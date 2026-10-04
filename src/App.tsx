@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import CuratedCategories from '@/components/CuratedCategories';
+import CollectionShowcase from '@/components/CollectionShowcase';
 import ProductGrid from '@/components/ProductGrid';
 import BrandIntro from '@/components/BrandIntro';
 import Craftsmanship from '@/components/Craftsmanship';
@@ -152,11 +152,12 @@ function AppContent() {
             {/* SECTION 01: CINEMATIC AUTO-SCROLL HERO */}
             <Hero />
 
-            {/* SECTION 02: DYNAMIC CURATED CATEGORIES */}
-            <CuratedCategories />
+            {/* SECTION 02: DISCOVER CATEGORIES VISUAL CARDS */}
+            <CollectionShowcase />
 
-            {/* SECTION 03: NEW ARRIVALS & FEATURED PRODUCTS */}
+            {/* SECTION 03: CURATED CATEGORIES PRODUCT CATALOG */}
             <ProductGrid />
+
 
             {/* SECTION 03: THE WORLD OF PEARLS */}
             <BrandIntro />
