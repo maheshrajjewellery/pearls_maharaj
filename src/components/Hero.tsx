@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useShop } from '@/context/ShopContext';
@@ -12,113 +12,142 @@ interface HeroSlide {
   description: string;
   imageDesktop: string;
   imageMobile: string;
+  ctaText: string;
+  ctaLink: string;
+  imagePosition: string;
   alt: string;
 }
 
-const heroSlides: HeroSlide[] = [
+const defaultHeroSlides: HeroSlide[] = [
   {
     id: 'slide-01',
     number: '01',
     title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'Pearl necklace close-up on model',
+    subtitle: 'The Purest Pearl Elegance',
+    description: 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.',
+    imageDesktop: '/images/pearl-banner.png',
+    imageMobile: '/images/pearl-banner-mobile.png',
+    ctaText: 'EXPLORE THE COLLECTION',
+    ctaLink: '/shop',
+    imagePosition: 'center center',
+    alt: 'Maharaj Jewellery Pearl Collection - Elegant South Asian woman in layered pearls',
   },
   {
     id: 'slide-02',
     number: '02',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/9428790/pexels-photo-9428790.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/9428790/pexels-photo-9428790.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'Baroque pearl drop earrings',
+    title: 'ROYAL HERITAGE',
+    subtitle: 'South Sea Pearl Strands',
+    description: 'Hand-selected golden and white South Sea pearls set in 18K gold fittings.',
+    imageDesktop: '/images/pearl-banner.png',
+    imageMobile: '/images/pearl-banner-mobile.png',
+    ctaText: 'DISCOVER SOUTH SEA',
+    ctaLink: '/shop?category=saltwater',
+    imagePosition: 'center center',
+    alt: 'South Sea Pearl Jewellery Banner',
   },
   {
     id: 'slide-03',
     number: '03',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/8408374/pexels-photo-8408374.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/8408374/pexels-photo-8408374.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'South Sea pearl bracelet accent',
-  },
-  {
-    id: 'slide-04',
-    number: '04',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/25389117/pexels-photo-25389117.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/30780337/pexels-photo-30780337.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'Bridal pearl jewellery creation',
-  },
-  {
-    id: 'slide-05',
-    number: '05',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'Pearls resting on silk luxury fabric',
-  },
-  {
-    id: 'slide-06',
-    number: '06',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'A STUDY IN PEARLS',
-    description: 'Exceptional pearls, thoughtfully crafted into timeless jewellery.',
-    imageDesktop: 'https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    imageMobile: 'https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=800',
-    alt: 'Editorial portrait showcasing pearl heirloom',
+    title: 'THE BRIDAL EDIT',
+    subtitle: 'Sacred Bridal Heirloom Collection',
+    description: 'Ornate pearl chokers, layered necklaces, and matching earrings crafted for unforgettable moments.',
+    imageDesktop: '/images/pearl-banner.png',
+    imageMobile: '/images/pearl-banner-mobile.png',
+    ctaText: 'EXPLORE BRIDAL',
+    ctaLink: '/shop?category=bridal',
+    imagePosition: 'center center',
+    alt: 'Royal Pearl Heritage Collection',
   },
 ];
 
 const SLIDE_DURATION = 4500; // 4.5 seconds
 
 export default function Hero() {
-  const { setCurrentPage, setCategory } = useShop();
+  const { setCurrentPage, setCategory, cmsData } = useShop();
   const isMobile = useMediaQuery('(max-width: 767px)');
   const prefersReduced = useReducedMotion();
+
+  const heroCMS = cmsData?.homepage?.hero;
+  const cmsSlides = cmsData?.homepage?.heroSlides;
+
+  // Active Published Hero Slides from CMS
+  const activeSlides: HeroSlide[] = useMemo(() => {
+    if (cmsSlides && cmsSlides.length > 0) {
+      const filtered = cmsSlides
+        .filter((s) => s.isActive && s.status === 'Published')
+        .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+
+      if (filtered.length > 0) {
+        return filtered.map((slide, index) => ({
+          id: slide.id,
+          number: String(index + 1).padStart(2, '0'),
+          title: slide.title || 'MAHARAJ JEWELLERY',
+          subtitle: slide.subtitle || 'The Purest Pearl Elegance',
+          description: slide.description || 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms.',
+          imageDesktop: slide.imageUrl || '/images/pearl-banner.png',
+          imageMobile: slide.mobileImageUrl || slide.imageUrl || '/images/pearl-banner-mobile.png',
+          ctaText: slide.ctaText || 'EXPLORE THE COLLECTION',
+          ctaLink: slide.ctaLink || '/shop',
+          imagePosition: slide.imagePosition || 'center center',
+          alt: `${slide.title} - ${slide.subtitle}`,
+        }));
+      }
+    }
+    return defaultHeroSlides;
+  }, [cmsSlides]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Reset index if slides list changes
+  useEffect(() => {
+    if (currentIndex >= activeSlides.length) {
+      setCurrentIndex(0);
+    }
+  }, [activeSlides.length, currentIndex]);
+
   // Auto-advance photo sequence
   useEffect(() => {
-    if (prefersReduced || isPaused) return;
+    if (prefersReduced || isPaused || activeSlides.length <= 1) return;
 
     timerRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
+      setCurrentIndex((prev) => (prev + 1) % activeSlides.length);
     }, SLIDE_DURATION);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [currentIndex, isPaused, prefersReduced]);
+  }, [currentIndex, isPaused, prefersReduced, activeSlides.length]);
 
   const handleIndicatorClick = (index: number) => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setCurrentIndex(index);
   };
 
-  const handleExploreClick = () => {
-    setCurrentPage('shop');
-    setCategory('all');
-    window.history.pushState({}, '', '/shop');
+  const handleExploreClick = (linkPath: string) => {
+    if (linkPath.includes('category=')) {
+      const cat = linkPath.split('category=')[1] as any;
+      setCurrentPage('shop');
+      setCategory(cat);
+    } else if (linkPath.startsWith('/about')) {
+      setCurrentPage('about');
+    } else {
+      setCurrentPage('shop');
+      setCategory('all');
+    }
+    window.history.pushState({}, '', linkPath || '/shop');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const currentSlide = heroSlides[currentIndex];
+  if (heroCMS && heroCMS.active === false) return null;
+
+  const currentSlide = activeSlides[currentIndex] || activeSlides[0];
+  const heroImage = isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop;
 
   return (
     <section
-      className="relative w-full h-[80vh] sm:h-[84vh] lg:h-[88vh] min-h-[580px] max-h-[900px] bg-[#171412] overflow-hidden select-none flex flex-col justify-between"
+      className="relative w-full h-[80vh] sm:h-[84vh] lg:h-[88vh] min-h-[580px] max-h-[900px] bg-[#30372F] overflow-hidden select-none flex flex-col justify-between"
       aria-label="Maharaj Jewellery Cinematic Hero Campaign"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -127,31 +156,43 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="popLayout">
           <motion.div
-            key={currentSlide.id}
+            key={currentSlide.id + currentIndex}
             initial={{ opacity: 0, scale: 1.02 }}
             animate={{
               opacity: 1,
-              scale: prefersReduced ? 1 : 1.06,
+              scale: prefersReduced ? 1 : 1.05,
             }}
-            exit={{ opacity: 0, scale: 1.04 }}
+            exit={{ opacity: 0, scale: 1.03 }}
             transition={{
-              opacity: { duration: 1.5, ease: [0.25, 1, 0.5, 1] },
+              opacity: { duration: 1.2, ease: [0.25, 1, 0.5, 1] },
               scale: { duration: SLIDE_DURATION / 1000 + 0.5, ease: 'linear' },
             }}
             className="absolute inset-0 w-full h-full"
           >
             <img
-              src={isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop}
+              src={heroImage}
               alt={currentSlide.alt}
-              className="w-full h-full object-cover object-center"
-              fetchPriority="high"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: isMobile ? '80% center' : currentSlide.imagePosition }}
+              fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (!target.src.includes('/images/pearl-banner.png')) {
+                  target.src = '/images/pearl-banner.png';
+                }
+              }}
             />
           </motion.div>
         </AnimatePresence>
 
-        {/* Soft Vignette & Gradient Overlays for High Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#171412]/85 via-[#171412]/30 to-transparent pointer-events-none" />
-        <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 bg-gradient-to-r from-[#171412]/60 to-transparent pointer-events-none" />
+        {/* Subtle overlay gradient: Keeps woman & pearls illuminated while protecting text readability on left */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(12, 9, 7, 0.45) 0%, rgba(12, 9, 7, 0.15) 50%, rgba(12, 9, 7, 0) 85%)',
+          }}
+        />
       </div>
 
       {/* 2. OPTIONAL VERTICAL EDITORIAL SIDE STAMP (Desktop) */}
@@ -163,22 +204,24 @@ export default function Hero() {
 
       {/* 3. HERO CONTENT BLOCK (BOTTOM LEFT, MAX WIDTH 480px DESKTOP / 300px MOBILE) */}
       <div className="relative z-20 w-full max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20 pt-8 flex-1 flex flex-col justify-end pb-12 sm:pb-16 lg:pb-20">
-        <div className="max-w-[300px] sm:max-w-[420px] lg:max-w-[480px] text-left">
+        <div className="max-w-[320px] sm:max-w-[440px] lg:max-w-[500px] text-left">
           {/* Eyebrow */}
           <motion.div
+            key={`title-${currentSlide.id}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="flex items-center gap-3 mb-2"
           >
-            <span className="h-px w-6 bg-[#B79A5A]" />
-            <span className="text-[#B79A5A] text-[10.5px] sm:text-[11px] font-sans font-medium tracking-[0.1em] uppercase">
+            <span className="h-px w-6 bg-[#C5A15A]" />
+            <span className="text-[#C5A15A] text-[10.5px] sm:text-[11px] font-sans font-medium tracking-[0.1em] uppercase">
               {currentSlide.title}
             </span>
           </motion.div>
 
           {/* Heading */}
           <motion.h1
+            key={`heading-${currentSlide.id}`}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -189,6 +232,7 @@ export default function Hero() {
 
           {/* Body Text */}
           <motion.p
+            key={`desc-${currentSlide.id}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -199,28 +243,29 @@ export default function Hero() {
 
           {/* CTA Link */}
           <motion.div
+            key={`cta-${currentSlide.id}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <button
-              onClick={handleExploreClick}
-              className="group inline-flex items-center gap-3 text-white hover:text-[#B79A5A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.1em] uppercase transition-colors duration-300 focus:outline-none min-touch-target cursor-pointer"
+              onClick={() => handleExploreClick(currentSlide.ctaLink)}
+              className="group inline-flex items-center gap-3 text-white hover:text-[#C5A15A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.1em] uppercase transition-colors duration-300 focus:outline-none min-touch-target cursor-pointer"
             >
-              <span>EXPLORE COLLECTION</span>
+              <span>{currentSlide.ctaText}</span>
               <ArrowRight
                 size={14}
-                className="group-hover:translate-x-1.5 transition-transform duration-300 text-[#B79A5A]"
+                className="group-hover:translate-x-1.5 transition-transform duration-300 text-[#C5A15A]"
               />
             </button>
           </motion.div>
         </div>
       </div>
 
-      {/* 4. HERO BOTTOM PROGRESS INDICATOR (01 ━━━━━━━ 02 03 04 05 06) */}
+      {/* 4. HERO BOTTOM PROGRESS INDICATOR (01 ━━━━━━━ 02 03 04) */}
       <div className="relative z-20 w-full max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20 pb-6 sm:pb-8 flex items-center justify-between pointer-events-auto">
         <div className="flex items-center gap-3 sm:gap-5">
-          {heroSlides.map((slide, idx) => {
+          {activeSlides.map((slide, idx) => {
             const isActive = idx === currentIndex;
             return (
               <button
@@ -231,7 +276,7 @@ export default function Hero() {
               >
                 <span
                   className={`font-sans text-[11px] tracking-wider transition-colors duration-300 ${
-                    isActive ? 'text-[#B79A5A] font-semibold' : 'text-white/40 group-hover:text-white/80'
+                    isActive ? 'text-[#C5A15A] font-semibold' : 'text-white/40 group-hover:text-white/80'
                   }`}
                 >
                   {slide.number}
@@ -248,7 +293,7 @@ export default function Hero() {
                         duration: SLIDE_DURATION / 1000,
                         ease: 'linear',
                       }}
-                      className="absolute left-0 top-0 bottom-0 bg-[#B79A5A]"
+                      className="absolute left-0 top-0 bottom-0 bg-[#C5A15A]"
                     />
                   ) : null}
                 </div>
@@ -265,7 +310,7 @@ export default function Hero() {
           <motion.div
             animate={{ y: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-px h-5 bg-gradient-to-b from-[#B79A5A] to-transparent"
+            className="w-px h-5 bg-gradient-to-b from-[#C5A15A] to-transparent"
           />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { ArrowLeftRight, Check, Info, Sparkles, MapPin, Ruler, Palette, Shapes, Layers } from 'lucide-react';
@@ -64,7 +64,7 @@ export default function PearlComparison() {
     <section
       id="pearl-comparison"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
       aria-label="Interactive pearl comparison"
     >
       {/* Background ambient lighting */}

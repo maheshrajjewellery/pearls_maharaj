@@ -93,31 +93,32 @@ ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE product_images ENABLE ROW LEVEL SECURITY;
 
--- PUBLIC READ POLICIES
+-- CATEGORIES RLS POLICIES
 DROP POLICY IF EXISTS "Public categories read" ON categories;
-CREATE POLICY "Public categories read" ON categories
-FOR SELECT USING (is_active = true OR auth.role() = 'authenticated');
-
-DROP POLICY IF EXISTS "Public products read" ON products;
-CREATE POLICY "Public products read" ON products
-FOR SELECT USING (is_active = true OR auth.role() = 'authenticated');
-
-DROP POLICY IF EXISTS "Public product_images read" ON product_images;
-CREATE POLICY "Public product_images read" ON product_images
-FOR SELECT USING (true);
-
--- ADMIN FULL ACCESS POLICIES
 DROP POLICY IF EXISTS "Admin categories all" ON categories;
-CREATE POLICY "Admin categories all" ON categories
-FOR ALL USING (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Allow public read categories" ON categories;
+DROP POLICY IF EXISTS "Allow admin full access categories" ON categories;
 
+CREATE POLICY "Allow public read categories" ON categories FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access categories" ON categories FOR ALL USING (true) WITH CHECK (true);
+
+-- PRODUCTS RLS POLICIES
+DROP POLICY IF EXISTS "Public products read" ON products;
 DROP POLICY IF EXISTS "Admin products all" ON products;
-CREATE POLICY "Admin products all" ON products
-FOR ALL USING (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Allow public read products" ON products;
+DROP POLICY IF EXISTS "Allow admin full access products" ON products;
 
+CREATE POLICY "Allow public read products" ON products FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access products" ON products FOR ALL USING (true) WITH CHECK (true);
+
+-- PRODUCT IMAGES RLS POLICIES
+DROP POLICY IF EXISTS "Public product_images read" ON product_images;
 DROP POLICY IF EXISTS "Admin product_images all" ON product_images;
-CREATE POLICY "Admin product_images all" ON product_images
-FOR ALL USING (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Allow public read product_images" ON product_images;
+DROP POLICY IF EXISTS "Allow admin full access product_images" ON product_images;
+
+CREATE POLICY "Allow public read product_images" ON product_images FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access product_images" ON product_images FOR ALL USING (true) WITH CHECK (true);
 
 -- 7. SUPABASE STORAGE BUCKET
 INSERT INTO storage.buckets (id, name, public)
@@ -126,16 +127,12 @@ ON CONFLICT (id) DO NOTHING;
 
 -- STORAGE POLICIES
 DROP POLICY IF EXISTS "Public product-images read" ON storage.objects;
-CREATE POLICY "Public product-images read" ON storage.objects
-FOR SELECT USING (bucket_id = 'product-images');
-
 DROP POLICY IF EXISTS "Admin product-images upload" ON storage.objects;
-CREATE POLICY "Admin product-images upload" ON storage.objects
-FOR INSERT WITH CHECK (bucket_id = 'product-images');
-
 DROP POLICY IF EXISTS "Admin product-images delete" ON storage.objects;
-CREATE POLICY "Admin product-images delete" ON storage.objects
-FOR DELETE USING (bucket_id = 'product-images');
+
+CREATE POLICY "Public product-images read" ON storage.objects FOR SELECT USING (bucket_id = 'product-images');
+CREATE POLICY "Admin product-images upload" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'product-images');
+CREATE POLICY "Admin product-images delete" ON storage.objects FOR DELETE USING (bucket_id = 'product-images');
 
 -- 8. SEED DATA
 -- Seed Categories
@@ -256,3 +253,272 @@ VALUES
   ('b3333333-3333-3333-3333-333333333333', 'https://images.pexels.com/photos/17555289/pexels-photo-17555289.jpeg?auto=compress&cs=tinysrgb&w=1200', 'Maharani Emerald Pearl Haar Primary', 1, true),
   ('b4444444-4444-4444-4444-444444444444', 'https://images.pexels.com/photos/19525066/pexels-photo-19525066.jpeg?auto=compress&cs=tinysrgb&w=1200', 'Imperial Solitaire Pearl Ring Primary', 1, true)
 ON CONFLICT DO NOTHING;
+
+-- ====================================================================
+-- 9. CREATE TABLE: collections
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS collections (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  description TEXT,
+  cover_image TEXT,
+  banner_image TEXT,
+  status TEXT DEFAULT 'Active' CHECK (status IN ('Active', 'Draft')),
+  display_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- INDEXES FOR COLLECTIONS
+CREATE INDEX IF NOT EXISTS idx_collections_slug ON collections(slug);
+CREATE INDEX IF NOT EXISTS idx_collections_status ON collections(status);
+CREATE INDEX IF NOT EXISTS idx_collections_display_order ON collections(display_order);
+
+-- TRIGGER FOR COLLECTIONS updated_at
+DROP TRIGGER IF EXISTS set_collections_updated_at ON collections;
+CREATE TRIGGER set_collections_updated_at
+BEFORE UPDATE ON collections
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- RLS POLICIES FOR COLLECTIONS
+ALTER TABLE collections ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read collections" ON collections;
+DROP POLICY IF EXISTS "Allow admin full access collections" ON collections;
+CREATE POLICY "Allow public read collections" ON collections FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access collections" ON collections FOR ALL USING (true) WITH CHECK (true);
+
+-- 10. CREATE TABLE: collection_products (Junction table)
+CREATE TABLE IF NOT EXISTS collection_products (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  collection_id UUID NOT NULL REFERENCES collections(id) ON DELETE CASCADE,
+  product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(collection_id, product_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_collection_products_col_id ON collection_products(collection_id);
+CREATE INDEX IF NOT EXISTS idx_collection_products_prod_id ON collection_products(product_id);
+
+ALTER TABLE collection_products ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read collection_products" ON collection_products;
+DROP POLICY IF EXISTS "Allow admin full access collection_products" ON collection_products;
+CREATE POLICY "Allow public read collection_products" ON collection_products FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access collection_products" ON collection_products FOR ALL USING (true) WITH CHECK (true);
+
+-- SEED COLLECTIONS
+INSERT INTO collections (id, name, slug, description, cover_image, banner_image, status, display_order)
+VALUES 
+  ('c1111111-1111-1111-1111-111111111111', 'Royal Pearls Collection', 'royal-pearls', 'Curated royal South Sea and Tahitian pearl masterpieces', 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1920', 'Active', 1),
+  ('c2222222-2222-2222-2222-222222222222', 'Heritage Royal Dynasty', 'heritage', 'Heritage designs inspired by royal Indian court jewellery', 'https://images.pexels.com/photos/10061399/pexels-photo-10061399.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/10061399/pexels-photo-10061399.jpeg?auto=compress&cs=tinysrgb&w=1920', 'Active', 2),
+  ('c3333333-3333-3333-3333-333333333333', 'Sacred Wedding Bridal', 'bridal', 'Sacred wedding pearl jewellery for royal brides', 'https://images.pexels.com/photos/30780337/pexels-photo-30780337.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/30780337/pexels-photo-30780337.jpeg?auto=compress&cs=tinysrgb&w=1920', 'Active', 3)
+ON CONFLICT (slug) DO UPDATE 
+SET name = EXCLUDED.name, description = EXCLUDED.description;
+
+-- ====================================================================
+-- 11. CREATE TABLE: orders
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,
+  order_number TEXT UNIQUE NOT NULL,
+  customer_name TEXT NOT NULL,
+  customer_email TEXT NOT NULL,
+  customer_phone TEXT NOT NULL,
+  shipping_address JSONB NOT NULL,
+  subtotal NUMERIC(12, 2) NOT NULL DEFAULT 0,
+  shipping_fee NUMERIC(12, 2) NOT NULL DEFAULT 0,
+  discount NUMERIC(12, 2) NOT NULL DEFAULT 0,
+  total_amount NUMERIC(12, 2) NOT NULL DEFAULT 0,
+  payment_method TEXT NOT NULL,
+  payment_status TEXT NOT NULL DEFAULT 'Pending',
+  order_status TEXT NOT NULL DEFAULT 'Confirmed',
+  razorpay_payment_id TEXT,
+  razorpay_order_id TEXT,
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON orders(customer_email);
+CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
+CREATE INDEX IF NOT EXISTS idx_orders_order_status ON orders(order_status);
+
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read insert orders" ON orders;
+CREATE POLICY "Allow public read insert orders" ON orders FOR ALL USING (true) WITH CHECK (true);
+
+-- ====================================================================
+-- 12. CREATE TABLE: user_addresses
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS user_addresses (
+  id TEXT PRIMARY KEY,
+  user_email TEXT NOT NULL,
+  full_name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  house_flat TEXT NOT NULL,
+  street TEXT NOT NULL,
+  area TEXT,
+  city TEXT NOT NULL,
+  state TEXT NOT NULL,
+  pincode TEXT NOT NULL,
+  country TEXT DEFAULT 'India',
+  is_default BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_addresses_email ON user_addresses(user_email);
+
+ALTER TABLE user_addresses ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow user_addresses access" ON user_addresses;
+CREATE POLICY "Allow user_addresses access" ON user_addresses FOR ALL USING (true) WITH CHECK (true);
+
+-- ====================================================================
+-- 13. CREATE TABLE: coupons
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS coupons (
+  code TEXT PRIMARY KEY,
+  description TEXT NOT NULL,
+  discount_type TEXT NOT NULL CHECK (discount_type IN ('percentage', 'fixed')),
+  discount_value NUMERIC(12, 2) NOT NULL,
+  min_order_amount NUMERIC(12, 2) DEFAULT 0,
+  max_discount NUMERIC(12, 2),
+  expiry_date TIMESTAMPTZ NOT NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE coupons ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read coupons" ON coupons;
+CREATE POLICY "Allow public read coupons" ON coupons FOR SELECT USING (true);
+
+-- SEED COUPONS
+INSERT INTO coupons (code, description, discount_type, discount_value, min_order_amount, expiry_date, is_active)
+VALUES
+  ('WELCOME10', '10% off on your luxury jewellery purchase', 'percentage', 10, 0, '2028-12-31 23:59:59+00', true),
+  ('ROYAL15', '15% off on orders above ₹50,000', 'percentage', 15, 50000, '2028-12-31 23:59:59+00', true),
+  ('PEARL5000', 'Flat ₹5,000 off on grand heritage orders above ₹1,00,000', 'fixed', 5000, 100000, '2028-12-31 23:59:59+00', true),
+  ('MAHARAJA20', '20% off on signature bridal suites above ₹1,50,000', 'percentage', 20, 150000, '2028-12-31 23:59:59+00', true)
+ON CONFLICT (code) DO NOTHING;
+
+-- ====================================================================
+-- 14. CREATE TABLE: profiles
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  full_name TEXT,
+  phone TEXT,
+  avatar_url TEXT,
+  provider TEXT DEFAULT 'email',
+  status TEXT DEFAULT 'Active' CHECK (status IN ('Active', 'Inactive')),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_status ON profiles(status);
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow profiles access" ON profiles;
+CREATE POLICY "Allow profiles access" ON profiles FOR ALL USING (true) WITH CHECK (true);
+
+-- ====================================================================
+-- 15. CREATE TABLE: corporate_gifting_enquiries
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS corporate_gifting_enquiries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  enquiry_number TEXT UNIQUE NOT NULL,
+  company_name TEXT NOT NULL,
+  contact_name TEXT NOT NULL,
+  designation TEXT,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  company_type TEXT,
+  website TEXT,
+  quantity INTEGER DEFAULT 1,
+  quantity_range TEXT,
+  budget TEXT,
+  gift_type TEXT,
+  occasion TEXT,
+  preferred_delivery_date DATE,
+  customization_required TEXT,
+  packaging_required TEXT,
+  branding_required TEXT,
+  message TEXT,
+  status TEXT NOT NULL DEFAULT 'New',
+  assigned_to TEXT,
+  assigned_to_name TEXT,
+  quotation_amount NUMERIC(12, 2),
+  quotation_date TIMESTAMPTZ,
+  quotation_valid_until TIMESTAMPTZ,
+  quotation_notes TEXT,
+  quotation_ref TEXT,
+  is_archived BOOLEAN DEFAULT false,
+  converted_order_id TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_corporate_enquiries_status ON corporate_gifting_enquiries(status);
+CREATE INDEX IF NOT EXISTS idx_corporate_enquiries_email ON corporate_gifting_enquiries(email);
+CREATE INDEX IF NOT EXISTS idx_corporate_enquiries_enquiry_number ON corporate_gifting_enquiries(enquiry_number);
+
+DROP TRIGGER IF EXISTS set_corporate_enquiries_updated_at ON corporate_gifting_enquiries;
+CREATE TRIGGER set_corporate_enquiries_updated_at
+BEFORE UPDATE ON corporate_gifting_enquiries
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+ALTER TABLE corporate_gifting_enquiries ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow all corporate_gifting_enquiries" ON corporate_gifting_enquiries;
+CREATE POLICY "Allow all corporate_gifting_enquiries" ON corporate_gifting_enquiries FOR ALL USING (true) WITH CHECK (true);
+
+-- ====================================================================
+-- 16. CREATE TABLE: corporate_gifting_enquiry_events
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS corporate_gifting_enquiry_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  enquiry_id UUID NOT NULL REFERENCES corporate_gifting_enquiries(id) ON DELETE CASCADE,
+  event_type TEXT NOT NULL,
+  old_status TEXT,
+  new_status TEXT,
+  message TEXT NOT NULL,
+  created_by TEXT DEFAULT 'Admin',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_corporate_enquiry_events_enquiry_id ON corporate_gifting_enquiry_events(enquiry_id);
+
+ALTER TABLE corporate_gifting_enquiry_events ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow all corporate_gifting_enquiry_events" ON corporate_gifting_enquiry_events;
+CREATE POLICY "Allow all corporate_gifting_enquiry_events" ON corporate_gifting_enquiry_events FOR ALL USING (true) WITH CHECK (true);
+
+-- ====================================================================
+-- 17. CREATE TABLE: cms_content (Dynamic CMS Content Store)
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS cms_content (
+  key TEXT PRIMARY KEY,
+  data JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+DROP TRIGGER IF EXISTS set_cms_content_updated_at ON cms_content;
+CREATE TRIGGER set_cms_content_updated_at
+BEFORE UPDATE ON cms_content
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+ALTER TABLE cms_content ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read cms_content" ON cms_content;
+DROP POLICY IF EXISTS "Allow admin all cms_content" ON cms_content;
+
+CREATE POLICY "Allow public read cms_content" ON cms_content FOR SELECT USING (true);
+CREATE POLICY "Allow admin all cms_content" ON cms_content FOR ALL USING (true) WITH CHECK (true);
+
+
+
+
+

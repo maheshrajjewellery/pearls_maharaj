@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { enquiryOptions } from '@/data/giftingData';
 import { Send, CheckCircle, ShieldCheck } from 'lucide-react';
+import { submitCorporateEnquiryInDb } from '@/services/corporateEnquiryService';
 
 interface GiftingEnquiryFormProps {
   initialOccasion?: string;
@@ -26,19 +27,38 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedEnquiryRef, setSubmittedEnquiryRef] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const res = await submitCorporateEnquiryInDb({
+        companyName: formData.companyName,
+        contactName: formData.fullName,
+        email: formData.workEmail,
+        phone: formData.phoneNumber,
+        quantity: formData.numberOfGifts,
+        budget: formData.budgetRange,
+        giftType: formData.preferredJewellery,
+        occasion: formData.occasion,
+        message: formData.message,
+      });
+
+      if (res.success && res.enquiry) {
+        setSubmittedEnquiryRef(res.enquiry.enquiryNumber);
+      }
+    } catch (err) {
+      console.error('Failed to submit corporate enquiry:', err);
+    } finally {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 1200);
+    }
   };
 
   return (
@@ -56,18 +76,18 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
             <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
               CORPORATE GIFTING ENQUIRY
             </span>
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29231F] leading-tight mb-4"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#30372F] leading-tight mb-4"
           >
             LET'S CREATE SOMETHING MEANINGFUL.
           </motion.h2>
@@ -76,7 +96,7 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
             initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[#29231F]/80 text-base sm:text-lg font-light leading-relaxed"
+            className="text-[#30372F]/80 text-base sm:text-lg font-light leading-relaxed"
           >
             Tell us about your gifting requirements and our team will help curate the right jewellery experience.
           </motion.p>
@@ -98,14 +118,19 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                 transition={{ duration: 0.5 }}
                 className="flex flex-col items-center text-center py-12 px-4"
               >
-                <div className="w-16 h-16 rounded-full bg-[#F7F3EC] border border-[#C8A96B] flex items-center justify-center text-[#C8A96B] mb-6">
+                <div className="w-16 h-16 rounded-full bg-[#F7F3EC] border border-[#C5A15A] flex items-center justify-center text-[#C5A15A] mb-6">
                   <CheckCircle size={32} />
                 </div>
-                <h3 className="font-serif text-3xl text-[#29231F] font-normal mb-3">
+                <h3 className="font-serif text-3xl text-[#30372F] font-normal mb-1">
                   Enquiry Received
                 </h3>
-                <p className="text-[#29231F]/80 text-base font-light max-w-md mb-8 leading-relaxed">
-                  Thank you, <span className="font-medium text-[#29231F]">{formData.fullName}</span>. Our Corporate Concierge team has received your enquiry and will respond within 24 business hours with a tailored lookbook and pricing proposal.
+                {submittedEnquiryRef && (
+                  <span className="inline-block px-3 py-1 bg-[#C5A15A]/15 text-[#C5A15A] font-mono text-xs font-semibold tracking-wider border border-[#C5A15A]/30 mb-4">
+                    REFERENCE ID: {submittedEnquiryRef}
+                  </span>
+                )}
+                <p className="text-[#30372F]/80 text-base font-light max-w-md mb-8 leading-relaxed">
+                  Thank you, <span className="font-medium text-[#30372F]">{formData.fullName}</span>. Our Corporate Concierge team has received your enquiry and will respond within 24 business hours with a tailored lookbook and pricing proposal.
                 </p>
                 <button
                   onClick={() => {
@@ -122,7 +147,7 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       message: '',
                     });
                   }}
-                  className="px-8 py-3 bg-[#29231F] text-[#FFFDF8] text-xs uppercase tracking-[0.2em] font-medium hover:bg-[#C8A96B] hover:text-[#29231F] transition-colors duration-300"
+                  className="px-8 py-3 bg-[#30372F] text-[#FFFDF8] text-xs uppercase tracking-[0.2em] font-medium hover:bg-[#C5A15A] hover:text-[#30372F] transition-colors duration-300"
                 >
                   Submit Another Enquiry
                 </button>
@@ -132,8 +157,8 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Full Name */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
-                      Full Name <span className="text-[#C8A96B]">*</span>
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
+                      Full Name <span className="text-[#C5A15A]">*</span>
                     </label>
                     <input
                       type="text"
@@ -142,14 +167,14 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       placeholder="e.g. Vikramaditya Sharma"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     />
                   </div>
 
                   {/* Company Name */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
-                      Company Name <span className="text-[#C8A96B]">*</span>
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
+                      Company Name <span className="text-[#C5A15A]">*</span>
                     </label>
                     <input
                       type="text"
@@ -158,14 +183,14 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       placeholder="e.g. Oberoi Enterprises"
                       value={formData.companyName}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     />
                   </div>
 
                   {/* Work Email */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
-                      Work Email <span className="text-[#C8A96B]">*</span>
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
+                      Work Email <span className="text-[#C5A15A]">*</span>
                     </label>
                     <input
                       type="email"
@@ -174,14 +199,14 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       placeholder="name@company.com"
                       value={formData.workEmail}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     />
                   </div>
 
                   {/* Phone Number */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
-                      Phone Number <span className="text-[#C8A96B]">*</span>
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
+                      Phone Number <span className="text-[#C5A15A]">*</span>
                     </label>
                     <input
                       type="tel"
@@ -190,13 +215,13 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       placeholder="+91 98765 43210"
                       value={formData.phoneNumber}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     />
                   </div>
 
                   {/* Number of Gifts */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
                       Number of Gifts
                     </label>
                     <input
@@ -205,20 +230,20 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                       placeholder="e.g. 50 pieces"
                       value={formData.numberOfGifts}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     />
                   </div>
 
                   {/* Occasion Dropdown */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
                       Occasion
                     </label>
                     <select
                       name="occasion"
                       value={formData.occasion}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     >
                       {enquiryOptions.occasions.map((occ) => (
                         <option key={occ} value={occ}>
@@ -230,14 +255,14 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
 
                   {/* Preferred Jewellery Dropdown */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
                       Preferred Jewellery
                     </label>
                     <select
                       name="preferredJewellery"
                       value={formData.preferredJewellery}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     >
                       {enquiryOptions.jewelleryTypes.map((type) => (
                         <option key={type} value={type}>
@@ -249,14 +274,14 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
 
                   {/* Budget Range Dropdown */}
                   <div className="flex flex-col">
-                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
+                    <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
                       Budget Range
                     </label>
                     <select
                       name="budgetRange"
                       value={formData.budgetRange}
                       onChange={handleChange}
-                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#29231F] font-light focus:outline-none focus:border-[#C8A96B] transition-colors duration-300"
+                      className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] px-4 py-3.5 text-sm text-[#30372F] font-light focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
                     >
                       {enquiryOptions.budgets.map((b) => (
                         <option key={b} value={b}>
@@ -269,7 +294,7 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
 
                 {/* Message / Special Instructions */}
                 <div className="flex flex-col">
-                  <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#29231F] mb-2.5">
+                  <label className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#30372F] mb-2.5">
                     Message / Custom Requirements
                   </label>
                   <textarea
@@ -278,21 +303,21 @@ export default function GiftingEnquiryForm({ initialOccasion, initialProduct }: 
                     placeholder="Share any details about delivery dates, customization requests, or recipient profiles..."
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] p-4 text-sm text-[#29231F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C8A96B] transition-colors duration-300 resize-none"
+                    className="w-full bg-[#FFFDF8] border border-[rgba(41,35,31,0.2)] p-4 text-sm text-[#30372F] font-light placeholder:text-[#B8A99A]/60 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300 resize-none"
                   />
                 </div>
 
                 {/* Privacy note & Submit CTA */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-4 border-t border-[rgba(41,35,31,0.1)]">
                   <div className="flex items-center gap-2 text-xs text-[#B8A99A] font-light">
-                    <ShieldCheck size={16} className="text-[#C8A96B]" />
+                    <ShieldCheck size={16} className="text-[#C5A15A]" />
                     <span>Your corporate information is strictly confidential.</span>
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 bg-[#29231F] text-[#FFFDF8] text-xs uppercase tracking-[0.25em] font-medium hover:bg-[#C8A96B] hover:text-[#29231F] transition-all duration-300 disabled:opacity-70"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 bg-[#30372F] text-[#FFFDF8] text-xs uppercase tracking-[0.25em] font-medium hover:bg-[#C5A15A] hover:text-[#30372F] transition-all duration-300 disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <span>SUBMITTING...</span>

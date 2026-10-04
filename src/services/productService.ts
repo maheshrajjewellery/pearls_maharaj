@@ -2,7 +2,6 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { DbProduct, DbProductImage, DbProductWithRelations, ProductFilterParams } from '@/types/database';
 import { ShopProduct, ShopCategory, PearlType, MaterialFilter, CollectionFilter, ColorFilter } from '@/types/shop';
 import { deleteProductImage } from './storageService';
-import { shopProducts as initialShopProducts } from '@/data/shopProducts';
 
 const LOCAL_STORAGE_KEY = 'maharaj_db_products';
 
@@ -85,15 +84,14 @@ export const dbToShopProduct = (dbProd: DbProductWithRelations): ShopProduct => 
 
 // Local storage fallback helpers
 const getLocalProducts = (): ShopProduct[] => {
-  if (typeof window === 'undefined') return initialShopProducts;
+  if (typeof window === 'undefined') return [];
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (saved) {
     try {
       return JSON.parse(saved);
     } catch {}
   }
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialShopProducts));
-  return initialShopProducts;
+  return [];
 };
 
 const setLocalProducts = (prods: ShopProduct[]) => {
@@ -541,17 +539,15 @@ export const updateProductInDb = async (
   return updatedShopProduct;
 };
 
-// Delete product from Database (with image cleanup & soft-delete option)
+// Delete product from Database
 export const deleteProductFromDb = async (id: string, softDelete: boolean = false): Promise<boolean> => {
   if (softDelete) {
-    // Soft delete sets is_active = false
     await updateProductInDb(id, { is_active: false });
     return true;
   }
 
   if (isSupabaseConfigured()) {
     try {
-      // 1. Fetch images to delete from storage
       const { data: images } = await supabase.from('product_images').select('image_url').eq('product_id', id);
       if (images && images.length > 0) {
         for (const img of images) {
@@ -559,7 +555,6 @@ export const deleteProductFromDb = async (id: string, softDelete: boolean = fals
         }
       }
 
-      // 2. Delete product record (cascade deletes product_images)
       const { error } = await supabase.from('products').delete().eq('id', id);
       if (error) throw new Error(error.message);
     } catch (err) {
@@ -569,5 +564,24 @@ export const deleteProductFromDb = async (id: string, softDelete: boolean = fals
 
   const list = getLocalProducts().filter((p) => p.id !== id);
   setLocalProducts(list);
+  return true;
+};
+
+// Delete ALL products from Database and local storage
+export const deleteAllProductsFromDb = async (): Promise<boolean> => {
+  if (isSupabaseConfigured()) {
+    try {
+      await supabase.from('product_images').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('products').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    } catch (err) {
+      console.error('Supabase delete all products error:', err);
+    }
+  }
+
+  setLocalProducts([]);
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem('maharaj_admin_products');
+  }
   return true;
 };

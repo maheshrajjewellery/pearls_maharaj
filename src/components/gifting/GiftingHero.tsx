@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { giftingHeroData } from '@/data/giftingData';
+import { useShop } from '@/context/ShopContext';
 
 interface GiftingHeroProps {
   onEnquireClick: () => void;
@@ -8,6 +9,15 @@ interface GiftingHeroProps {
 }
 
 export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingHeroProps) {
+  const { cmsData } = useShop();
+  const corpCMS = cmsData?.corporate;
+
+  const eyebrow = 'ROYAL CORPORATE GIFTING';
+  const heading1 = corpCMS?.heroHeading || giftingHeroData.headingLine1;
+  const heading2 = giftingHeroData.headingLine2;
+  const supportingCopy = corpCMS?.heroSubheading || giftingHeroData.supportingCopy;
+  const heroImg = corpCMS?.heroImage && corpCMS.heroImage.trim() !== '' ? corpCMS.heroImage : giftingHeroData.heroImage;
+
   return (
     <section className="relative w-full bg-[#F7F3EC] py-12 lg:py-20 flex items-center overflow-hidden border-b border-[rgba(41,35,31,0.08)]">
       {/* Background ambient lighting */}
@@ -25,9 +35,9 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-6 h-px bg-[#C8A96B]" />
+              <span className="w-6 h-px bg-[#C5A15A]" />
               <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
-                {giftingHeroData.eyebrow}
+                {eyebrow}
               </span>
             </motion.div>
 
@@ -37,13 +47,9 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal text-[#29231F] leading-[1.08] tracking-[-0.01em]"
+                className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal text-[#30372F] leading-[1.08] tracking-[-0.01em]"
               >
-                <span>{giftingHeroData.headingLine1}</span>
-                <br />
-                <span className="italic font-light text-[#C8A96B]">
-                  {giftingHeroData.headingLine2}
-                </span>
+                <span>{heading1}</span>
               </motion.h1>
             </div>
 
@@ -52,9 +58,9 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[#29231F]/80 text-base sm:text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-9"
+              className="text-[#30372F]/80 text-base sm:text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-9"
             >
-              {giftingHeroData.supportingCopy}
+              {supportingCopy}
             </motion.p>
 
             {/* CTAs */}
@@ -67,7 +73,7 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               {/* Primary CTA */}
               <button
                 onClick={onEnquireClick}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#29231F] text-[#FFFDF8] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:bg-[#C8A96B] hover:text-[#29231F] shadow-sm"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#30372F] text-[#FFFDF8] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:bg-[#C5A15A] hover:text-[#30372F] shadow-sm"
               >
                 <span>{giftingHeroData.primaryCta}</span>
                 <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -76,7 +82,7 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               {/* Secondary CTA */}
               <button
                 onClick={onExploreClick}
-                className="group inline-flex items-center justify-center gap-2 px-7 py-4 bg-transparent border border-[#29231F]/25 text-[#29231F] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:border-[#C8A96B] hover:text-[#C8A96B]"
+                className="group inline-flex items-center justify-center gap-2 px-7 py-4 bg-transparent border border-[#30372F]/25 text-[#30372F] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:border-[#C5A15A] hover:text-[#C5A15A]"
               >
                 <span>{giftingHeroData.secondaryCta}</span>
               </button>
@@ -98,7 +104,7 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               />
 
               {/* Subtle warm ambient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#29231F]/30 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/30 via-transparent to-transparent pointer-events-none" />
 
               {/* Light sweep effect across pearls on entrance */}
               <motion.div
@@ -109,10 +115,10 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               />
 
               {/* Floating accent badge */}
-              <div className="absolute bottom-6 left-6 right-6 bg-[#FFFDF8]/90 backdrop-blur-md p-4 border border-[#C8A96B]/30 flex items-center justify-between">
+              <div className="absolute bottom-6 left-6 right-6 bg-[#FFFDF8]/90 backdrop-blur-md p-4 border border-[#C5A15A]/30 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Sparkles size={16} className="text-[#C8A96B]" />
-                  <span className="text-xs uppercase tracking-[0.2em] font-medium text-[#29231F]">
+                  <Sparkles size={16} className="text-[#C5A15A]" />
+                  <span className="text-xs uppercase tracking-[0.2em] font-medium text-[#30372F]">
                     Bespoke Presentation Box
                   </span>
                 </div>

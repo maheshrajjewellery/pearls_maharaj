@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Shield, Droplets, Box, Wrench, ArrowRight } from 'lucide-react';
@@ -68,7 +68,7 @@ export default function PearlCareGuide() {
     <section
       id="pearl-care"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
       aria-label="Pearl care guide - preservation and maintenance"
     >
       {/* Background ambient lighting */}

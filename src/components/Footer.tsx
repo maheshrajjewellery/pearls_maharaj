@@ -46,7 +46,11 @@ const socialLinks = [
 
 export default function Footer() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
-  const { setCurrentPage, setCategory } = useShop();
+  const { setCurrentPage, setCategory, cmsData } = useShop();
+
+  const footerCMS = cmsData?.footer;
+  const tagline = footerCMS?.tagline || 'Exceptional Pearls. Crafted into Timeless Jewellery.';
+  const copyright = footerCMS?.copyrightText || '© 2026 MAHARAJ JEWELLERY. ALL RIGHTS RESERVED.';
 
   const handleLinkClick = (link: { label: string; category?: string; action?: string }) => {
     if (link.action === 'gifting') {
@@ -79,7 +83,7 @@ export default function Footer() {
   return (
     <footer
       ref={ref}
-      className="bg-[#F4F0E8] text-[#171412] pt-16 sm:pt-20 lg:pt-28 pb-10 px-6 lg:px-14 border-t border-[#171412]/10"
+      className="bg-[#30372F] text-[#F5EBDD] pt-16 sm:pt-20 lg:pt-28 pb-10 px-6 lg:px-14 border-t border-[rgba(197,161,90,0.25)]"
     >
       <div className="max-w-[1720px] mx-auto">
         {/* Top 4-Column Grid Layout */}
@@ -92,18 +96,16 @@ export default function Footer() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="flex flex-col leading-none mb-4">
-                <span className="font-serif text-2xl lg:text-3xl font-normal tracking-[0.18em] text-[#171412]">
+                <span className="font-serif text-2xl lg:text-3xl font-normal tracking-[0.18em] text-[#F5EBDD]">
                   MAHARAJ
                 </span>
-                <span className="font-sans text-[9.5px] font-normal tracking-[0.25em] uppercase text-[#171412]/70 mt-1">
+                <span className="font-sans text-[9.5px] font-normal tracking-[0.25em] uppercase text-[#F5EBDD]/70 mt-1">
                   JEWELLERY
                 </span>
-                <span className="mt-3 h-[1.5px] w-8 bg-[#B79A5A]" />
+                <span className="mt-3 h-[1.5px] w-8 bg-[#C5A15A]" />
               </div>
-              <p className="font-sans text-[#171412]/75 text-xs tracking-wider uppercase font-normal leading-relaxed max-w-xs mt-4">
-                Exceptional Pearls.
-                <br />
-                Crafted into Timeless Jewellery.
+              <p className="font-sans text-[#F5EBDD]/75 text-xs tracking-wider uppercase font-normal leading-relaxed max-w-xs mt-4">
+                {tagline}
               </p>
             </motion.div>
           </div>
@@ -116,7 +118,7 @@ export default function Footer() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h3 className="font-sans text-xs tracking-[0.12em] uppercase font-medium text-[#B79A5A] mb-5">
+              <h3 className="font-sans text-xs tracking-[0.12em] uppercase font-medium text-[#C5A15A] mb-5">
                 {col.title}
               </h3>
               <ul className="space-y-3">
@@ -124,7 +126,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <button
                       onClick={() => handleLinkClick(link)}
-                      className="text-[#171412]/80 text-sm font-sans font-normal hover:text-[#B79A5A] transition-colors duration-300 text-left min-touch-target flex items-center"
+                      className="text-[#F5EBDD]/80 text-sm font-sans font-normal hover:text-[#C5A15A] transition-colors duration-300 text-left min-touch-target flex items-center"
                     >
                       {link.label}
                     </button>
@@ -140,19 +142,21 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center justify-between gap-6 py-8 border-t border-[#171412]/10"
+          className="flex flex-col sm:flex-row items-center justify-between gap-6 py-8 border-t border-[rgba(197,161,90,0.25)]"
         >
           <div className="flex items-center gap-6">
-            <span className="font-sans text-xs tracking-[0.1em] uppercase font-medium text-[#171412]/70">
+            <span className="font-sans text-xs tracking-[0.1em] uppercase font-medium text-[#F5EBDD]/70">
               Connect
             </span>
             <div className="flex items-center gap-4">
               {socialLinks.map(({ icon: Icon, label }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={label === 'Instagram' ? (footerCMS?.socialInstagram || '#') : label === 'Facebook' ? (footerCMS?.socialFacebook || '#') : label === 'WhatsApp' ? (footerCMS?.socialWhatsapp || '#') : '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
-                  className="text-[#171412]/75 hover:text-[#B79A5A] transition-colors duration-300 min-touch-target flex items-center justify-center p-1"
+                  className="text-[#F5EBDD]/75 hover:text-[#C5A15A] transition-colors duration-300 min-touch-target flex items-center justify-center p-1"
                 >
                   <Icon size={19} strokeWidth={1.4} />
                 </a>
@@ -164,20 +168,20 @@ export default function Footer() {
             <a
               href="#"
               onClick={(e) => e.preventDefault()}
-              className="font-sans text-xs tracking-wider uppercase font-normal text-[#171412]/70 hover:text-[#B79A5A] transition-colors duration-300 min-touch-target flex items-center"
+              className="font-sans text-xs tracking-wider uppercase font-normal text-[#F5EBDD]/70 hover:text-[#C5A15A] transition-colors duration-300 min-touch-target flex items-center"
             >
               Privacy Policy
             </a>
             <a
               href="#"
               onClick={(e) => e.preventDefault()}
-              className="font-sans text-xs tracking-wider uppercase font-normal text-[#171412]/70 hover:text-[#B79A5A] transition-colors duration-300 min-touch-target flex items-center"
+              className="font-sans text-xs tracking-wider uppercase font-normal text-[#F5EBDD]/70 hover:text-[#C5A15A] transition-colors duration-300 min-touch-target flex items-center"
             >
               Terms of Concierge
             </a>
             <button
               onClick={() => setCurrentPage('admin')}
-              className="font-sans text-xs tracking-wider uppercase font-medium text-[#B79A5A] hover:underline transition-colors duration-300 min-touch-target flex items-center"
+              className="font-sans text-xs tracking-wider uppercase font-medium text-[#C5A15A] hover:underline transition-colors duration-300 min-touch-target flex items-center"
             >
               Admin Portal
             </button>
@@ -185,9 +189,9 @@ export default function Footer() {
         </motion.div>
 
         {/* Copyright Footer Line */}
-        <div className="text-center pt-6 border-t border-[#171412]/10">
-          <p className="font-sans text-[#171412]/60 text-xs tracking-[0.1em] uppercase font-normal">
-            © 2026 MAHARAJ JEWELLERY. ALL RIGHTS RESERVED.
+        <div className="text-center pt-6 border-t border-[rgba(197,161,90,0.25)]">
+          <p className="font-sans text-[#F5EBDD]/60 text-xs tracking-[0.1em] uppercase font-normal">
+            {copyright}
           </p>
         </div>
       </div>

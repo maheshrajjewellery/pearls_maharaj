@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Ruler, Check } from 'lucide-react';
@@ -85,7 +85,7 @@ export default function PearlSize() {
     <section
       id="pearl-size"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15 select-none"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15 select-none"
       aria-label="Pearl size and proportion guide"
     >
       {/* Background radial ambient lights */}
@@ -156,7 +156,7 @@ export default function PearlSize() {
                     <div
                       className={`relative rounded-full transition-all duration-500 ${
                         isSelected
-                          ? 'ring-2 ring-champagne-300 ring-offset-4 ring-offset-[#29231F] shadow-[0_10px_30px_rgba(200,169,107,0.4)]'
+                          ? 'ring-2 ring-champagne-300 ring-offset-4 ring-offset-[#30372F] shadow-[0_10px_30px_rgba(200,169,107,0.4)]'
                           : 'shadow-[0_6px_16px_rgba(0,0,0,0.4)] group-hover:shadow-[0_8px_20px_rgba(200,169,107,0.2)]'
                       }`}
                       style={{

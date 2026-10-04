@@ -8,7 +8,13 @@ const luxuryEase = [0.16, 1, 0.3, 1] as const;
 export default function AboutPearlStory() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
   const prefersReduced = useReducedMotion();
-  const { setCurrentPage, setCategory } = useShop();
+  const { setCurrentPage, setCategory, cmsData } = useShop();
+
+  const aboutCMS = cmsData?.about;
+  const storyText = aboutCMS?.storyText || 'Pearls carry a quiet kind of beauty. Their natural variation, soft luster and timeless character make every piece feel individual.';
+  const storyImg = aboutCMS?.storyImage && aboutCMS.storyImage.trim() !== ''
+    ? aboutCMS.storyImage
+    : 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1400';
 
   const handleExplorePearls = () => {
     setCurrentPage('shop');
@@ -40,7 +46,7 @@ export default function AboutPearlStory() {
                 transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
               >
                 <motion.img
-                  src="https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                  src={storyImg}
                   alt="Macro photography capturing natural pearl luster"
                   className="w-full h-full object-cover object-center"
                   initial={{ scale: prefersReduced ? 1 : 1.03 }}
@@ -92,7 +98,7 @@ export default function AboutPearlStory() {
               transition={{ duration: 0.85, delay: 0.4, ease: luxuryEase }}
               className="text-cocoa-200/85 text-[16px] sm:text-[17px] font-sans font-normal leading-[1.7] mb-8 sm:mb-10"
             >
-              Pearls carry a quiet kind of beauty. Their natural variation, soft luster and timeless character make every piece feel individual.
+              {storyText}
             </motion.p>
 
             {/* CTA */}

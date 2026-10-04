@@ -1,6 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
+import { useShop } from '@/context/ShopContext';
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -10,6 +11,11 @@ interface PearlHeroProps {
 
 export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
   const prefersReduced = useReducedMotion();
+  const { cmsData } = useShop();
+
+  const eduCMS = cmsData?.education;
+  const heroTitle = eduCMS?.heroTitle || 'UNDERSTAND THE PEARL.';
+  const heroSub = eduCMS?.heroSubtitle || 'Discover the natural beauty, character and craftsmanship behind every pearl.';
 
   const handleScrollDown = () => {
     if (onBeginExploring) {
@@ -24,7 +30,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
 
   return (
     <section
-      className="relative w-full h-[65vh] min-h-[520px] max-h-[720px] bg-[#29231F] overflow-hidden flex flex-col justify-between items-center text-center select-none"
+      className="relative w-full h-[65vh] min-h-[520px] max-h-[720px] bg-[#30372F] overflow-hidden flex flex-col justify-between items-center text-center select-none"
       aria-label="Maharaj Pearl Education Hero"
     >
       {/* Subtle ambient lighting vignette */}
@@ -32,7 +38,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 45%, rgba(200, 169, 107, 0.09) 0%, rgba(41, 35, 31, 0.85) 60%, #29231F 100%)',
+            'radial-gradient(ellipse at 50% 45%, rgba(200, 169, 107, 0.09) 0%, rgba(41, 35, 31, 0.85) 60%, #30372F 100%)',
         }}
       />
 
@@ -136,9 +142,9 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
             initial={{ opacity: 0, y: prefersReduced ? 0 : 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.7, ease: luxuryEase }}
-            className="font-serif font-normal text-pearlIvory-50 text-[clamp(32px,5.5vw,56px)] leading-[1.05] tracking-[0.02em] uppercase"
+            className="font-serif font-normal text-pearlIvory-50 text-[clamp(28px,5vw,52px)] leading-[1.05] tracking-[0.02em] uppercase"
           >
-            UNDERSTAND <span className="text-champagne-300 italic font-light font-serif">THE PEARL.</span>
+            {heroTitle}
           </motion.h1>
 
           <motion.p
@@ -147,7 +153,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
             transition={{ duration: 0.9, delay: 0.95, ease: luxuryEase }}
             className="mt-3 sm:mt-4 text-pearlIvory-300/80 text-[14px] sm:text-[15px] font-sans font-light tracking-wide leading-relaxed max-w-lg mx-auto"
           >
-            Discover the natural beauty, character and craftsmanship behind every pearl.
+            {heroSub}
           </motion.p>
         </div>
       </div>

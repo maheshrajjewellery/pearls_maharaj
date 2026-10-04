@@ -14,13 +14,13 @@
   body {
     font-family: 'DM Sans', system-ui, sans-serif;
     background-color: #F8F5F0;
-    color: #1A1A1A;
+    color: #30372F;
     overflow-x: hidden;
   }
 
   ::selection {
-    background-color: #C4A35A;
-    color: #0D0D0D;
+    background-color: #C5A15A;
+    color: #30372F;
   }
 }
 

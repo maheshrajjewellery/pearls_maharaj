@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+﻿import { useRef, useState } from 'react';
 import {
   motion,
   useScroll,
@@ -105,7 +105,7 @@ export default function AboutTransformation() {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#171412] text-pearlIvory-50 select-none overflow-hidden"
+      className="relative bg-[#30372F] text-pearlIvory-50 select-none overflow-hidden"
       style={{ height: prefersReduced ? 'auto' : '170vh' }}
       aria-label="From Pearl to Jewellery Transformation"
     >
@@ -119,7 +119,7 @@ export default function AboutTransformation() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 65% 55% at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(23, 20, 18, 0.85) 60%, #171412 100%)',
+              'radial-gradient(ellipse 65% 55% at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(23, 20, 18, 0.85) 60%, #30372F 100%)',
           }}
         />
 
@@ -162,7 +162,7 @@ export default function AboutTransformation() {
               <linearGradient id="goldFiligree" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#D4BE8A" />
                 <stop offset="35%" stopColor="#FFFDF8" />
-                <stop offset="70%" stopColor="#C4A35A" />
+                <stop offset="70%" stopColor="#C5A15A" />
                 <stop offset="100%" stopColor="#8A6E30" />
               </linearGradient>
 
@@ -219,7 +219,7 @@ export default function AboutTransformation() {
                 cy="250"
                 r="115"
                 fill="none"
-                stroke="#C8A96B"
+                stroke="#C5A15A"
                 strokeWidth="0.8"
                 strokeDasharray="4 4"
                 opacity="0.6"
@@ -229,19 +229,19 @@ export default function AboutTransformation() {
                 cy="250"
                 r="135"
                 fill="none"
-                stroke="#C8A96B"
+                stroke="#C5A15A"
                 strokeWidth="0.5"
                 opacity="0.4"
               />
               {/* Crosshair guide lines */}
-              <line x1="110" y1="250" x2="390" y2="250" stroke="#C8A96B" strokeWidth="0.6" opacity="0.35" />
-              <line x1="250" y1="110" x2="250" y2="390" stroke="#C8A96B" strokeWidth="0.6" opacity="0.35" />
+              <line x1="110" y1="250" x2="390" y2="250" stroke="#C5A15A" strokeWidth="0.6" opacity="0.35" />
+              <line x1="250" y1="110" x2="250" y2="390" stroke="#C5A15A" strokeWidth="0.6" opacity="0.35" />
               
               {/* Golden ratio diamond enclosure */}
               <polygon
                 points="250,135 365,250 250,365 135,250"
                 fill="none"
-                stroke="#C8A96B"
+                stroke="#C5A15A"
                 strokeWidth="0.8"
                 strokeDasharray="6 3"
                 opacity="0.5"

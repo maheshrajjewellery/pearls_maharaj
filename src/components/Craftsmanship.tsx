@@ -1,14 +1,25 @@
-import { useRef } from 'react';
+﻿import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { craftStages, craftsmanshipBg } from '@/data/mockData';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+
+import { useShop } from '@/context/ShopContext';
 
 export default function Craftsmanship() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
   const isMobile = useMediaQuery('(max-width: 767px)');
   const prefersReduced = useReducedMotion();
+  const { cmsData } = useShop();
+
+  const craftCMS = cmsData?.homepage?.craftsmanship;
+
+  if (craftCMS && craftCMS.active === false) return null;
+
+  const bgImg = craftCMS?.bgImage && craftCMS.bgImage.trim() !== '' ? craftCMS.bgImage : craftsmanshipBg;
+  const heading = craftCMS?.heading || 'Crafted to Last';
+  const subtitle = craftCMS?.subtitle || 'Observe how raw organic pearls transform into fine jewellery heirlooms through our 5-stage creation sequence.';
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -20,7 +31,7 @@ export default function Craftsmanship() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#171412] text-white overflow-hidden"
+      className="relative bg-[#30372F] text-white overflow-hidden"
       style={{ height: isMobile || prefersReduced ? 'auto' : '130vh' }}
     >
       <div
@@ -34,12 +45,12 @@ export default function Craftsmanship() {
         {/* Background image & gradient overlay */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
-            src={craftsmanshipBg}
+            src={bgImg}
             alt="Maharaj Craftsmanship background"
             className="w-full h-full object-cover opacity-20"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#171412]/95 via-[#171412]/85 to-[#171412]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#30372F]/95 via-[#30372F]/85 to-[#30372F]" />
         </div>
 
         {/* Section Header */}
@@ -48,7 +59,7 @@ export default function Craftsmanship() {
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[#B79A5A] text-[10.5px] sm:text-[11px] font-sans tracking-[0.1em] uppercase font-medium mb-3"
+            className="text-[#C5A15A] text-[10.5px] sm:text-[11px] font-sans tracking-[0.1em] uppercase font-medium mb-3"
           >
             MASTER ARTISANRY
           </motion.p>
@@ -59,7 +70,7 @@ export default function Craftsmanship() {
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-white text-clamp-section font-normal tracking-[0.02em] leading-tight"
           >
-            Crafted to Last
+            {heading}
           </motion.h2>
 
           <motion.p
@@ -68,20 +79,20 @@ export default function Craftsmanship() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-white/80 font-sans font-normal text-clamp-body max-w-md mx-auto mt-3 leading-[1.7]"
           >
-            Observe how raw organic pearls transform into fine jewellery heirlooms through our 5-stage creation sequence.
+            {subtitle}
           </motion.p>
         </div>
 
         {/* Visual Jewellery Chain Connection Graphic */}
         <div className="relative z-10 max-w-4xl mx-auto w-full my-6 hidden sm:block">
           <div className="flex items-center justify-between px-12 relative">
-            <div className="absolute left-12 right-12 top-1/2 -translate-y-1/2 h-[1px] bg-[#B79A5A]/30 z-0" />
+            <div className="absolute left-12 right-12 top-1/2 -translate-y-1/2 h-[1px] bg-[#C5A15A]/30 z-0" />
             {craftStages.map((stage) => (
               <div key={stage.number} className="relative z-10 flex flex-col items-center">
-                <span className="w-4 h-4 rounded-full bg-[#171412] border-2 border-[#B79A5A] flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A]" />
+                <span className="w-4 h-4 rounded-full bg-[#30372F] border-2 border-[#C5A15A] flex items-center justify-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A15A]" />
                 </span>
-                <span className="text-[10px] font-sans text-[#B79A5A] font-medium tracking-widest mt-1">
+                <span className="text-[10px] font-sans text-[#C5A15A] font-medium tracking-widest mt-1">
                   {stage.number}
                 </span>
               </div>
@@ -105,8 +116,8 @@ export default function Craftsmanship() {
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#171412]/80 via-transparent to-transparent" />
-                  <span className="absolute top-2.5 left-2.5 font-serif text-[#B79A5A] text-xl font-normal">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/80 via-transparent to-transparent" />
+                  <span className="absolute top-2.5 left-2.5 font-serif text-[#C5A15A] text-xl font-normal">
                     {stage.number}
                   </span>
                 </div>
@@ -140,12 +151,12 @@ export default function Craftsmanship() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#171412]/85 via-transparent to-transparent" />
-                    <span className="absolute top-3 left-3 font-serif text-[#B79A5A] text-2xl font-light">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/85 via-transparent to-transparent" />
+                    <span className="absolute top-3 left-3 font-serif text-[#C5A15A] text-2xl font-light">
                       {stage.number}
                     </span>
                   </div>
-                  <h3 className="font-serif text-white text-xl font-normal mb-1 group-hover:text-[#B79A5A] transition-colors">
+                  <h3 className="font-serif text-white text-xl font-normal mb-1 group-hover:text-[#C5A15A] transition-colors">
                     {stage.title}
                   </h3>
                   <p className="text-white/70 text-xs font-sans font-light leading-relaxed">

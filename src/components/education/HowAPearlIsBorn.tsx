@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Layers, ShieldAlert, CheckCircle2, ChevronRight, Play, Pause } from 'lucide-react';
@@ -79,7 +79,7 @@ export default function HowAPearlIsBorn() {
     <section
       id="how-a-pearl-is-born"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
       aria-label="How a pearl is born scientific infographic"
     >
       {/* Background ambient radial gradients */}
@@ -214,7 +214,7 @@ export default function HowAPearlIsBorn() {
                   {/* Translucent aragonite layers */}
                   <radialGradient id="layerGrad1" cx="40%" cy="35%" r="60%">
                     <stop offset="0%" stopColor="#E8D9B8" stopOpacity="0.8" />
-                    <stop offset="70%" stopColor="#C4A35A" stopOpacity="0.4" />
+                    <stop offset="70%" stopColor="#C5A15A" stopOpacity="0.4" />
                     <stop offset="100%" stopColor="#5A4E48" stopOpacity="0.7" />
                   </radialGradient>
 
@@ -228,7 +228,7 @@ export default function HowAPearlIsBorn() {
                   {/* Irritant spark gradient */}
                   <radialGradient id="sparkGrad" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#FFDE99" />
-                    <stop offset="60%" stopColor="#C8A96B" />
+                    <stop offset="60%" stopColor="#C5A15A" />
                     <stop offset="100%" stopColor="#7A6038" />
                   </radialGradient>
                 </defs>
@@ -239,7 +239,7 @@ export default function HowAPearlIsBorn() {
                   cy="160"
                   r="135"
                   fill="url(#nacreGlow)"
-                  stroke="#C8A96B"
+                  stroke="#C5A15A"
                   strokeWidth="1.5"
                   initial={false}
                   animate={{
@@ -266,7 +266,7 @@ export default function HowAPearlIsBorn() {
                       cy="160"
                       r={radius}
                       fill="none"
-                      stroke="#C8A96B"
+                      stroke="#C5A15A"
                       strokeWidth={1}
                       strokeDasharray={i % 2 === 0 ? '4 3' : undefined}
                       strokeOpacity={0.4 + i * 0.12}
@@ -297,7 +297,7 @@ export default function HowAPearlIsBorn() {
                   cy="160"
                   r="52"
                   fill="rgba(200, 169, 107, 0.25)"
-                  stroke="#C8A96B"
+                  stroke="#C5A15A"
                   strokeWidth="2"
                   strokeDasharray="5 3"
                   initial={false}

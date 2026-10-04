@@ -1,12 +1,21 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
+import { useShop } from '@/context/ShopContext';
 
 export default function Newsletter() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
+  const { cmsData } = useShop();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const newsletterCMS = cmsData?.homepage?.newsletter;
+
+  if (newsletterCMS && newsletterCMS.active === false) return null;
+
+  const title = newsletterCMS?.title || 'Enter The World Of Maharaj.';
+  const subtitle = newsletterCMS?.subtitle || 'Discover new collections, jewellery stories and exclusive launches.';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,20 +33,18 @@ export default function Newsletter() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif text-[#171412] text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.08] tracking-[0.01em]"
+          className="font-serif text-[#30372F] text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.08] tracking-[0.01em]"
         >
-          Enter The World
-          <br />
-          Of Maharaj.
+          {title}
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[#171412]/80 text-sm font-sans font-normal max-w-md mx-auto mt-6 leading-[1.6]"
+          className="text-[#30372F]/80 text-sm font-sans font-normal max-w-md mx-auto mt-6 leading-[1.6]"
         >
-          Discover new collections, jewellery stories and exclusive launches.
+          {subtitle}
         </motion.p>
 
         <motion.form
@@ -53,11 +60,11 @@ export default function Newsletter() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your Email Address"
             required
-            className="flex-1 w-full bg-transparent border-b border-[#171412]/30 px-2 py-3 text-sm font-sans font-normal text-[#171412] placeholder:text-[#171412]/40 focus:outline-none focus:border-[#B79A5A] transition-colors duration-300"
+            className="flex-1 w-full bg-transparent border-b border-[#30372F]/30 px-2 py-3 text-sm font-sans font-normal text-[#30372F] placeholder:text-[#30372F]/40 focus:outline-none focus:border-[#C5A15A] transition-colors duration-300"
           />
           <button
             type="submit"
-            className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#171412] text-[#F7F3EB] text-xs font-sans tracking-[0.1em] uppercase font-medium hover:bg-[#B79A5A] hover:text-[#171412] transition-colors duration-500 whitespace-nowrap group min-touch-target"
+            className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#30372F] text-[#F7F3EB] text-xs font-sans tracking-[0.1em] uppercase font-medium hover:bg-[#C5A15A] hover:text-[#30372F] transition-colors duration-500 whitespace-nowrap group min-touch-target"
           >
             Subscribe
             <ArrowRight size={16} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-400" />

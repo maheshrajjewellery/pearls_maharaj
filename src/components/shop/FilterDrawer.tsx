@@ -17,7 +17,18 @@ import {
   MaterialFilter,
   CollectionFilter,
   ColorFilter,
+  StoneFilter,
 } from '@/types/shop';
+
+const stoneOptions: StoneFilter[] = [
+  'Diamond',
+  'Emeralds',
+  'Pearls',
+  'Ruby',
+  'Sapphire',
+  'Tanzanite',
+  'Multi-Color',
+];
 
 export default function FilterDrawer() {
   const {
@@ -26,6 +37,7 @@ export default function FilterDrawer() {
     filterState,
     setCategory,
     togglePearlType,
+    toggleStone,
     togglePriceRange,
     toggleMaterial,
     toggleCollection,
@@ -44,6 +56,7 @@ export default function FilterDrawer() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     category: true,
     pearlType: true,
+    stone: true,
     price: true,
     material: true,
     collection: true,
@@ -157,6 +170,48 @@ export default function FilterDrawer() {
                         >
                           <span className="text-xs sm:text-[13px] tracking-wide text-cocoa-300 font-light group-hover:text-champagne-500 transition-colors">
                             {type}
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-[2px] border transition-all duration-200 flex items-center justify-center ${
+                              isChecked
+                                ? 'bg-cocoa-300 border-cocoa-300 text-pearlIvory-50'
+                                : 'border-cocoa-300/30 group-hover:border-champagne-300 bg-transparent'
+                            }`}
+                          >
+                            {isChecked && <Check size={12} strokeWidth={2.5} />}
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* 2.5 BY STONE */}
+              <div className="pt-6">
+                <button
+                  onClick={() => toggleSection('stone')}
+                  className="w-full flex items-center justify-between pb-3 text-left"
+                >
+                  <span className="font-sans text-xs tracking-[0.25em] uppercase font-medium text-cocoa-300">
+                    BY STONE
+                  </span>
+                  <span className="text-xs text-cocoa-100 font-light">
+                    {openSections.stone ? '—' : '+'}
+                  </span>
+                </button>
+                {openSections.stone && (
+                  <div className="space-y-3 pt-2">
+                    {stoneOptions.map((st) => {
+                      const isChecked = filterState.stones.includes(st as StoneFilter);
+                      return (
+                        <label
+                          key={st}
+                          onClick={() => toggleStone(st as StoneFilter)}
+                          className="flex items-center justify-between cursor-pointer group select-none py-0.5"
+                        >
+                          <span className="text-xs sm:text-[13px] tracking-wide text-cocoa-300 font-light group-hover:text-champagne-500 transition-colors">
+                            {st}
                           </span>
                           <div
                             className={`w-4 h-4 rounded-[2px] border transition-all duration-200 flex items-center justify-center ${

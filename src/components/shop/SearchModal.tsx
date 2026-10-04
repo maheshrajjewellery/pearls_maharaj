@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, ArrowRight } from 'lucide-react';
 import { useShop } from '@/context/ShopContext';
-import { shopProducts } from '@/data/shopProducts';
 import { ShopProduct } from '@/types/shop';
 
 const popularKeywords = [
@@ -16,22 +15,22 @@ const popularKeywords = [
 ];
 
 export default function SearchModal() {
-  const { isSearchOpen, closeSearch, setSearchQuery, openQuickView, setCurrentPage } = useShop();
+  const { isSearchOpen, closeSearch, setSearchQuery, openQuickView, setCurrentPage, products } = useShop();
   const [localQuery, setLocalQuery] = useState('');
 
   const liveResults = useMemo(() => {
     if (!localQuery.trim()) return [];
     const q = localQuery.toLowerCase().trim();
-    return shopProducts
+    return products
       .filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.descriptor.toLowerCase().includes(q) ||
           p.pearlType.toLowerCase().includes(q) ||
-          p.collection.toLowerCase().includes(q)
+          p.category.toLowerCase().includes(q)
       )
       .slice(0, 5);
-  }, [localQuery]);
+  }, [localQuery, products]);
 
   if (!isSearchOpen) return null;
 

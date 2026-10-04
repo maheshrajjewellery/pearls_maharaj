@@ -1,11 +1,9 @@
-import { useState } from 'react';
+﻿import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
-import { curatedGiftingCollection, CuratedGiftingItem } from '@/data/giftingData';
 import { useShop } from '@/context/ShopContext';
 import { Eye, ArrowRight } from 'lucide-react';
-
-import { PearlType, CollectionFilter } from '@/types/shop';
+import { ShopProduct } from '@/types/shop';
 
 interface GiftingCuratedCollectionProps {
   onEnquireProduct?: (productName: string) => void;
@@ -13,67 +11,27 @@ interface GiftingCuratedCollectionProps {
 
 const categories = [
   { id: 'all', label: 'All Categories' },
-  { id: 'earrings', label: 'Pearl Earrings' },
-  { id: 'bracelets', label: 'Pearl Bracelets' },
-  { id: 'pendants', label: 'Pearl Pendants' },
   { id: 'necklaces', label: 'Pearl Necklaces' },
-  { id: 'sets', label: 'Jewellery Sets' },
+  { id: 'earrings', label: 'Pearl Earrings' },
+  { id: 'rings', label: 'Pearl Rings' },
+  { id: 'bracelets', label: 'Pearl Bracelets' },
+  { id: 'bangles', label: 'Pearl Bangles' },
 ];
 
 export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCuratedCollectionProps) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [hoveredProductId, setHoveredProductId] = useState<string | null>(null);
-  const { openQuickView } = useShop();
+  const { openQuickView, products } = useShop();
 
-  const filteredItems =
-    activeCategory === 'all'
-      ? curatedGiftingCollection
-      : curatedGiftingCollection.filter((item) => item.category === activeCategory);
+  const filteredItems = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    if (activeCategory === 'all') return products;
+    return products.filter((p) => p.category.toLowerCase() === activeCategory.toLowerCase());
+  }, [products, activeCategory]);
 
-  const handleQuickView = (item: CuratedGiftingItem) => {
-    // Map item to shop product interface to open standard modal
-    const validPearlType: PearlType =
-      item.specs.pearlType.includes('Akoya')
-        ? 'Akoya'
-        : item.specs.pearlType.includes('South Sea')
-        ? 'South Sea'
-        : 'Freshwater';
-
-    openQuickView({
-      id: item.id,
-      name: item.name,
-      slug: item.id,
-      price: parseInt(item.price.replace(/[^\d]/g, ''), 10) || 50000,
-      formattedPrice: item.price,
-      category: 'necklaces',
-      pearlType: validPearlType,
-      material: item.specs.material,
-      materialFilter: 'Gold',
-      collection: 'Royal Pearls' as CollectionFilter,
-      color: 'White',
-      priceRange: 'above-50k',
-      image: item.image,
-      hoverImage: item.hoverImage,
-      images: [item.image, item.hoverImage],
-      descriptor: `${item.specs.pearlType} • ${item.specs.material}`,
-      shortDescription: item.description,
-      specs: {
-        pearlSize: '8.0 - 12.0 mm',
-        luster: 'AAA High Mirror Luster',
-        metalPurity: item.specs.material,
-        hallmark: 'BIS Hallmarked 750 Gold',
-        origin: 'Curated Waters',
-        closure: 'Bespoke Clasp',
-        weight: '12-40 grams',
-      },
-      isNewArrival: false,
-      isFeatured: true,
-      rating: 5.0,
-      reviewsCount: 18,
-      inStock: true,
-      createdAt: '2026-01-01',
-    });
+  const handleQuickView = (product: ShopProduct) => {
+    openQuickView(product);
   };
 
   return (
@@ -91,18 +49,18 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
             <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
               CURATED GIFTING COLLECTION
             </span>
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29231F] leading-tight mb-4"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#30372F] leading-tight mb-4"
           >
             CURATED FOR YOUR OCCASION
           </motion.h2>
@@ -111,7 +69,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
             initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[#29231F]/70 text-base font-light"
+            className="text-[#30372F]/70 text-base font-light"
           >
             Explore our signature pearl creations crafted specifically for executive corporate gifting.
           </motion.p>
@@ -127,15 +85,15 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                 onClick={() => setActiveCategory(cat.id)}
                 className={`relative px-5 py-2.5 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 ${
                   isActive
-                    ? 'text-[#29231F]'
-                    : 'text-[#B8A99A] hover:text-[#29231F]'
+                    ? 'text-[#30372F]'
+                    : 'text-[#B8A99A] hover:text-[#30372F]'
                 }`}
               >
                 {cat.label}
                 {isActive && (
                   <motion.div
                     layoutId="activeTabGifting"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C8A96B]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C5A15A]"
                     transition={{ duration: 0.3 }}
                   />
                 )}
@@ -183,7 +141,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
 
                   {/* Champagne-gold detail line across top of image on hover */}
                   <div
-                    className={`absolute top-0 left-0 right-0 h-0.5 bg-[#C8A96B] transition-all duration-500 ${
+                    className={`absolute top-0 left-0 right-0 h-0.5 bg-[#C5A15A] transition-all duration-500 ${
                       isHovered ? 'w-full opacity-100' : 'w-0 opacity-0'
                     }`}
                   />
@@ -191,7 +149,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                   {/* Floating Action Button */}
                   <button
                     onClick={() => handleQuickView(item)}
-                    className={`absolute bottom-4 right-4 p-3 bg-[#FFFDF8]/90 text-[#29231F] rounded-full shadow-md transition-all duration-300 hover:bg-[#29231F] hover:text-[#FFFDF8] ${
+                    className={`absolute bottom-4 right-4 p-3 bg-[#FFFDF8]/90 text-[#30372F] rounded-full shadow-md transition-all duration-300 hover:bg-[#30372F] hover:text-[#FFFDF8] ${
                       isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                     }`}
                     title="Quick View Details"
@@ -205,19 +163,19 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="text-[10px] tracking-[0.25em] font-medium uppercase text-[#B8A99A]">
-                        {item.categoryLabel}
+                        {item.category}
                       </span>
-                      <span className="text-xs font-serif font-medium text-[#C8A96B]">
-                        {item.price}
+                      <span className="text-xs font-serif font-medium text-[#C5A15A]">
+                        {item.formattedPrice || `₹ ${item.price.toLocaleString('en-IN')}`}
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-2xl text-[#29231F] font-normal leading-tight mb-2 group-hover:text-[#C8A96B] transition-colors duration-300">
+                    <h3 className="font-serif text-2xl text-[#30372F] font-normal leading-tight mb-2 group-hover:text-[#C5A15A] transition-colors duration-300">
                       {item.name}
                     </h3>
 
-                    <p className="text-[#29231F]/70 text-xs sm:text-sm font-light leading-relaxed mb-6">
-                      {item.description}
+                    <p className="text-[#30372F]/70 text-xs sm:text-sm font-light leading-relaxed mb-6 line-clamp-2">
+                      {item.shortDescription || item.descriptor}
                     </p>
                   </div>
 
@@ -225,7 +183,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                   <div>
                     <div className="w-full h-px bg-[rgba(41,35,31,0.12)] mb-4 relative overflow-hidden">
                       <div
-                        className={`absolute inset-y-0 left-0 bg-[#C8A96B] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        className={`absolute inset-y-0 left-0 bg-[#C5A15A] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                           isHovered ? 'w-full' : 'w-0'
                         }`}
                       />
@@ -234,7 +192,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                     <div className="flex items-center justify-between">
                       <button
                         onClick={() => handleQuickView(item)}
-                        className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#29231F] group-hover:text-[#C8A96B] transition-colors duration-300"
+                        className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#30372F] group-hover:text-[#C5A15A] transition-colors duration-300"
                       >
                         <span>VIEW COLLECTION</span>
                         <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -243,7 +201,7 @@ export default function GiftingCuratedCollection({ onEnquireProduct }: GiftingCu
                       {onEnquireProduct && (
                         <button
                           onClick={() => onEnquireProduct(item.name)}
-                          className="text-[11px] uppercase tracking-[0.15em] text-[#B8A99A] hover:text-[#29231F] underline underline-offset-4"
+                          className="text-[11px] uppercase tracking-[0.15em] text-[#B8A99A] hover:text-[#30372F] underline underline-offset-4"
                         >
                           Enquire
                         </button>

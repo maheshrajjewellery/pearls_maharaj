@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import GiftingHero from '@/components/gifting/GiftingHero';
 import GiftingArtOfGiving from '@/components/gifting/GiftingArtOfGiving';
 import GiftingOccasions from '@/components/gifting/GiftingOccasions';
@@ -41,7 +41,7 @@ export default function CorporateGiftingPage() {
   };
 
   return (
-    <div className="w-full bg-[#F7F3EC] min-h-screen flex flex-col font-sans selection:bg-[#C8A96B] selection:text-[#29231F]">
+    <div className="w-full bg-[#F7F3EC] min-h-screen flex flex-col font-sans selection:bg-[#C5A15A] selection:text-[#30372F]">
       
       {/* 01 — CINEMATIC CORPORATE GIFTING HERO */}
       <GiftingHero
@@ -78,12 +78,6 @@ export default function CorporateGiftingPage() {
       <GiftingFinalCTA
         onStartConversation={() => scrollToEnquiry()}
       />
-
-      {/* GLOBAL MODALS & DRAWERS */}
-      <CartDrawer />
-      <SearchModal />
-      <QuickViewModal />
-      <PearlGuideModal />
 
     </div>
   );

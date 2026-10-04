@@ -107,3 +107,143 @@ export const deleteProductImage = async (imagePathOrUrl: string): Promise<boolea
     return false;
   }
 };
+
+export interface CMSHeroUploadResult {
+  url: string;
+  path: string;
+  name: string;
+  dimensions: string;
+  sizeFormatted: string;
+}
+
+export const validateCMSHeroImage = (file: File): { valid: boolean; error?: string } => {
+  if (!file) {
+    return { valid: false, error: 'No file selected.' };
+  }
+
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  if (!allowedTypes.includes(file.type.toLowerCase())) {
+    return {
+      valid: false,
+      error: 'Unsupported file format. Please upload a JPG, JPEG, PNG, or WEBP image.',
+    };
+  }
+
+  const MAX_HERO_SIZE = 10 * 1024 * 1024; // 10MB
+  if (file.size > MAX_HERO_SIZE) {
+    return {
+      valid: false,
+      error: 'File size exceeds maximum limit of 10MB.',
+    };
+  }
+
+  return { valid: true };
+};
+
+export const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      URL.revokeObjectURL(objectUrl);
+    };
+    img.onerror = () => {
+      resolve({ width: 1920, height: 1080 });
+      URL.revokeObjectURL(objectUrl);
+    };
+    img.src = objectUrl;
+  });
+};
+
+export const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+};
+
+export const uploadHeroBannerImage = async (file: File): Promise<CMSHeroUploadResult> => {
+  const validation = validateCMSHeroImage(file);
+  if (!validation.valid) {
+    throw new Error(validation.error || 'Image validation failed');
+  }
+
+  const { width, height } = await getImageDimensions(file);
+  const sizeFormatted = formatFileSize(file.size);
+  const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+  const path = `cms/homepage/hero/${Date.now()}_${cleanName}`;
+
+  if (!isSupabaseConfigured()) {
+    const objectUrl = URL.createObjectURL(file);
+    return {
+      url: objectUrl,
+      path,
+      name: file.name,
+      dimensions: `${width} × ${height}`,
+      sizeFormatted,
+    };
+  }
+
+  const CMS_BUCKET = 'cms';
+
+  try {
+    const { data, error } = await supabase.storage
+      .from(CMS_BUCKET)
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: true,
+        contentType: file.type || 'image/webp',
+      });
+
+    if (error) {
+      console.warn('CMS bucket upload error, attempting product-images bucket fallback:', error);
+      const { data: fallbackData, error: fallbackErr } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(path, file, {
+          cacheControl: '3600',
+          upsert: true,
+          contentType: file.type || 'image/webp',
+        });
+
+      if (fallbackErr) {
+        throw fallbackErr;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(fallbackData.path);
+
+      return {
+        url: publicUrlData.publicUrl,
+        path: fallbackData.path,
+        name: file.name,
+        dimensions: `${width} × ${height}`,
+        sizeFormatted,
+      };
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from(CMS_BUCKET)
+      .getPublicUrl(data.path);
+
+    return {
+      url: publicUrlData.publicUrl,
+      path: data.path,
+      name: file.name,
+      dimensions: `${width} × ${height}`,
+      sizeFormatted,
+    };
+  } catch (err) {
+    console.error('Storage upload failed, returning object URL fallback:', err);
+    const objectUrl = URL.createObjectURL(file);
+    return {
+      url: objectUrl,
+      path,
+      name: file.name,
+      dimensions: `${width} × ${height}`,
+      sizeFormatted,
+    };
+  }
+};

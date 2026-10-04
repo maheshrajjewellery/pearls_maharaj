@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useShop } from '@/context/ShopContext';
 import { ShopCategory } from '@/types/shop';
@@ -11,11 +11,15 @@ export default function CategoryNav() {
     setCategory(catSlug);
   };
 
-  const navCategories = [
-    { id: 'all', label: 'All Jewellery' },
-    { id: 'new-arrivals', label: 'New Arrivals' },
-    ...categories.map((c) => ({ id: c.slug, label: c.name })),
-  ];
+  const navCategories: { id: ShopCategory; label: string }[] = useMemo(() => {
+    const list: { id: ShopCategory; label: string }[] = [{ id: 'all', label: 'All Jewellery' }];
+    if (categories && categories.length > 0) {
+      categories.forEach((cat) => {
+        list.push({ id: cat.slug as ShopCategory, label: cat.name });
+      });
+    }
+    return list;
+  }, [categories]);
 
   return (
     <nav

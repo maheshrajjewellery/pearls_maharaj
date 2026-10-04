@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+﻿import React, { useState, useMemo } from "react";
 import { useAdmin } from "../../context/AdminContext";
 import {
   Package,
@@ -62,7 +62,7 @@ export const DashboardView: React.FC = () => {
     (e) => e.status === "New",
   ).length;
 
-  // Chart dataset generation based on brand palette (#C8A96B and #29231F)
+  // Chart dataset generation based on brand palette (#C5A15A and #30372F)
   const salesChartData = useMemo(() => {
     if (chartTimeframe === "7d") {
       return [
@@ -152,12 +152,14 @@ export const DashboardView: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* WELCOME BANNER */}
-      <div className="bg-[#FFFDF8] border border-[#29231F]/10 p-6 shadow-xs relative overflow-hidden">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-[#E8DED0]/40 to-transparent pointer-events-none hidden md:block" />
-        <h2 className="font-serif text-2xl md:text-3xl text-[#29231F] font-semibold">
+      <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs relative overflow-hidden">
+        <div
+          className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-[#F5EBDD]/40 to-transparent pointer-events-none hidden md:block"
+        />
+        <h2 className="font-serif text-2xl md:text-3xl text-[#30372F] font-semibold">
           Good Morning, {adminUser?.name || "Admin"}
         </h2>
-        <p className="text-xs text-[#29231F]/70 mt-1">
+        <p className="text-xs text-[#30372F]/70 mt-1">
           Here's what's happening with Maharaj Jewellery today.
         </p>
       </div>
@@ -167,20 +169,20 @@ export const DashboardView: React.FC = () => {
         {/* TOTAL PRODUCTS */}
         <div
           onClick={() => setActiveTab("products")}
-          className="bg-[#FFFDF8] border border-[#29231F]/10 p-5 shadow-xs hover:border-[#C8A96B] transition-all cursor-pointer group"
+          className="bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs hover:border-[#C5A15A] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[#29231F]/60 font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-[#30372F]/60 font-semibold">
               TOTAL PRODUCTS
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#C8A96B] flex items-center justify-center group-hover:bg-[#C8A96B] group-hover:text-[#FFFDF8] transition-colors">
+            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#C5A15A] flex items-center justify-center group-hover:bg-[#C5A15A] group-hover:text-[#FFFDF8] transition-colors">
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-serif text-3xl font-semibold text-[#29231F] mt-3">
+          <p className="font-serif text-3xl font-semibold text-[#30372F] mt-3">
             {totalProductsCount}
           </p>
-          <div className="flex items-center gap-1 text-[11px] text-[#C8A96B] font-medium mt-2">
+          <div className="flex items-center gap-1 text-[11px] text-[#C5A15A] font-medium mt-2">
             <span>Live catalog items</span>
             <ArrowUpRight className="w-3 h-3" />
           </div>
@@ -189,20 +191,20 @@ export const DashboardView: React.FC = () => {
         {/* TOTAL ORDERS */}
         <div
           onClick={() => setActiveTab("orders")}
-          className="bg-[#FFFDF8] border border-[#29231F]/10 p-5 shadow-xs hover:border-[#C8A96B] transition-all cursor-pointer group"
+          className="bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs hover:border-[#C5A15A] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[#29231F]/60 font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-[#30372F]/60 font-semibold">
               TOTAL ORDERS
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#29231F] flex items-center justify-center group-hover:bg-[#29231F] group-hover:text-[#FFFDF8] transition-colors">
+            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#30372F] flex items-center justify-center group-hover:bg-[#30372F] group-hover:text-[#FFFDF8] transition-colors">
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-serif text-3xl font-semibold text-[#29231F] mt-3">
+          <p className="font-serif text-3xl font-semibold text-[#30372F] mt-3">
             {totalOrdersCount}
           </p>
-          <div className="flex items-center gap-1 text-[11px] text-[#29231F]/70 font-medium mt-2">
+          <div className="flex items-center gap-1 text-[11px] text-[#30372F]/70 font-medium mt-2">
             <span>+12% vs last month</span>
           </div>
         </div>
@@ -210,20 +212,20 @@ export const DashboardView: React.FC = () => {
         {/* TOTAL CUSTOMERS */}
         <div
           onClick={() => setActiveTab("customers")}
-          className="bg-[#FFFDF8] border border-[#29231F]/10 p-5 shadow-xs hover:border-[#C8A96B] transition-all cursor-pointer group"
+          className="bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs hover:border-[#C5A15A] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[#29231F]/60 font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-[#30372F]/60 font-semibold">
               TOTAL CUSTOMERS
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#C8A96B] flex items-center justify-center group-hover:bg-[#C8A96B] group-hover:text-[#FFFDF8] transition-colors">
+            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#C5A15A] flex items-center justify-center group-hover:bg-[#C5A15A] group-hover:text-[#FFFDF8] transition-colors">
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-serif text-3xl font-semibold text-[#29231F] mt-3">
+          <p className="font-serif text-3xl font-semibold text-[#30372F] mt-3">
             {totalCustomersCount}
           </p>
-          <div className="flex items-center gap-1 text-[11px] text-[#C8A96B] font-medium mt-2">
+          <div className="flex items-center gap-1 text-[11px] text-[#C5A15A] font-medium mt-2">
             <span>Registered VIP & Clients</span>
           </div>
         </div>
@@ -231,17 +233,17 @@ export const DashboardView: React.FC = () => {
         {/* CORPORATE ENQUIRIES */}
         <div
           onClick={() => setActiveTab("corporate-enquiries")}
-          className="bg-[#FFFDF8] border border-[#29231F]/10 p-5 shadow-xs hover:border-[#C8A96B] transition-all cursor-pointer group"
+          className="bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs hover:border-[#C5A15A] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest text-[#29231F]/60 font-semibold">
+            <span className="text-[10px] uppercase tracking-widest text-[#30372F]/60 font-semibold">
               CORPORATE ENQUIRIES
             </span>
-            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#29231F] flex items-center justify-center group-hover:bg-[#29231F] group-hover:text-[#FFFDF8] transition-colors">
+            <div className="w-8 h-8 rounded-full bg-[#F5F1EB] text-[#30372F] flex items-center justify-center group-hover:bg-[#30372F] group-hover:text-[#FFFDF8] transition-colors">
               <Briefcase className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-serif text-3xl font-semibold text-[#29231F] mt-3">
+          <p className="font-serif text-3xl font-semibold text-[#30372F] mt-3">
             {corporateEnquiriesCount}
           </p>
           <div className="flex items-center gap-1 text-[11px] text-amber-700 font-medium mt-2">
@@ -251,50 +253,50 @@ export const DashboardView: React.FC = () => {
       </div>
 
       {/* SECONDARY STATS ROW */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F5F1EB] border border-[#29231F]/10 p-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F5F1EB] border border-[#30372F]/10 p-4">
         <div className="flex items-center gap-3">
-          <TrendingUp className="w-5 h-5 text-[#C8A96B]" />
+          <TrendingUp className="w-5 h-5 text-[#C5A15A]" />
           <div>
-            <p className="text-[10px] text-[#29231F]/60 uppercase font-medium">
+            <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
               TOTAL SALES
             </p>
-            <p className="text-sm font-semibold text-[#29231F]">
+            <p className="text-sm font-semibold text-[#30372F]">
               ₹ {totalSalesRevenue.toLocaleString("en-IN")}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 border-l border-[#29231F]/10 pl-3">
+        <div className="flex items-center gap-3 border-l border-[#30372F]/10 pl-3">
           <Clock className="w-5 h-5 text-amber-600" />
           <div>
-            <p className="text-[10px] text-[#29231F]/60 uppercase font-medium">
+            <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
               PENDING ORDERS
             </p>
-            <p className="text-sm font-semibold text-[#29231F]">
+            <p className="text-sm font-semibold text-[#30372F]">
               {pendingOrdersCount} Orders
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 border-l border-[#29231F]/10 pl-3">
+        <div className="flex items-center gap-3 border-l border-[#30372F]/10 pl-3">
           <AlertTriangle className="w-5 h-5 text-red-600" />
           <div>
-            <p className="text-[10px] text-[#29231F]/60 uppercase font-medium">
+            <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
               LOW STOCK
             </p>
-            <p className="text-sm font-semibold text-[#29231F]">
+            <p className="text-sm font-semibold text-[#30372F]">
               {lowStockCount} Items
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 border-l border-[#29231F]/10 pl-3">
-          <Mail className="w-5 h-5 text-[#C8A96B]" />
+        <div className="flex items-center gap-3 border-l border-[#30372F]/10 pl-3">
+          <Mail className="w-5 h-5 text-[#C5A15A]" />
           <div>
-            <p className="text-[10px] text-[#29231F]/60 uppercase font-medium">
+            <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
               NEW ENQUIRIES
             </p>
-            <p className="text-sm font-semibold text-[#29231F]">
+            <p className="text-sm font-semibold text-[#30372F]">
               {newEnquiriesCount} Active
             </p>
           </div>
@@ -302,26 +304,26 @@ export const DashboardView: React.FC = () => {
       </div>
 
       {/* SALES ANALYTICS CHART */}
-      <div className="bg-[#FFFDF8] border border-[#29231F]/10 p-6 shadow-xs">
+      <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="font-serif text-xl font-semibold text-[#29231F]">
+            <h3 className="font-serif text-xl font-semibold text-[#30372F]">
               Sales & Revenue Overview
             </h3>
-            <p className="text-xs text-[#29231F]/60 mt-0.5">
-              Historical revenue breakdown using brand palette (#C8A96B and
-              #29231F)
+            <p className="text-xs text-[#30372F]/60 mt-0.5">
+              Historical revenue breakdown using brand palette (#C5A15A and
+              #30372F)
             </p>
           </div>
 
           {/* Timeframe Filters */}
-          <div className="flex items-center bg-[#F5F1EB] p-1 border border-[#29231F]/10 text-xs font-medium">
+          <div className="flex items-center bg-[#F5F1EB] p-1 border border-[#30372F]/10 text-xs font-medium">
             <button
               onClick={() => setChartTimeframe("7d")}
               className={`px-3 py-1 transition-colors ${
                 chartTimeframe === "7d"
-                  ? "bg-[#29231F] text-[#F7F3EC]"
-                  : "text-[#29231F]/70 hover:text-[#29231F]"
+                  ? "bg-[#30372F] text-[#F7F3EC]"
+                  : "text-[#30372F]/70 hover:text-[#30372F]"
               }`}
             >
               7 Days
@@ -330,8 +332,8 @@ export const DashboardView: React.FC = () => {
               onClick={() => setChartTimeframe("30d")}
               className={`px-3 py-1 transition-colors ${
                 chartTimeframe === "30d"
-                  ? "bg-[#29231F] text-[#F7F3EC]"
-                  : "text-[#29231F]/70 hover:text-[#29231F]"
+                  ? "bg-[#30372F] text-[#F7F3EC]"
+                  : "text-[#30372F]/70 hover:text-[#30372F]"
               }`}
             >
               30 Days
@@ -340,8 +342,8 @@ export const DashboardView: React.FC = () => {
               onClick={() => setChartTimeframe("3m")}
               className={`px-3 py-1 transition-colors ${
                 chartTimeframe === "3m"
-                  ? "bg-[#29231F] text-[#F7F3EC]"
-                  : "text-[#29231F]/70 hover:text-[#29231F]"
+                  ? "bg-[#30372F] text-[#F7F3EC]"
+                  : "text-[#30372F]/70 hover:text-[#30372F]"
               }`}
             >
               3 Months
@@ -350,8 +352,8 @@ export const DashboardView: React.FC = () => {
               onClick={() => setChartTimeframe("12m")}
               className={`px-3 py-1 transition-colors ${
                 chartTimeframe === "12m"
-                  ? "bg-[#29231F] text-[#F7F3EC]"
-                  : "text-[#29231F]/70 hover:text-[#29231F]"
+                  ? "bg-[#30372F] text-[#F7F3EC]"
+                  : "text-[#30372F]/70 hover:text-[#30372F]"
               }`}
             >
               12 Months
@@ -368,8 +370,8 @@ export const DashboardView: React.FC = () => {
             >
               <defs>
                 <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#C8A96B" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#C8A96B" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#C5A15A" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#C5A15A" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid
@@ -378,12 +380,12 @@ export const DashboardView: React.FC = () => {
               />
               <XAxis
                 dataKey="name"
-                stroke="#29231F"
+                stroke="#30372F"
                 fontSize={11}
                 tickLine={false}
               />
               <YAxis
-                stroke="#29231F"
+                stroke="#30372F"
                 fontSize={11}
                 tickLine={false}
                 tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
@@ -392,7 +394,7 @@ export const DashboardView: React.FC = () => {
                 contentStyle={{
                   backgroundColor: "#FFFDF8",
                   borderColor: "rgba(41,35,31,0.2)",
-                  color: "#29231F",
+                  color: "#30372F",
                   borderRadius: "0px",
                   fontSize: "12px",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
@@ -405,7 +407,7 @@ export const DashboardView: React.FC = () => {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#C8A96B"
+                stroke="#C5A15A"
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#goldGradient)"
@@ -418,14 +420,14 @@ export const DashboardView: React.FC = () => {
       {/* BOTTOM GRID: RECENT ORDERS TABLE + RECENT ACTIVITY */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* RECENT ORDERS TABLE (2 COLS) */}
-        <div className="lg:col-span-2 bg-[#FFFDF8] border border-[#29231F]/10 p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#29231F]/10">
-            <h3 className="font-serif text-lg font-semibold text-[#29231F]">
+        <div className="lg:col-span-2 bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#30372F]/10">
+            <h3 className="font-serif text-lg font-semibold text-[#30372F]">
               Recent Orders
             </h3>
             <button
               onClick={() => setActiveTab("orders")}
-              className="text-xs uppercase tracking-wider text-[#C8A96B] hover:underline font-semibold flex items-center gap-1"
+              className="text-xs uppercase tracking-wider text-[#C5A15A] hover:underline font-semibold flex items-center gap-1"
             >
               View All Orders <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
@@ -434,7 +436,7 @@ export const DashboardView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#29231F]/10 text-[#29231F]/60 uppercase tracking-widest text-[10px] bg-[#F5F1EB]/50">
+                <tr className="border-b border-[#30372F]/10 text-[#30372F]/60 uppercase tracking-widest text-[10px] bg-[#F5F1EB]/50">
                   <th className="p-2.5">Order ID</th>
                   <th className="p-2.5">Customer</th>
                   <th className="p-2.5">Date</th>
@@ -444,35 +446,35 @@ export const DashboardView: React.FC = () => {
                   <th className="p-2.5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#29231F]/5">
+              <tbody className="divide-y divide-[#30372F]/5">
                 {recentOrders.map((ord) => (
                   <tr
                     key={ord.id}
                     className="hover:bg-[#F5F1EB]/40 transition-colors"
                   >
-                    <td className="p-2.5 font-medium text-[#29231F]">
+                    <td className="p-2.5 font-medium text-[#30372F]">
                       {ord.orderNumber}
                     </td>
-                    <td className="p-2.5 text-[#29231F]/90 font-medium">
+                    <td className="p-2.5 text-[#30372F]/90 font-medium">
                       {ord.customerName}
                     </td>
-                    <td className="p-2.5 text-[#29231F]/60">
+                    <td className="p-2.5 text-[#30372F]/60">
                       {new Date(ord.createdAt).toLocaleDateString("en-IN", {
                         month: "short",
                         day: "numeric",
                       })}
                     </td>
-                    <td className="p-2.5 font-semibold text-[#29231F]">
+                    <td className="p-2.5 font-semibold text-[#30372F]">
                       ₹ {ord.totalAmount.toLocaleString("en-IN")}
                     </td>
-                    <td className="p-2.5 text-[#29231F]/70">
+                    <td className="p-2.5 text-[#30372F]/70">
                       {ord.paymentStatus}
                     </td>
                     <td className="p-2.5">{getStatusBadge(ord.orderStatus)}</td>
                     <td className="p-2.5 text-right">
                       <button
                         onClick={() => setActiveTab("orders")}
-                        className="p-1 text-[#29231F]/60 hover:text-[#C8A96B] transition-colors"
+                        className="p-1 text-[#30372F]/60 hover:text-[#C5A15A] transition-colors"
                         title="View order details"
                       >
                         <Eye className="w-4 h-4" />
@@ -486,12 +488,12 @@ export const DashboardView: React.FC = () => {
         </div>
 
         {/* RECENT ACTIVITY FEED (1 COL) */}
-        <div className="bg-[#FFFDF8] border border-[#29231F]/10 p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#29231F]/10">
-            <h3 className="font-serif text-lg font-semibold text-[#29231F]">
+        <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#30372F]/10">
+            <h3 className="font-serif text-lg font-semibold text-[#30372F]">
               Recent Activity
             </h3>
-            <span className="text-[10px] text-[#29231F]/50 uppercase tracking-wider font-mono">
+            <span className="text-[10px] text-[#30372F]/50 uppercase tracking-wider font-mono">
               LIVE FEED
             </span>
           </div>
@@ -500,19 +502,19 @@ export const DashboardView: React.FC = () => {
             {activityLogs.map((log) => (
               <div
                 key={log.id}
-                className="flex items-start gap-3 pb-3 border-b border-[#29231F]/5 last:border-0 last:pb-0"
+                className="flex items-start gap-3 pb-3 border-b border-[#30372F]/5 last:border-0 last:pb-0"
               >
-                <div className="w-6 h-6 rounded-full bg-[#F5F1EB] text-[#C8A96B] flex items-center justify-center shrink-0 mt-0.5 border border-[#29231F]/10">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#29231F]" />
+                <div className="w-6 h-6 rounded-full bg-[#F5F1EB] text-[#C5A15A] flex items-center justify-center shrink-0 mt-0.5 border border-[#30372F]/10">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#30372F]" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#29231F] leading-tight">
+                  <p className="font-medium text-[#30372F] leading-tight">
                     {log.title}
                   </p>
-                  <p className="text-[#29231F]/70 text-[11px] mt-0.5 leading-snug">
+                  <p className="text-[#30372F]/70 text-[11px] mt-0.5 leading-snug">
                     {log.description}
                   </p>
-                  <span className="text-[9px] text-[#29231F]/40 font-mono mt-1 block">
+                  <span className="text-[9px] text-[#30372F]/40 font-mono mt-1 block">
                     {log.timestamp}
                   </span>
                 </div>

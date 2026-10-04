@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import { Star, Check, EyeOff, Trash2 } from 'lucide-react';
 
@@ -18,23 +18,23 @@ export const ReviewsView: React.FC = () => {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FFFDF8] border border-[#29231F]/10 p-5 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs">
         <div>
-          <h2 className="font-serif text-xl font-semibold text-[#29231F]">
+          <h2 className="font-serif text-xl font-semibold text-[#30372F]">
             Product Reviews & Moderation ({reviews.length})
           </h2>
-          <p className="text-xs text-[#29231F]/60 mt-0.5">
+          <p className="text-xs text-[#30372F]/60 mt-0.5">
             Moderate submitted client reviews. Only approved reviews display publicly on product pages.
           </p>
         </div>
       </div>
 
       {/* REVIEWS TABLE */}
-      <div className="bg-[#FFFDF8] border border-[#29231F]/10 shadow-xs overflow-hidden">
+      <div className="bg-[#FFFDF8] border border-[#30372F]/10 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#29231F]/10 text-[#29231F]/60 uppercase tracking-widest text-[10px] bg-[#F5F1EB]">
+              <tr className="border-b border-[#30372F]/10 text-[#30372F]/60 uppercase tracking-widest text-[10px] bg-[#F5F1EB]">
                 <th className="p-3">Customer</th>
                 <th className="p-3">Product</th>
                 <th className="p-3">Rating</th>
@@ -44,29 +44,29 @@ export const ReviewsView: React.FC = () => {
                 <th className="p-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#29231F]/5">
+            <tbody className="divide-y divide-[#30372F]/5">
               {reviews.map((rev) => (
                 <tr key={rev.id} className="hover:bg-[#F5F1EB]/40 transition-colors">
                   <td className="p-3">
-                    <p className="font-semibold text-[#29231F]">{rev.customerName}</p>
-                    <p className="text-[10px] text-[#29231F]/60">{rev.customerEmail}</p>
+                    <p className="font-semibold text-[#30372F]">{rev.customerName}</p>
+                    <p className="text-[10px] text-[#30372F]/60">{rev.customerEmail}</p>
                   </td>
-                  <td className="p-3 font-medium text-[#29231F]">{rev.productName}</td>
+                  <td className="p-3 font-medium text-[#30372F]">{rev.productName}</td>
                   <td className="p-3">
-                    <div className="flex items-center gap-0.5 text-[#C8A96B]">
+                    <div className="flex items-center gap-0.5 text-[#C5A15A]">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-3 h-3 ${i < rev.rating ? 'fill-[#C8A96B]' : 'text-gray-300'}`}
+                          className={`w-3 h-3 ${i < rev.rating ? 'fill-[#C5A15A]' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
                   </td>
                   <td className="p-3">
-                    <p className="font-semibold text-[#29231F]">{rev.title}</p>
-                    <p className="text-[#29231F]/70 text-[11px] line-clamp-2 mt-0.5">"{rev.comment}"</p>
+                    <p className="font-semibold text-[#30372F]">{rev.title}</p>
+                    <p className="text-[#30372F]/70 text-[11px] line-clamp-2 mt-0.5">"{rev.comment}"</p>
                   </td>
-                  <td className="p-3 text-[#29231F]/60">{rev.date.split('T')[0]}</td>
+                  <td className="p-3 text-[#30372F]/60">{rev.date.split('T')[0]}</td>
                   <td className="p-3">
                     {rev.status === 'Approved' ? (
                       <span className="px-2 py-0.5 text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold">Approved</span>
@@ -96,7 +96,7 @@ export const ReviewsView: React.FC = () => {
                       )}
                       <button
                         onClick={() => handleDelete(rev.id)}
-                        className="p-1.5 text-[#29231F]/60 hover:text-red-700"
+                        className="p-1.5 text-[#30372F]/60 hover:text-red-700"
                         title="Delete review"
                       >
                         <Trash2 className="w-4 h-4" />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { giftingOccasions } from '@/data/giftingData';
@@ -26,18 +26,18 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
             <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
               OCCASIONS WORTH CELEBRATING
             </span>
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29231F] leading-tight"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#30372F] leading-tight"
           >
             FOR MOMENTS THAT MATTER
           </motion.h2>
@@ -57,7 +57,7 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
                 onMouseEnter={() => setHoveredId(occasion.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => onSelectOccasion && onSelectOccasion(occasion.title)}
-                className="group relative cursor-pointer overflow-hidden rounded-xs bg-[#29231F] aspect-[3/4] flex flex-col justify-end p-7 shadow-[0_10px_30px_rgba(41,35,31,0.06)]"
+                className="group relative cursor-pointer overflow-hidden rounded-xs bg-[#30372F] aspect-[3/4] flex flex-col justify-end p-7 shadow-[0_10px_30px_rgba(41,35,31,0.06)]"
               >
                 {/* Background Image with Hover Scale 1 -> 1.035 */}
                 <div className="absolute inset-0 overflow-hidden">
@@ -69,7 +69,7 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
                     }`}
                   />
                   {/* Subtle Dark Gradient Overlay for readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#29231F]/90 via-[#29231F]/35 to-transparent transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/90 via-[#30372F]/35 to-transparent transition-opacity duration-500" />
                 </div>
 
                 {/* Content Overlay */}
@@ -79,7 +79,7 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
                   }`}
                 >
                   {/* Subtitle */}
-                  <span className="text-[10px] tracking-[0.25em] font-medium uppercase text-[#C8A96B] mb-2">
+                  <span className="text-[10px] tracking-[0.25em] font-medium uppercase text-[#C5A15A] mb-2">
                     {occasion.subtitle}
                   </span>
 
@@ -90,7 +90,7 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
                     </h3>
                     <div
                       className={`w-8 h-8 rounded-full border border-[#FFFDF8]/30 flex items-center justify-center text-[#FFFDF8] transition-all duration-300 ${
-                        isHovered ? 'border-[#C8A96B] bg-[#C8A96B] text-[#29231F]' : ''
+                        isHovered ? 'border-[#C5A15A] bg-[#C5A15A] text-[#30372F]' : ''
                       }`}
                     >
                       <ArrowUpRight size={16} />
@@ -105,7 +105,7 @@ export default function GiftingOccasions({ onSelectOccasion }: GiftingOccasionsP
                   {/* Champagne Underline reveal on hover */}
                   <div className="w-full h-px bg-[#FFFDF8]/20 overflow-hidden">
                     <div
-                      className={`h-full bg-[#C8A96B] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      className={`h-full bg-[#C5A15A] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                         isHovered ? 'w-full' : 'w-0'
                       }`}
                     />

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+﻿import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw, Sparkles } from 'lucide-react';
 import { useShop } from '@/context/ShopContext';
@@ -121,7 +121,7 @@ export default function ShopProductGrid() {
             <button
               onClick={handleLoadMore}
               disabled={isLoadingMore}
-              className="group min-w-[200px] px-8 py-3.5 border border-cocoa-300 text-cocoa-300 text-xs font-sans tracking-[0.25em] uppercase font-normal hover:bg-[#29231F] hover:text-[#F7F3EC] transition-all duration-300 flex items-center justify-center gap-3 select-none"
+              className="group min-w-[200px] px-8 py-3.5 border border-cocoa-300 text-cocoa-300 text-xs font-sans tracking-[0.25em] uppercase font-normal hover:bg-[#30372F] hover:text-[#F7F3EC] transition-all duration-300 flex items-center justify-center gap-3 select-none"
             >
               {isLoadingMore ? (
                 <>

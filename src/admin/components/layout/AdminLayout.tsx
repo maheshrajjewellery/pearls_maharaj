@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import { AdminSidebar } from './AdminSidebar';
 import { AdminHeader } from './AdminHeader';
@@ -77,7 +77,7 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1EB] text-[#29231F] font-sans flex flex-col md:flex-row selection:bg-[#C8A96B] selection:text-[#29231F]">
+    <div className="min-h-screen bg-[#F5F1EB] text-[#30372F] font-sans flex flex-col md:flex-row selection:bg-[#C5A15A] selection:text-[#30372F]">
       {/* LEFT SIDEBAR (250px) */}
       <AdminSidebar
         isMobileOpen={isMobileSidebarOpen}
@@ -88,7 +88,7 @@ export const AdminLayout: React.FC = () => {
       {isMobileSidebarOpen && (
         <div
           onClick={() => setIsMobileSidebarOpen(false)}
-          className="fixed inset-0 z-30 bg-[#29231F]/40 backdrop-blur-xs md:hidden"
+          className="fixed inset-0 z-30 bg-[#30372F]/40 backdrop-blur-xs md:hidden"
         />
       )}
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Eye, ShoppingBag } from 'lucide-react';
 import { ShopProduct } from '@/types/shop';
@@ -122,7 +122,7 @@ export default function ShopProductCard({ product, index }: ShopProductCardProps
       {/* Product Details Underneath */}
       <div className="pt-3.5 sm:pt-4 text-center sm:text-left flex flex-col">
         {/* Descriptor / Pearl Type */}
-        <p className="text-[10px] sm:text-[10.5px] font-sans tracking-[0.08em] uppercase font-medium text-[#B59662] mb-1 truncate">
+        <p className="text-[10px] sm:text-[10.5px] font-sans tracking-[0.08em] uppercase font-medium text-[#C5A15A] mb-1 truncate">
           {product.descriptor}
         </p>
 

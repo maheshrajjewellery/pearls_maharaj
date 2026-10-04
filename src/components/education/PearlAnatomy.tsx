@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Layers, Disc, Eye, Check } from 'lucide-react';
@@ -92,7 +92,7 @@ export default function PearlAnatomy() {
     <section
       id="pearl-anatomy"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
       aria-label="Pearl anatomy interactive diagram"
     >
       {/* Ambient background glows */}
@@ -170,7 +170,7 @@ export default function PearlAnatomy() {
                   {/* Nucleus Bead Gradient */}
                   <radialGradient id="anatomyNucleusGrad" cx="35%" cy="35%" r="50%">
                     <stop offset="0%" stopColor="#E8D9B8" />
-                    <stop offset="60%" stopColor="#C4A35A" />
+                    <stop offset="60%" stopColor="#C5A15A" />
                     <stop offset="100%" stopColor="#5A4E48" />
                   </radialGradient>
 
@@ -187,7 +187,7 @@ export default function PearlAnatomy() {
                   cy="160"
                   r="120"
                   fill="url(#anatomyPearlGrad)"
-                  stroke="#C8A96B"
+                  stroke="#C5A15A"
                   strokeWidth="1.5"
                   className="filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)] cursor-pointer"
                 />
@@ -200,7 +200,7 @@ export default function PearlAnatomy() {
                     cy="160"
                     r={radius}
                     fill="none"
-                    stroke="#C8A96B"
+                    stroke="#C5A15A"
                     strokeWidth={1}
                     strokeDasharray={i % 2 === 0 ? '3 3' : '2 4'}
                     strokeOpacity={activePartId === 'nacre' ? 0.8 : 0.25}
@@ -304,25 +304,25 @@ export default function PearlAnatomy() {
                 >
                   {activePartId === 'surface' && (
                     <>
-                      <line x1="280" y1="160" x2="310" y2="160" stroke="#C8A96B" strokeWidth="1.5" />
+                      <line x1="280" y1="160" x2="310" y2="160" stroke="#C5A15A" strokeWidth="1.5" />
                       <circle cx="280" cy="160" r="3" fill="#FFDE99" />
                     </>
                   )}
                   {activePartId === 'nacre' && (
                     <>
-                      <line x1="225" y1="130" x2="300" y2="100" stroke="#C8A96B" strokeWidth="1.5" />
+                      <line x1="225" y1="130" x2="300" y2="100" stroke="#C5A15A" strokeWidth="1.5" />
                       <circle cx="225" cy="130" r="3" fill="#FFDE99" />
                     </>
                   )}
                   {activePartId === 'nucleus' && (
                     <>
-                      <line x1="160" y1="160" x2="280" y2="230" stroke="#C8A96B" strokeWidth="1.5" />
+                      <line x1="160" y1="160" x2="280" y2="230" stroke="#C5A15A" strokeWidth="1.5" />
                       <circle cx="160" cy="160" r="3" fill="#FFDE99" />
                     </>
                   )}
                   {activePartId === 'luster' && (
                     <>
-                      <line x1="112" y1="106" x2="40" y2="70" stroke="#C8A96B" strokeWidth="1.5" />
+                      <line x1="112" y1="106" x2="40" y2="70" stroke="#C5A15A" strokeWidth="1.5" />
                       <circle cx="112" cy="106" r="3" fill="#FFDE99" />
                     </>
                   )}

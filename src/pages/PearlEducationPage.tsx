@@ -75,12 +75,6 @@ export default function PearlEducationPage() {
       {/* 15 — FINAL BRAND CTA */}
       <PearlEducationCTA />
 
-      {/* GLOBAL MODALS & DRAWERS */}
-      <CartDrawer />
-      <SearchModal />
-      <QuickViewModal />
-      <PearlGuideModal />
-
     </div>
   );
 }

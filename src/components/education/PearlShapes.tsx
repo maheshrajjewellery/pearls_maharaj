@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Compass, Check } from 'lucide-react';
@@ -186,7 +186,7 @@ export default function PearlShapes() {
                         cy="50"
                         r="38"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />
@@ -199,7 +199,7 @@ export default function PearlShapes() {
                         rx="38"
                         ry="35"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />
@@ -212,7 +212,7 @@ export default function PearlShapes() {
                         rx="28"
                         ry="40"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />
@@ -222,7 +222,7 @@ export default function PearlShapes() {
                       <path
                         d="M 16,52 C 16,30 32,18 50,18 C 68,18 84,30 84,52 C 84,68 70,72 50,72 C 30,72 16,68 16,52 Z"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />
@@ -232,7 +232,7 @@ export default function PearlShapes() {
                       <path
                         d="M 50,14 C 54,26 78,48 78,64 C 78,78 65,86 50,86 C 35,86 22,78 22,64 C 22,48 46,26 50,14 Z"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />
@@ -242,7 +242,7 @@ export default function PearlShapes() {
                       <path
                         d="M 45,18 C 62,14 78,28 80,44 C 82,60 74,72 65,82 C 54,90 32,84 24,70 C 16,56 22,38 34,26 C 38,22 40,20 45,18 Z"
                         fill={`url(#shapeGrad-${shape.id})`}
-                        stroke="#C8A96B"
+                        stroke="#C5A15A"
                         strokeWidth="1"
                         className="filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
                       />

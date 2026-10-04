@@ -137,6 +137,8 @@ export const dbToAdminCategory = (dbCat: DbCategory, itemCount: number = 0): Adm
     itemCount,
     enabled: dbCat.is_active,
     displayOrder: dbCat.display_order,
+    createdAt: dbCat.created_at,
+    updatedAt: dbCat.updated_at,
   };
 };
 
@@ -148,7 +150,7 @@ export const fetchCategoriesFromDb = async (onlyActive: boolean = false): Promis
         query = query.eq('is_active', true);
       }
       const { data, error } = await query;
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         setLocalCategories(data);
         return data;
       }
@@ -182,7 +184,7 @@ export const createCategoryInDb = async (input: {
   }
 
   const newCategory: DbCategory = {
-    id: crypto.randomUUID ? crypto.randomUUID() : `cat-${Date.now()}`,
+    id: crypto.randomUUID ? crypto.randomUUID() : `a${Date.now().toString(16)}-1111-4111-8111-${Date.now().toString(16)}`,
     name: input.name.trim(),
     slug,
     description: input.description?.trim() || null,
@@ -194,23 +196,24 @@ export const createCategoryInDb = async (input: {
   };
 
   if (isSupabaseConfigured()) {
-    try {
-      const { data, error } = await supabase.from('categories').insert([{
-        name: newCategory.name,
-        slug: newCategory.slug,
-        description: newCategory.description,
-        image_url: newCategory.image_url,
-        display_order: newCategory.display_order,
-        is_active: newCategory.is_active,
-      }]).select().single();
+    const { data, error } = await supabase.from('categories').insert([{
+      name: newCategory.name,
+      slug: newCategory.slug,
+      description: newCategory.description,
+      image_url: newCategory.image_url,
+      display_order: newCategory.display_order,
+      is_active: newCategory.is_active,
+    }]).select().single();
 
-      if (!error && data) {
-        const updatedList = [...existing, data];
-        setLocalCategories(updatedList);
-        return data;
-      }
-    } catch (err) {
-      console.error('Supabase category create error:', err);
+    if (error) {
+      console.error('Supabase category create error:', error);
+      throw new Error(error.message || 'Failed to insert category into Supabase.');
+    }
+
+    if (data) {
+      const updatedList = [...existing, data];
+      setLocalCategories(updatedList);
+      return data;
     }
   }
 
@@ -256,28 +259,29 @@ export const updateCategoryInDb = async (
   };
 
   if (isSupabaseConfigured()) {
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .update({
-          name: updatedCategory.name,
-          slug: updatedCategory.slug,
-          description: updatedCategory.description,
-          image_url: updatedCategory.image_url,
-          display_order: updatedCategory.display_order,
-          is_active: updatedCategory.is_active,
-        })
-        .eq('id', target.id)
-        .select()
-        .single();
+    const { data, error } = await supabase
+      .from('categories')
+      .update({
+        name: updatedCategory.name,
+        slug: updatedCategory.slug,
+        description: updatedCategory.description,
+        image_url: updatedCategory.image_url,
+        display_order: updatedCategory.display_order,
+        is_active: updatedCategory.is_active,
+      })
+      .eq('id', target.id)
+      .select()
+      .single();
 
-      if (!error && data) {
-        const list = existing.map((c) => (c.id === target.id ? data : c));
-        setLocalCategories(list);
-        return data;
-      }
-    } catch (err) {
-      console.error('Supabase category update error:', err);
+    if (error) {
+      console.error('Supabase category update error:', error);
+      throw new Error(error.message || 'Failed to update category in Supabase.');
+    }
+
+    if (data) {
+      const list = existing.map((c) => (c.id === target.id ? data : c));
+      setLocalCategories(list);
+      return data;
     }
   }
 

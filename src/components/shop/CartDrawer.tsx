@@ -3,7 +3,15 @@ import { X, ShoppingBag, Trash2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useShop } from '@/context/ShopContext';
 
 export default function CartDrawer() {
-  const { isCartOpen, setIsCartOpen, cart, updateCartQuantity, removeFromCart, cartSubtotal, cartCount } = useShop();
+  const { isCartOpen, setIsCartOpen, cart, updateCartQuantity, removeFromCart, cartSubtotal, cartCount, setCurrentPage } = useShop();
+
+  const handleProceedToCheckout = () => {
+    setIsCartOpen(false);
+    setCurrentPage('checkout');
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/checkout');
+    }
+  };
 
   const formattedSubtotal = new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -170,8 +178,8 @@ export default function CartDrawer() {
                 </div>
 
                 <button
-                  onClick={() => alert('Redirecting to Maharaj Jewellery Secure Checkout...')}
-                  className="w-full py-3.5 bg-cocoa-300 hover:bg-cocoa-200 text-pearlIvory-50 text-xs font-sans font-medium tracking-[0.1em] uppercase transition-all duration-300 flex items-center justify-center gap-2"
+                  onClick={handleProceedToCheckout}
+                  className="w-full py-3.5 bg-cocoa-300 hover:bg-cocoa-200 text-pearlIvory-50 text-xs font-sans font-medium tracking-[0.1em] uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>PROCEED TO CHECKOUT</span>
                   <ArrowRight size={14} />

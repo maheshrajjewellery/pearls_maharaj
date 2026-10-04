@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 import { faqItems, FAQItem } from '@/data/contactData';
@@ -16,7 +16,7 @@ export default function ContactFAQ() {
   return (
     <section
       ref={ref}
-      className="relative w-full py-16 sm:py-20 lg:py-24 bg-[#F7F3EC] border-b border-[#29231F]/10"
+      className="relative w-full py-16 sm:py-20 lg:py-24 bg-[#F7F3EC] border-b border-[#30372F]/10"
       aria-label="Frequently Asked Questions"
     >
       <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16">
@@ -29,18 +29,18 @@ export default function ContactFAQ() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="flex items-center gap-3 mb-3"
           >
-            <span className="h-px w-6 bg-[#C8A96B]" />
-            <span className="text-[#C8A96B] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
+            <span className="h-px w-6 bg-[#C5A15A]" />
+            <span className="text-[#C5A15A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
               CLIENT ASSISTANCE
             </span>
-            <span className="h-px w-6 bg-[#C8A96B]" />
+            <span className="h-px w-6 bg-[#C5A15A]" />
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-[clamp(28px,4vw,44px)] font-normal text-[#29231F] tracking-[-0.01em]"
+            className="font-serif text-[clamp(28px,4vw,44px)] font-normal text-[#30372F] tracking-[-0.01em]"
           >
             COMMON QUESTIONS
           </motion.h2>
@@ -63,8 +63,8 @@ export default function ContactFAQ() {
                 }}
                 className={`border transition-colors duration-300 ${
                   isOpen
-                    ? 'border-[#C8A96B]/50 bg-[#FFFDF8] shadow-[0_2px_12px_rgba(41,35,31,0.03)]'
-                    : 'border-[#29231F]/10 bg-[#FFFDF8]/70 hover:bg-[#FFFDF8]'
+                    ? 'border-[#C5A15A]/50 bg-[#FFFDF8] shadow-[0_2px_12px_rgba(41,35,31,0.03)]'
+                    : 'border-[#30372F]/10 bg-[#FFFDF8]/70 hover:bg-[#FFFDF8]'
                 }`}
               >
                 {/* Accordion Trigger */}
@@ -74,17 +74,17 @@ export default function ContactFAQ() {
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
                   id={`faq-question-${item.id}`}
-                  className="w-full flex items-center justify-between p-6 sm:p-7 text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C8A96B] cursor-pointer group"
+                  className="w-full flex items-center justify-between p-6 sm:p-7 text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C5A15A] cursor-pointer group"
                 >
-                  <span className="font-serif text-lg sm:text-xl font-normal text-[#29231F] group-hover:text-[#C8A96B] transition-colors duration-300 pr-4">
+                  <span className="font-serif text-lg sm:text-xl font-normal text-[#30372F] group-hover:text-[#C5A15A] transition-colors duration-300 pr-4">
                     {item.question}
                   </span>
 
                   <div
                     className={`w-8 h-8 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                       isOpen
-                        ? 'border-[#C8A96B] bg-[#C8A96B] text-[#29231F]'
-                        : 'border-[#29231F]/15 text-[#29231F] group-hover:border-[#C8A96B] group-hover:text-[#C8A96B]'
+                        ? 'border-[#C5A15A] bg-[#C5A15A] text-[#30372F]'
+                        : 'border-[#30372F]/15 text-[#30372F] group-hover:border-[#C5A15A] group-hover:text-[#C5A15A]'
                     }`}
                   >
                     {isOpen ? (
@@ -108,7 +108,7 @@ export default function ContactFAQ() {
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-1 text-[#29231F]/80 font-sans text-[14px] sm:text-[15px] font-light leading-[1.7] border-t border-[#29231F]/5">
+                      <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-1 text-[#30372F]/80 font-sans text-[14px] sm:text-[15px] font-light leading-[1.7] border-t border-[#30372F]/5">
                         <p>{item.answer}</p>
                       </div>
                     </motion.div>

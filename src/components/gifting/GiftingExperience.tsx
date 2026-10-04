@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { experienceSteps } from '@/data/giftingData';
 
@@ -19,18 +19,18 @@ export default function GiftingExperience() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
             <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
               THE GIFTING PROCESS
             </span>
-            <span className="w-6 h-px bg-[#C8A96B]" />
+            <span className="w-6 h-px bg-[#C5A15A]" />
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29231F] leading-tight"
+            className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#30372F] leading-tight"
           >
             THE GIFTING EXPERIENCE
           </motion.h2>
@@ -47,17 +47,17 @@ export default function GiftingExperience() {
               className="flex flex-col items-start border-t border-[rgba(41,35,31,0.15)] pt-8 relative"
             >
               {/* Large Typography Step Number */}
-              <span className="font-serif text-5xl sm:text-6xl text-[#C8A96B]/80 font-light tracking-tight mb-4 select-none">
+              <span className="font-serif text-5xl sm:text-6xl text-[#C5A15A]/80 font-light tracking-tight mb-4 select-none">
                 {step.number}
               </span>
 
               {/* Step Title */}
-              <h3 className="font-serif text-2xl text-[#29231F] font-normal leading-tight mb-3">
+              <h3 className="font-serif text-2xl text-[#30372F] font-normal leading-tight mb-3">
                 {step.title}
               </h3>
 
               {/* Step Description */}
-              <p className="text-[#29231F]/75 text-sm font-light leading-relaxed">
+              <p className="text-[#30372F]/75 text-sm font-light leading-relaxed">
                 {step.description}
               </p>
             </motion.div>

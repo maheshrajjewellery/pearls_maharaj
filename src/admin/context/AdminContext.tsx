@@ -30,7 +30,36 @@ import {
   createProductInDb,
   updateProductInDb,
   deleteProductFromDb,
+  deleteAllProductsFromDb,
 } from '@/services/productService';
+import {
+  fetchCollectionsFromDb,
+  createCollectionInDb,
+  updateCollectionInDb,
+  deleteCollectionFromDb,
+} from '@/services/collectionService';
+import {
+  fetchOrdersFromDb,
+  updateOrderStatusInDb,
+  cancelOrderInDb,
+  refundOrderInDb,
+  subscribeToOrdersRealtime,
+} from '@/services/orderService';
+import {
+  fetchCustomersFromDb,
+  updateCustomerStatusInDb,
+  subscribeToCustomersRealtime,
+} from '@/services/customerService';
+import {
+  fetchAllCMSData,
+  updateCMSContent,
+  ContactCMS,
+  CorporateCMS,
+  FooterCMS,
+  defaultContactCMS,
+  defaultCorporateCMS,
+  defaultFooterCMS,
+} from '@/services/cmsService';
 import {
   initialOrders,
   initialCustomers,
@@ -126,6 +155,9 @@ interface AdminContextType {
   aboutCMS: AboutCMS;
   educationCMS: PearlEducationCMS;
   bridalCMS: BridalCMS;
+  contactCMS: ContactCMS;
+  corporateCMS: CorporateCMS;
+  footerCMS: FooterCMS;
   settings: AdminSettings;
   activityLogs: ActivityLog[];
   isLoading: boolean;
@@ -134,17 +166,25 @@ interface AdminContextType {
   addProduct: (product: Partial<ShopProduct> & { images?: string[]; sku?: string }) => Promise<boolean>;
   updateProduct: (product: Partial<ShopProduct> & { id: string; images?: string[]; sku?: string }) => Promise<boolean>;
   deleteProduct: (id: string, softDelete?: boolean) => Promise<boolean>;
+  deleteAllProducts: () => Promise<boolean>;
   duplicateProduct: (product: ShopProduct) => Promise<boolean>;
 
-  addCategory: (category: { name: string; slug?: string; description?: string; image?: string; enabled?: boolean }) => Promise<boolean>;
-  updateCategory: (category: { id: string; name?: string; slug?: string; description?: string; image?: string; enabled?: boolean }) => Promise<boolean>;
+  addCategory: (category: { name: string; slug?: string; description?: string; image?: string; enabled?: boolean; displayOrder?: number }) => Promise<boolean>;
+  updateCategory: (category: { id: string; name?: string; slug?: string; description?: string; image?: string; enabled?: boolean; displayOrder?: number }) => Promise<boolean>;
   deleteCategory: (id: string) => Promise<boolean>;
+  productCategoryFilter: string;
+  setProductCategoryFilter: (slug: string) => void;
 
-  addCollection: (collection: AdminCollection) => void;
-  updateCollection: (collection: AdminCollection) => void;
-  deleteCollection: (id: string) => void;
+  addCollection: (collection: AdminCollection) => Promise<boolean>;
+  updateCollection: (collection: AdminCollection) => Promise<boolean>;
+  deleteCollection: (id: string) => Promise<boolean>;
 
-  updateOrderStatus: (orderId: string, status: AdminOrder['orderStatus'], note?: string) => void;
+  updateOrderStatus: (orderId: string, status: AdminOrder['orderStatus'], note?: string) => Promise<boolean>;
+  cancelOrder: (orderId: string, reason?: string) => Promise<boolean>;
+  refundOrder: (orderId: string, reason?: string) => Promise<boolean>;
+  refreshOrders: () => Promise<void>;
+  refreshCustomers: () => Promise<void>;
+  updateCustomerStatus: (email: string, status: 'Active' | 'Inactive') => Promise<boolean>;
   updateCorporateEnquiryStatus: (id: string, status: CorporateEnquiry['status'], internalNotes?: string) => void;
   deleteCorporateEnquiry: (id: string) => void;
 
@@ -161,6 +201,9 @@ interface AdminContextType {
   updateAboutCMS: (cms: Partial<AboutCMS>) => void;
   updateEducationCMS: (cms: Partial<PearlEducationCMS>) => void;
   updateBridalCMS: (cms: Partial<BridalCMS>) => void;
+  updateContactCMS: (cms: Partial<ContactCMS>) => void;
+  updateCorporateCMS: (cms: Partial<CorporateCMS>) => void;
+  updateFooterCMS: (cms: Partial<FooterCMS>) => void;
 
   updateSettings: (settings: Partial<AdminSettings>) => void;
   exportNewsletterCSV: () => void;
@@ -171,6 +214,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
+  const [productCategoryFilter, setProductCategoryFilter] = useState<string>('all');
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
     catalogue: true,
     corporate: false,
@@ -232,27 +276,67 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Other collections
   const [orders, setOrders] = useState<AdminOrder[]>(initialOrders);
-  const [customers] = useState<AdminCustomer[]>(initialCustomers);
+  const [customers, setCustomers] = useState<AdminCustomer[]>(initialCustomers);
   const [corporateEnquiries, setCorporateEnquiries] = useState<CorporateEnquiry[]>(initialCorporateEnquiries);
   const [contactEnquiries, setContactEnquiries] = useState<ContactEnquiry[]>(initialContactEnquiries);
   const [reviews, setReviews] = useState<AdminReview[]>(initialReviews);
   const [banners, setBanners] = useState<Banner[]>(initialBanners);
   const [newsletterSubscribers] = useState<NewsletterSubscriber[]>(initialNewsletterSubscribers);
-  const [collections, setCollections] = useState<AdminCollection[]>(initialCollections);
+  const [collections, setCollections] = useState<AdminCollection[]>([]);
   const [homepageCMS, setHomepageCMS] = useState<HomepageCMS>(initialHomepageCMS);
   const [aboutCMS, setAboutCMS] = useState<AboutCMS>(initialAboutCMS);
   const [educationCMS, setEducationCMS] = useState<PearlEducationCMS>(initialPearlEducationCMS);
   const [bridalCMS, setBridalCMS] = useState<BridalCMS>(initialBridalCMS);
+  const [contactCMS, setContactCMS] = useState<ContactCMS>(defaultContactCMS);
+  const [corporateCMS, setCorporateCMS] = useState<CorporateCMS>(defaultCorporateCMS);
+  const [footerCMS, setFooterCMS] = useState<FooterCMS>(defaultFooterCMS);
   const [settings, setSettings] = useState<AdminSettings>(initialSettings);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>(initialActivityLogs);
 
-  // Load Database Categories and Products
+  // Load Database Categories, Products, Orders, and Customers
+  const refreshOrders = useCallback(async () => {
+    try {
+      const res = await fetchOrdersFromDb({ pageSize: 1000 });
+      setOrders(res.orders);
+    } catch (err) {
+      console.error('Error fetching database orders:', err);
+    }
+  }, []);
+
+  const refreshCustomers = useCallback(async () => {
+    try {
+      const res = await fetchCustomersFromDb({ pageSize: 1000 });
+      setCustomers(res.customers);
+    } catch (err) {
+      console.error('Error fetching database customers:', err);
+    }
+  }, []);
+
+  const updateCustomerStatus = useCallback(
+    async (email: string, status: 'Active' | 'Inactive') => {
+      const res = await updateCustomerStatusInDb(email, status);
+      if (res.success) {
+        addToast(`Customer account (${email}) status updated to ${status}.`, 'success');
+        await refreshCustomers();
+        return true;
+      } else {
+        addToast(res.errorMessage || 'Failed to update customer status.', 'error');
+        return false;
+      }
+    },
+    [addToast, refreshCustomers]
+  );
+
   const refreshDbData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [dbCats, dbProdsData] = await Promise.all([
+      const [dbCats, dbProdsData, dbCols, ordersRes, custRes, cmsData] = await Promise.all([
         fetchCategoriesFromDb(false),
         fetchProductsFromDb({}),
+        fetchCollectionsFromDb(),
+        fetchOrdersFromDb({ pageSize: 1000 }),
+        fetchCustomersFromDb({ pageSize: 1000 }),
+        fetchAllCMSData(),
       ]);
 
       const prods = dbProdsData.products;
@@ -265,8 +349,22 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setCategories(adminCats);
       setProducts(prods);
+      setCollections(dbCols);
+      setOrders(ordersRes.orders);
+      setCustomers(custRes.customers);
+
+      // CMS State Update
+      if (cmsData) {
+        if (cmsData.homepage) setHomepageCMS(cmsData.homepage);
+        if (cmsData.about) setAboutCMS(cmsData.about);
+        if (cmsData.education) setEducationCMS(cmsData.education);
+        if (cmsData.bridal) setBridalCMS(cmsData.bridal);
+        if (cmsData.contact) setContactCMS(cmsData.contact);
+        if (cmsData.corporate) setCorporateCMS(cmsData.corporate);
+        if (cmsData.footer) setFooterCMS(cmsData.footer);
+      }
     } catch (err) {
-      console.error('Error fetching database products/categories:', err);
+      console.error('Error fetching database products/categories/collections/orders/customers/CMS:', err);
     } finally {
       setIsLoading(false);
     }
@@ -274,7 +372,23 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     refreshDbData();
-  }, [refreshDbData]);
+
+    // Subscribe to realtime orders & customers updates
+    const unsubOrders = subscribeToOrdersRealtime(() => {
+      refreshOrders();
+      refreshCustomers();
+    });
+
+    const unsubCustomers = subscribeToCustomersRealtime(() => {
+      refreshCustomers();
+      refreshOrders();
+    });
+
+    return () => {
+      unsubOrders();
+      unsubCustomers();
+    };
+  }, [refreshDbData, refreshOrders, refreshCustomers]);
 
   // Auth functions
   const login = useCallback((email: string, pass: string) => {
@@ -392,6 +506,18 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [products, addToast, refreshDbData]);
 
+  const deleteAllProducts = useCallback(async () => {
+    try {
+      await deleteAllProductsFromDb();
+      addToast('All products removed from database.', 'info');
+      await refreshDbData();
+      return true;
+    } catch (err: any) {
+      addToast(err.message || 'Failed to remove all products.', 'error');
+      return false;
+    }
+  }, [addToast, refreshDbData]);
+
   const duplicateProduct = useCallback(async (product: ShopProduct) => {
     try {
       const rand = Math.floor(1000 + Math.random() * 9000);
@@ -425,13 +551,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [addToast, refreshDbData]);
 
   // CATEGORY DB ACTIONS
-  const addCategory = useCallback(async (cat: { name: string; slug?: string; description?: string; image?: string; enabled?: boolean }) => {
+  const addCategory = useCallback(async (cat: { name: string; slug?: string; description?: string; image?: string; enabled?: boolean; displayOrder?: number }) => {
     try {
       const created = await createCategoryInDb({
         name: cat.name,
         slug: cat.slug,
         description: cat.description,
         image_url: cat.image,
+        display_order: cat.displayOrder,
         is_active: cat.enabled ?? true,
       });
       addToast(`Category "${created.name}" created in database.`, 'success');
@@ -443,13 +570,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [addToast, refreshDbData]);
 
-  const updateCategory = useCallback(async (cat: { id: string; name?: string; slug?: string; description?: string; image?: string; enabled?: boolean }) => {
+  const updateCategory = useCallback(async (cat: { id: string; name?: string; slug?: string; description?: string; image?: string; enabled?: boolean; displayOrder?: number }) => {
     try {
       const updated = await updateCategoryInDb(cat.id, {
         name: cat.name,
         slug: cat.slug,
         description: cat.description,
         image_url: cat.image,
+        display_order: cat.displayOrder,
         is_active: cat.enabled,
       });
       addToast(`Category "${updated.name}" updated successfully.`, 'success');
@@ -475,41 +603,96 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [addToast, refreshDbData]);
 
   // Collections CRUD
-  const addCollection = useCallback((col: AdminCollection) => {
-    setCollections((prev) => [...prev, col]);
-    addToast(`Collection "${col.name}" created.`, 'success');
+  const addCollection = useCallback(async (col: AdminCollection) => {
+    try {
+      const created = await createCollectionInDb({
+        name: col.name,
+        slug: col.slug,
+        description: col.description,
+        coverImage: col.coverImage,
+        bannerImage: col.bannerImage,
+        status: col.status,
+        displayOrder: col.displayOrder,
+        productIds: col.productIds,
+      });
+      addToast(`Collection "${created.name}" created in database.`, 'success');
+      await refreshDbData();
+      return true;
+    } catch (err: any) {
+      addToast(err.message || 'Failed to create collection.', 'error');
+      return false;
+    }
+  }, [addToast, refreshDbData]);
+
+  const updateCollection = useCallback(async (col: AdminCollection) => {
+    try {
+      const updated = await updateCollectionInDb(col.id, {
+        name: col.name,
+        slug: col.slug,
+        description: col.description,
+        coverImage: col.coverImage,
+        bannerImage: col.bannerImage,
+        status: col.status,
+        displayOrder: col.displayOrder,
+        productIds: col.productIds,
+      });
+      addToast(`Collection "${updated.name}" updated in database.`, 'success');
+      await refreshDbData();
+      return true;
+    } catch (err: any) {
+      addToast(err.message || 'Failed to update collection.', 'error');
+      return false;
+    }
+  }, [addToast, refreshDbData]);
+
+  const deleteCollection = useCallback(async (id: string) => {
+    try {
+      await deleteCollectionFromDb(id);
+      addToast('Collection deleted from database.', 'info');
+      await refreshDbData();
+      return true;
+    } catch (err: any) {
+      addToast(err.message || 'Failed to delete collection.', 'error');
+      return false;
+    }
+  }, [addToast, refreshDbData]);
+
+  // Orders DB Actions
+  const updateOrderStatus = useCallback(async (orderId: string, status: AdminOrder['orderStatus'], note?: string) => {
+    const res = await updateOrderStatusInDb(orderId, status, note);
+    if (res.success && res.order) {
+      setOrders((prev) => prev.map((ord) => (ord.id === res.order!.id ? res.order! : ord)));
+      addToast(`Order ${res.order.orderNumber} status updated to ${status}.`, 'success');
+      return true;
+    } else {
+      addToast(res.errorMessage || 'Failed to update order status.', 'error');
+      return false;
+    }
   }, [addToast]);
 
-  const updateCollection = useCallback((col: AdminCollection) => {
-    setCollections((prev) => prev.map((c) => (c.id === col.id ? col : c)));
-    addToast(`Collection "${col.name}" updated.`, 'success');
-  }, [addToast]);
+  const cancelOrder = useCallback(async (orderId: string, reason?: string) => {
+    const res = await cancelOrderInDb(orderId, reason);
+    if (res.success && res.order) {
+      setOrders((prev) => prev.map((ord) => (ord.id === res.order!.id ? res.order! : ord)));
+      addToast(`Order ${res.order.orderNumber} cancelled successfully.`, 'warning');
+      await refreshDbData(); // Refresh product inventory after stock restoration
+      return true;
+    } else {
+      addToast(res.errorMessage || 'Failed to cancel order.', 'error');
+      return false;
+    }
+  }, [addToast, refreshDbData]);
 
-  const deleteCollection = useCallback((id: string) => {
-    setCollections((prev) => prev.filter((c) => c.id !== id));
-    addToast('Collection deleted.', 'info');
-  }, [addToast]);
-
-  // Orders
-  const updateOrderStatus = useCallback((orderId: string, status: AdminOrder['orderStatus'], note?: string) => {
-    setOrders((prev) =>
-      prev.map((ord) => {
-        if (ord.id === orderId || ord.orderNumber === orderId) {
-          const updatedTimeline = [
-            ...ord.timeline,
-            { status, timestamp: new Date().toISOString(), note: note || `Status updated to ${status}` },
-          ];
-          return {
-            ...ord,
-            orderStatus: status,
-            updatedAt: new Date().toISOString(),
-            timeline: updatedTimeline,
-          };
-        }
-        return ord;
-      })
-    );
-    addToast(`Order ${orderId} status updated to ${status}.`, 'success');
+  const refundOrder = useCallback(async (orderId: string, reason?: string) => {
+    const res = await refundOrderInDb(orderId, reason);
+    if (res.success && res.order) {
+      setOrders((prev) => prev.map((ord) => (ord.id === res.order!.id ? res.order! : ord)));
+      addToast(`Payment for Order ${res.order.orderNumber} refunded successfully.`, 'info');
+      return true;
+    } else {
+      addToast(res.errorMessage || 'Failed to refund order payment.', 'error');
+      return false;
+    }
   }, [addToast]);
 
   // Corporate Enquiries
@@ -559,24 +742,67 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [addToast]);
 
   // CMS Updates
-  const updateHomepageCMS = useCallback((cms: Partial<HomepageCMS>) => {
-    setHomepageCMS((prev) => ({ ...prev, ...cms }));
+  const updateHomepageCMS = useCallback(async (cms: Partial<HomepageCMS>) => {
+    setHomepageCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('homepage', updated);
+      return updated;
+    });
     addToast('Homepage CMS updated successfully.', 'success');
   }, [addToast]);
 
-  const updateAboutCMS = useCallback((cms: Partial<AboutCMS>) => {
-    setAboutCMS((prev) => ({ ...prev, ...cms }));
+  const updateAboutCMS = useCallback(async (cms: Partial<AboutCMS>) => {
+    setAboutCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('about', updated);
+      return updated;
+    });
     addToast('About Us CMS updated successfully.', 'success');
   }, [addToast]);
 
-  const updateEducationCMS = useCallback((cms: Partial<PearlEducationCMS>) => {
-    setEducationCMS((prev) => ({ ...prev, ...cms }));
+  const updateEducationCMS = useCallback(async (cms: Partial<PearlEducationCMS>) => {
+    setEducationCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('education', updated);
+      return updated;
+    });
     addToast('Pearl Education CMS updated.', 'success');
   }, [addToast]);
 
-  const updateBridalCMS = useCallback((cms: Partial<BridalCMS>) => {
-    setBridalCMS((prev) => ({ ...prev, ...cms }));
+  const updateBridalCMS = useCallback(async (cms: Partial<BridalCMS>) => {
+    setBridalCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('bridal', updated);
+      return updated;
+    });
     addToast('Bridal Content CMS updated.', 'success');
+  }, [addToast]);
+
+  const updateContactCMS = useCallback(async (cms: Partial<ContactCMS>) => {
+    setContactCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('contact', updated);
+      return updated;
+    });
+    addToast('Contact Us CMS updated.', 'success');
+  }, [addToast]);
+
+  const updateCorporateCMS = useCallback(async (cms: Partial<CorporateCMS>) => {
+    setCorporateCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('corporate', updated);
+      return updated;
+    });
+    addToast('Corporate Gifting CMS updated.', 'success');
+  }, [addToast]);
+
+  const updateFooterCMS = useCallback(async (cms: Partial<FooterCMS>) => {
+    setFooterCMS((prev) => {
+      const updated = { ...prev, ...cms };
+      updateCMSContent('footer', updated);
+      return updated;
+    });
+    addToast('Footer & Brand CMS updated.', 'success');
   }, [addToast]);
 
   // Settings
@@ -634,13 +860,19 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         aboutCMS,
         educationCMS,
         bridalCMS,
+        contactCMS,
+        corporateCMS,
+        footerCMS,
         settings,
         activityLogs,
         isLoading,
         addProduct,
         updateProduct,
         deleteProduct,
+        deleteAllProducts,
         duplicateProduct,
+        productCategoryFilter,
+        setProductCategoryFilter,
         addCategory,
         updateCategory,
         deleteCategory,
@@ -648,6 +880,11 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateCollection,
         deleteCollection,
         updateOrderStatus,
+        cancelOrder,
+        refundOrder,
+        refreshOrders,
+        refreshCustomers,
+        updateCustomerStatus,
         updateCorporateEnquiryStatus,
         deleteCorporateEnquiry,
         updateContactEnquiryStatus,
@@ -660,6 +897,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateAboutCMS,
         updateEducationCMS,
         updateBridalCMS,
+        updateContactCMS,
+        updateCorporateCMS,
+        updateFooterCMS,
         updateSettings,
         exportNewsletterCSV,
         refreshDbData,

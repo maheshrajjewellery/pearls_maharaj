@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { artOfGivingData } from '@/data/giftingData';
 
@@ -28,7 +28,7 @@ export default function GiftingArtOfGiving() {
             </div>
 
             {/* Subtle decorative gold frame accent */}
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 border-b border-r border-[#C8A96B]/40 pointer-events-none hidden sm:block" />
+            <div className="absolute -bottom-4 -right-4 w-32 h-32 border-b border-r border-[#C5A15A]/40 pointer-events-none hidden sm:block" />
           </div>
 
           {/* EDITORIAL TEXT SIDE */}
@@ -40,7 +40,7 @@ export default function GiftingArtOfGiving() {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <span className="w-6 h-px bg-[#C8A96B]" />
+              <span className="w-6 h-px bg-[#C5A15A]" />
               <span className="text-[11px] lg:text-[12px] tracking-[0.3em] font-medium uppercase text-[#B8A99A]">
                 {artOfGivingData.eyebrow}
               </span>
@@ -51,7 +51,7 @@ export default function GiftingArtOfGiving() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29231F] leading-[1.15] mb-8"
+              className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#30372F] leading-[1.15] mb-8"
             >
               {artOfGivingData.statement}
             </motion.h2>
@@ -61,7 +61,7 @@ export default function GiftingArtOfGiving() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-5 text-[#29231F]/80 text-base lg:text-lg font-light leading-relaxed"
+              className="space-y-5 text-[#30372F]/80 text-base lg:text-lg font-light leading-relaxed"
             >
               <p>{artOfGivingData.copyParagraph1}</p>
               <p>{artOfGivingData.copyParagraph2}</p>
@@ -81,7 +81,7 @@ export default function GiftingArtOfGiving() {
                 { label: 'Connection', detail: 'Forging bonds' },
               ].map((pillar) => (
                 <div key={pillar.label} className="flex flex-col">
-                  <span className="font-serif text-lg text-[#29231F] font-normal">
+                  <span className="font-serif text-lg text-[#30372F] font-normal">
                     {pillar.label}
                   </span>
                   <span className="text-[11px] text-[#B8A99A] tracking-wider font-light uppercase mt-1">

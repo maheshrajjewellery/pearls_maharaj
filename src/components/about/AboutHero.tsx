@@ -5,8 +5,14 @@ import { useShop } from '@/context/ShopContext';
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutHero() {
-  const { setCurrentPage, setCategory } = useShop();
+  const { setCurrentPage, setCategory, cmsData } = useShop();
   const prefersReduced = useReducedMotion();
+
+  const aboutCMS = cmsData?.about;
+  const heroHeading = aboutCMS?.heroHeading || 'BEAUTY, CRAFTED TO LAST.';
+  const heroImg = aboutCMS?.heroImage && aboutCMS.heroImage.trim() !== ''
+    ? aboutCMS.heroImage
+    : 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1400';
 
   const handleExplore = () => {
     setCurrentPage('shop');
@@ -48,35 +54,15 @@ export default function AboutHero() {
             </motion.div>
 
             {/* Main Heading - Revealed line-by-line */}
-            <h1 className="font-serif font-normal text-cocoa-300 text-[clamp(42px,6.8vw,78px)] leading-[0.98] sm:leading-[1.02] tracking-[0.01em] mb-5 sm:mb-6">
+            <h1 className="font-serif font-normal text-cocoa-300 text-[clamp(36px,5.5vw,72px)] leading-[0.98] sm:leading-[1.02] tracking-[0.01em] mb-5 sm:mb-6">
               <span className="block overflow-hidden">
                 <motion.span
-                  className="block"
+                  className="block uppercase"
                   initial={{ opacity: 0, y: prefersReduced ? 0 : 36 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.35, ease: luxuryEase }}
                 >
-                  BEAUTY,
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion.span
-                  className="block italic font-normal text-cocoa-200"
-                  initial={{ opacity: 0, y: prefersReduced ? 0 : 36 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, delay: 0.5, ease: luxuryEase }}
-                >
-                  CRAFTED
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion.span
-                  className="block"
-                  initial={{ opacity: 0, y: prefersReduced ? 0 : 36 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, delay: 0.65, ease: luxuryEase }}
-                >
-                  TO LAST.
+                  {heroHeading}
                 </motion.span>
               </span>
             </h1>
@@ -120,7 +106,7 @@ export default function AboutHero() {
               transition={{ duration: 1.1, delay: 0.3, ease: luxuryEase }}
             >
               <img
-                src="https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1400"
+                src={heroImg}
                 alt="Maharaj Jewellery luxury pearl campaign"
                 className="w-full h-full object-cover object-[68%_32%]"
                 fetchPriority="high"

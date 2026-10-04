@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { Sparkles, Palette, Droplet, Compass } from 'lucide-react';
@@ -36,7 +36,7 @@ const colorProfiles: PearlColorProfile[] = [
     naturalOrigins: 'Akoya, South Sea, Natural Persian Gulf Pearls',
     description:
       'Rich, warm, and inviting. Cream pearls harmonize exceptionally well with warm skin undertones and yellow or rose gold jewellery mountings.',
-    swatchGradient: 'radial-gradient(circle at 35% 35%, #FFFDF8 0%, #F5F0E8 45%, #C8A96B 100%)',
+    swatchGradient: 'radial-gradient(circle at 35% 35%, #FFFDF8 0%, #F5F0E8 45%, #C5A15A 100%)',
     macroImage: 'https://images.pexels.com/photos/10877350/pexels-photo-10877350.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
   {
@@ -91,7 +91,7 @@ const colorProfiles: PearlColorProfile[] = [
     naturalOrigins: 'Tahitian (French Polynesia)',
     description:
       'A mesmerizing natural wonder. Produced by the black-lipped oyster, Tahitian black pearls shimmer with complex peacock iridescence under natural light.',
-    swatchGradient: 'radial-gradient(circle at 35% 35%, #555555 0%, #2A2A2A 50%, #0D0D0D 100%)',
+    swatchGradient: 'radial-gradient(circle at 35% 35%, #555555 0%, #30372F 50%, #30372F 100%)',
     macroImage: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
 ];
@@ -107,7 +107,7 @@ export default function PearlColors() {
     <section
       id="pearl-colors"
       ref={ref}
-      className="relative w-full py-20 lg:py-28 bg-[#29231F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
+      className="relative w-full py-20 lg:py-28 bg-[#30372F] text-pearlIvory-100 overflow-hidden border-b border-champagne-300/15"
       aria-label="Pearl colors - a spectrum of beauty"
     >
       {/* Background ambient lighting */}
@@ -176,7 +176,7 @@ export default function PearlColors() {
                 <div
                   className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full transition-all duration-300 ${
                     isSelected
-                      ? 'ring-2 ring-champagne-300 ring-offset-2 ring-offset-[#29231F] shadow-[0_0_20px_rgba(200,169,107,0.4)]'
+                      ? 'ring-2 ring-champagne-300 ring-offset-2 ring-offset-[#30372F] shadow-[0_0_20px_rgba(200,169,107,0.4)]'
                       : 'border border-pearlIvory-300/20 group-hover:border-champagne-300/50'
                   }`}
                   style={{

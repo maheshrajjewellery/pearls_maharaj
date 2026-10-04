@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useAdmin } from "../../context/AdminContext";
 import {
   Search,
@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useShop } from "@/context/ShopContext";
+import { getPublicStoreUrl } from "@/lib/siteUrl";
 
 interface HeaderProps {
   onOpenMobileSidebar: () => void;
@@ -120,22 +121,22 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-[#F5F1EB] border-b border-[#29231F]/10 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xs">
+    <header className="sticky top-0 z-30 bg-[#F5F1EB] border-b border-[#30372F]/10 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xs">
       {/* LEFT: MOBILE TOGGLE + TITLE */}
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenMobileSidebar}
-          className="md:hidden p-2 text-[#29231F] hover:bg-[#E8DED0] rounded-none transition-colors"
+          className="md:hidden p-2 text-[#30372F] hover:bg-[#F5EBDD] rounded-none transition-colors"
           aria-label="Open navigation menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         <div>
-          <h1 className="font-serif text-lg md:text-xl text-[#29231F] font-semibold tracking-wide leading-tight">
+          <h1 className="font-serif text-lg md:text-xl text-[#30372F] font-semibold tracking-wide leading-tight">
             {currentInfo.title}
           </h1>
-          <p className="text-[11px] text-[#29231F]/60 hidden sm:block">
+          <p className="text-[11px] text-[#30372F]/60 hidden sm:block">
             {currentInfo.subtext}
           </p>
         </div>
@@ -146,40 +147,44 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
         {/* GLOBAL SEARCH TRIGGER */}
         <button
           onClick={() => setIsSearchModalOpen(true)}
-          className="flex items-center gap-2 bg-[#FFFDF8] border border-[#29231F]/15 px-3 py-1.5 text-xs text-[#29231F]/60 hover:text-[#29231F] hover:border-[#C8A96B] transition-all shadow-xs"
+          className="flex items-center gap-2 bg-[#FFFDF8] border border-[#30372F]/15 px-3 py-1.5 text-xs text-[#30372F]/60 hover:text-[#30372F] hover:border-[#C5A15A] transition-all shadow-xs"
         >
-          <Search className="w-3.5 h-3.5 text-[#C8A96B]" />
+          <Search className="w-3.5 h-3.5 text-[#C5A15A]" />
           <span className="hidden lg:inline">
             Search products, orders, customers...
           </span>
           <span className="lg:hidden">Search</span>
-          <kbd className="hidden lg:inline-block bg-[#E8DED0]/50 text-[9px] px-1.5 py-0.5 border border-[#29231F]/10 font-mono text-[#29231F]/80">
+          <kbd
+            className="hidden lg:inline-block bg-[#F5EBDD]/50 text-[9px] px-1.5 py-0.5 border border-[#30372F]/10 font-mono text-[#30372F]/80"
+          >
             ⌘K
           </kbd>
         </button>
 
         {/* VIEW PUBLIC WEBSITE */}
-        <button
-          onClick={() => setCurrentPage("home")}
-          className="hidden sm:flex items-center gap-1.5 text-xs text-[#29231F]/70 hover:text-[#C8A96B] px-2 py-1 transition-colors"
-          title="View Store Front"
+        <a
+          href={getPublicStoreUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden sm:flex items-center gap-1.5 text-xs text-[#30372F]/70 hover:text-[#C5A15A] px-2 py-1 transition-colors"
+          title="Open Live Store in New Tab"
         >
           <span className="text-[11px] uppercase tracking-wider font-medium">
             Store Front
           </span>
           <ExternalLink className="w-3.5 h-3.5" />
-        </button>
+        </a>
 
         {/* NOTIFICATIONS POPOVER */}
         <div className="relative">
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
-            className="p-2 text-[#29231F]/70 hover:text-[#29231F] relative hover:bg-[#E8DED0]/40 transition-colors"
+            className="p-2 text-[#30372F]/70 hover:text-[#30372F] relative hover:bg-[#F5EBDD]/40 transition-colors"
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4" />
             {totalNotifications > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 bg-[#C8A96B] text-[#29231F] text-[9px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute top-1 right-1 w-4 h-4 bg-[#C5A15A] text-[#30372F] text-[9px] font-bold rounded-full flex items-center justify-center">
                 {totalNotifications}
               </span>
             )}
@@ -187,43 +192,43 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
 
           {isNotifOpen && (
             <div
-              className="absolute right-0 mt-2 w-72 md:w-80 bg-[#FFFDF8] border border-[#29231F]/15 shadow-xl p-4 z-50 animate-fadeIn"
+              className="absolute right-0 mt-2 w-72 md:w-80 bg-[#FFFDF8] border border-[#30372F]/15 shadow-xl p-4 z-50 animate-fadeIn"
               onMouseLeave={() => setIsNotifOpen(false)}
             >
-              <div className="flex items-center justify-between pb-2 border-b border-[#29231F]/10 mb-3">
-                <span className="font-serif text-sm font-semibold text-[#29231F]">
+              <div className="flex items-center justify-between pb-2 border-b border-[#30372F]/10 mb-3">
+                <span className="font-serif text-sm font-semibold text-[#30372F]">
                   Notifications
                 </span>
-                <span className="text-[10px] bg-[#C8A96B]/20 text-[#29231F] font-bold px-2 py-0.5">
+                <span className="text-[10px] bg-[#C5A15A]/20 text-[#30372F] font-bold px-2 py-0.5">
                   {totalNotifications} New
                 </span>
               </div>
 
               <div className="space-y-2.5 max-h-60 overflow-y-auto text-xs">
                 {pendingOrdersCount > 0 && (
-                  <div className="p-2.5 bg-[#F5F1EB] border-l-2 border-[#C8A96B] flex flex-col gap-1">
-                    <span className="font-medium text-[#29231F]">
+                  <div className="p-2.5 bg-[#F5F1EB] border-l-2 border-[#C5A15A] flex flex-col gap-1">
+                    <span className="font-medium text-[#30372F]">
                       Pending Orders
                     </span>
-                    <span className="text-[#29231F]/70 text-[11px]">
+                    <span className="text-[#30372F]/70 text-[11px]">
                       {pendingOrdersCount} order(s) require review and
                       processing.
                     </span>
                   </div>
                 )}
                 {newCorporateCount > 0 && (
-                  <div className="p-2.5 bg-[#F5F1EB] border-l-2 border-[#29231F] flex flex-col gap-1">
-                    <span className="font-medium text-[#29231F]">
+                  <div className="p-2.5 bg-[#F5F1EB] border-l-2 border-[#30372F] flex flex-col gap-1">
+                    <span className="font-medium text-[#30372F]">
                       New Corporate Enquiry
                     </span>
-                    <span className="text-[#29231F]/70 text-[11px]">
+                    <span className="text-[#30372F]/70 text-[11px]">
                       {newCorporateCount} corporate gifting request(s) awaiting
                       reply.
                     </span>
                   </div>
                 )}
                 {totalNotifications === 0 && (
-                  <p className="text-center py-4 text-[#29231F]/50 text-xs italic">
+                  <p className="text-center py-4 text-[#30372F]/50 text-xs italic">
                     All notifications cleared. Everything up to date.
                   </p>
                 )}
@@ -236,47 +241,47 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
         <div className="relative">
           <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="flex items-center gap-2 p-1 pl-2 hover:bg-[#E8DED0]/40 transition-colors"
+            className="flex items-center gap-2 p-1 pl-2 hover:bg-[#F5EBDD]/40 transition-colors"
           >
-            <div className="w-7 h-7 bg-[#29231F] text-[#F7F3EC] flex items-center justify-center font-serif text-xs font-semibold rounded-full border border-[#C8A96B]">
+            <div className="w-7 h-7 bg-[#30372F] text-[#F7F3EC] flex items-center justify-center font-serif text-xs font-semibold rounded-full border border-[#C5A15A]">
               {adminUser?.name?.charAt(0) || "A"}
             </div>
             <div className="hidden md:flex flex-col text-left">
-              <span className="text-xs font-medium text-[#29231F] leading-none">
+              <span className="text-xs font-medium text-[#30372F] leading-none">
                 {adminUser?.name || "Admin"}
               </span>
-              <span className="text-[9px] text-[#C8A96B] uppercase tracking-wider font-semibold">
+              <span className="text-[9px] text-[#C5A15A] uppercase tracking-wider font-semibold">
                 {adminUser?.role || "Super Admin"}
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-[#29231F]/50 hidden sm:block" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#30372F]/50 hidden sm:block" />
           </button>
 
           {isProfileOpen && (
             <div
-              className="absolute right-0 mt-2 w-56 bg-[#FFFDF8] border border-[#29231F]/15 shadow-xl py-2 z-50"
+              className="absolute right-0 mt-2 w-56 bg-[#FFFDF8] border border-[#30372F]/15 shadow-xl py-2 z-50"
               onMouseLeave={() => setIsProfileOpen(false)}
             >
-              <div className="px-4 py-2 border-b border-[#29231F]/10">
-                <p className="text-xs font-semibold text-[#29231F]">
+              <div className="px-4 py-2 border-b border-[#30372F]/10">
+                <p className="text-xs font-semibold text-[#30372F]">
                   {adminUser?.name}
                 </p>
-                <p className="text-[10px] text-[#29231F]/60 truncate">
+                <p className="text-[10px] text-[#30372F]/60 truncate">
                   {adminUser?.email}
                 </p>
               </div>
 
               <div className="py-1">
-                <button
-                  onClick={() => {
-                    setIsProfileOpen(false);
-                    setCurrentPage("home");
-                  }}
-                  className="w-full text-left px-4 py-2 text-xs text-[#29231F]/80 hover:bg-[#F5F1EB] hover:text-[#29231F] flex items-center gap-2"
+                <a
+                  href={getPublicStoreUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsProfileOpen(false)}
+                  className="w-full text-left px-4 py-2 text-xs text-[#30372F]/80 hover:bg-[#F5F1EB] hover:text-[#30372F] flex items-center gap-2"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-[#C8A96B]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#C5A15A]" />
                   <span>Go to Customer Store</span>
-                </button>
+                </a>
                 <button
                   onClick={() => {
                     setIsProfileOpen(false);

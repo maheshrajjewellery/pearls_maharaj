@@ -27,12 +27,8 @@ export default function ShopPage() {
       {/* 5. NEWSLETTER */}
       <Newsletter />
 
-      {/* Interactive Drawers & Modals */}
+      {/* Interactive Drawers */}
       <FilterDrawer />
-      <QuickViewModal />
-      <PearlGuideModal />
-      <CartDrawer />
-      <SearchModal />
     </div>
   );
 }

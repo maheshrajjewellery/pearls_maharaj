@@ -1,21 +1,36 @@
 export type ShopCategory =
   | 'all'
   | 'new-arrivals'
+  | 'bestsellers'
   | 'necklaces'
+  | 'pearl-sets'
+  | 'bangles'
+  | 'bracelets'
   | 'earrings'
   | 'rings'
-  | 'bracelets'
-  | 'bangles'
-  | 'pearl-sets'
-  | 'bridal'
-  | 'gemstones';
+  | 'cufflinks'
+  | 'gemstones'
+  | 'saltwater'
+  | 'pearl-combos'
+  | 'bridal';
 
 export type PearlType =
   | 'Freshwater'
   | 'Akoya'
   | 'South Sea'
   | 'Tahitian'
-  | 'Baroque';
+  | 'Keshi'
+  | 'Baroque'
+  | 'All Types';
+
+export type StoneFilter =
+  | 'Diamond'
+  | 'Emeralds'
+  | 'Pearls'
+  | 'Ruby'
+  | 'Sapphire'
+  | 'Tanzanite'
+  | 'Multi-Color';
 
 export type PriceFilter =
   | 'under-10k'
@@ -37,6 +52,11 @@ export type CollectionFilter =
 
 export type ColorFilter =
   | 'White'
+  | 'Black'
+  | 'Grey'
+  | 'Golden'
+  | 'Pink / Peach'
+  | 'Multi-color'
   | 'Golden Champagne'
   | 'Peacock Black'
   | 'Rose Blush'
@@ -72,6 +92,7 @@ export interface ShopProduct {
   materialFilter: MaterialFilter;
   collection: CollectionFilter;
   color: ColorFilter;
+  stone?: StoneFilter;
   priceRange: PriceFilter;
   image: string;
   hoverImage: string;
@@ -92,11 +113,13 @@ export interface ShopProduct {
 export interface FilterState {
   category: ShopCategory;
   pearlTypes: PearlType[];
+  stones: StoneFilter[];
   priceRanges: PriceFilter[];
   materials: MaterialFilter[];
   collections: CollectionFilter[];
   colors: ColorFilter[];
   searchQuery: string;
+  preset?: 'bestsellers' | 'new-arrivals' | null;
 }
 
 export interface CartItem {
@@ -104,3 +127,13 @@ export interface CartItem {
   quantity: number;
   selectedSize?: string;
 }
+
+export interface UserProfile {
+  id: string;
+  googleId?: string;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+  provider?: string;
+}
+

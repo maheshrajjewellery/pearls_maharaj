@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+﻿import { useRef, useMemo } from 'react';
 import {
   motion,
   useScroll,
@@ -119,7 +119,7 @@ export default function PearlExperience() {
         {/* Stage */}
         <div className="relative w-full h-full flex flex-col items-center justify-center px-6">
           <motion.p
-            className="absolute top-[10%] left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-sans tracking-[0.3em] uppercase text-[#C8A96B] pointer-events-none"
+            className="absolute top-[10%] left-1/2 -translate-x-1/2 text-[10px] sm:text-[11px] font-sans tracking-[0.3em] uppercase text-[#C5A15A] pointer-events-none"
             style={{ opacity: reduced ? 0.6 : eyebrowOpacity }}
           >
             The Art of Craft
@@ -248,7 +248,7 @@ export default function PearlExperience() {
                       cx="0"
                       cy={-r - 1.5}
                       r="1.4"
-                      fill="#C8A96B"
+                      fill="#C5A15A"
                       style={{ opacity: reduced ? 1 : pinOpacity }}
                     />
                     <circle cx="0" cy="0" r={r} fill="url(#pearlGrad)" filter="url(#pearlShadow)" />
@@ -296,7 +296,7 @@ export default function PearlExperience() {
               y: reduced ? 0 : titleY,
             }}
           >
-            <p className="text-[10px] sm:text-[11px] font-sans tracking-[0.32em] uppercase text-[#C8A96B] mb-2.5">
+            <p className="text-[10px] sm:text-[11px] font-sans tracking-[0.32em] uppercase text-[#C5A15A] mb-2.5">
               The Maharaj Signature
             </p>
             <h2 className="font-serif text-[#F7F3EC] text-[30px] sm:text-[42px] lg:text-[52px] font-normal leading-[0.98] tracking-[-0.015em]">

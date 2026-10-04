@@ -42,11 +42,30 @@ export interface AdminOrder {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  razorpayPaymentId?: string;
+  razorpayOrderId?: string;
+  inventoryRestored?: boolean;
   timeline: {
-    status: OrderStatus;
+    status: OrderStatus | string;
     timestamp: string;
     note?: string;
   }[];
+}
+
+export interface AdminCustomerAddress {
+  id?: string;
+  label?: string;
+  fullName?: string;
+  phone?: string;
+  houseFlat?: string;
+  street?: string;
+  area?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  country?: string;
+  address: string;
+  isDefault?: boolean;
 }
 
 export interface AdminCustomer {
@@ -56,13 +75,16 @@ export interface AdminCustomer {
   phone: string;
   totalOrders: number;
   totalSpent: number;
+  avgOrderValue: number;
+  firstOrderDate: string | null;
+  lastOrderDate: string | null;
+  cancelledOrdersCount: number;
+  deliveredOrdersCount: number;
   joinedDate: string;
-  status: 'Active' | 'VIP' | 'Inactive';
-  addresses: {
-    label: string;
-    address: string;
-    isDefault: boolean;
-  }[];
+  status: 'Active' | 'Inactive';
+  provider?: 'google' | 'email';
+  avatarUrl?: string;
+  addresses: AdminCustomerAddress[];
   wishlistCount: number;
 }
 
@@ -70,26 +92,64 @@ export type CorporateEnquiryStatus =
   | 'New'
   | 'Contacted'
   | 'In Discussion'
-  | 'Quoted'
-  | 'Confirmed'
-  | 'Completed'
-  | 'Closed';
+  | 'Quotation Sent'
+  | 'Converted'
+  | 'Closed'
+  | 'Rejected';
+
+export interface CorporateEnquiryEvent {
+  id: string;
+  enquiryId: string;
+  eventType: string;
+  oldStatus?: string;
+  newStatus?: string;
+  message: string;
+  createdBy: string;
+  createdAt: string;
+}
+
+export interface QuotationDetails {
+  amount?: number;
+  quotationDate?: string;
+  validUntil?: string;
+  notes?: string;
+  quotationRef?: string;
+}
 
 export interface CorporateEnquiry {
   id: string;
   enquiryNumber: string;
-  name: string;
-  company: string;
+  companyName: string;
+  contactName: string;
+  designation?: string;
   email: string;
   phone: string;
-  numberOfGifts: number;
-  occasion: string;
-  preferredJewellery: string;
+  companyType?: string;
+  website?: string;
+  quantity: number;
+  quantityRange?: string;
   budget: string;
+  giftType?: string;
+  occasion?: string;
+  preferredDeliveryDate?: string;
+  customizationRequired?: string;
+  packagingRequired?: string;
+  brandingRequired?: string;
   message?: string;
-  date: string;
   status: CorporateEnquiryStatus;
+  assignedTo?: string | null;
+  assignedToName?: string | null;
+  quotation?: QuotationDetails;
   internalNotes?: string;
+  isArchived?: boolean;
+  convertedOrderId?: string;
+  createdAt: string;
+  updatedAt: string;
+  events: CorporateEnquiryEvent[];
+  // Legacy backward-compatibility aliases
+  name?: string;
+  company?: string;
+  numberOfGifts?: number;
 }
 
 export type ContactEnquiryStatus = 'New' | 'Read' | 'Replied' | 'Closed';
@@ -148,6 +208,8 @@ export interface AdminCategory {
   itemCount: number;
   enabled: boolean;
   displayOrder: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AdminCollection {
@@ -162,16 +224,41 @@ export interface AdminCollection {
   productIds: string[];
 }
 
+export interface HomepageHeroSlide {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  imageUrl: string;
+  imagePath?: string;
+  mobileImageUrl?: string;
+  mobileImagePath?: string;
+  ctaText: string;
+  ctaLink: string;
+  displayOrder: number;
+  isActive: boolean;
+  status: 'Published' | 'Draft';
+  imagePosition?: 'center center' | 'center left' | 'center right' | 'top center' | 'bottom center';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface HomepageCMS {
   hero: {
     heading: string;
     subtitle: string;
     description: string;
     bgImage: string;
+    bgImagePath?: string;
+    bgImageName?: string;
+    bgImageDimensions?: string;
+    bgImageSize?: string;
+    bgImageUpdatedAt?: string;
     ctaText: string;
     ctaLink: string;
     active: boolean;
   };
+  heroSlides?: HomepageHeroSlide[];
   discoverCategories: {
     title: string;
     subtitle: string;
@@ -202,6 +289,21 @@ export interface HomepageCMS {
     image: string;
     ctaText: string;
     ctaLink: string;
+    active: boolean;
+  };
+  educationSection?: {
+    title: string;
+    subtitle: string;
+    active: boolean;
+  };
+  giftingSection?: {
+    title: string;
+    subtitle: string;
+    image: string;
+    active: boolean;
+  };
+  editorialGallery?: {
+    title: string;
     active: boolean;
   };
   newsletter: {

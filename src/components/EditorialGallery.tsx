@@ -1,10 +1,18 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Instagram, ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import { editorialImages } from '@/data/mockData';
+import { useShop } from '@/context/ShopContext';
 
 export default function EditorialGallery() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  const { cmsData } = useShop();
+
+  const galleryCMS = cmsData?.homepage?.editorialGallery;
+
+  if (galleryCMS && galleryCMS.active === false) return null;
+
+  const title = galleryCMS?.title || 'The Maharaj World';
 
   // Editorial layout: varied sizes
   const colSpans = [
@@ -25,7 +33,7 @@ export default function EditorialGallery() {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[#B79A5A] text-[10.5px] sm:text-[11px] font-sans tracking-[0.1em] uppercase font-medium mb-3"
+            className="text-[#C5A15A] text-[10.5px] sm:text-[11px] font-sans tracking-[0.1em] uppercase font-medium mb-3"
           >
             EDITORIAL
           </motion.p>
@@ -33,9 +41,9 @@ export default function EditorialGallery() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-[#171412] text-clamp-section font-normal tracking-[0.02em]"
+            className="font-serif text-[#30372F] text-clamp-section font-normal tracking-[0.02em]"
           >
-            The Maharaj World
+            {title}
           </motion.h2>
         </div>
 

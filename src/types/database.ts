@@ -62,3 +62,24 @@ export interface ProductFilterParams {
   page?: number;
   limit?: number;
 }
+
+export interface DbCollection {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  cover_image: string | null;
+  banner_image: string | null;
+  status: 'Active' | 'Draft';
+  display_order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface DbCollectionProduct {
+  id: string;
+  collection_id: string;
+  product_id: string;
+  created_at?: string;
+}

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 
@@ -12,7 +12,7 @@ export default function ConsultationBanner({ onBookConsultation }: ConsultationB
   return (
     <section
       ref={ref}
-      className="relative w-full bg-[#29231F] text-[#FFFDF8] py-16 sm:py-20 lg:py-24 overflow-hidden border-b border-[#FFFDF8]/10"
+      className="relative w-full bg-[#30372F] text-[#FFFDF8] py-16 sm:py-20 lg:py-24 overflow-hidden border-b border-[#FFFDF8]/10"
       aria-label="Jewellery Consultation Banner"
     >
       {/* Background ambient lighting */}
@@ -36,8 +36,8 @@ export default function ConsultationBanner({ onBookConsultation }: ConsultationB
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-3 mb-4"
             >
-              <span className="h-px w-6 bg-[#C8A96B]" />
-              <span className="text-[#C8A96B] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
+              <span className="h-px w-6 bg-[#C5A15A]" />
+              <span className="text-[#C5A15A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
                 BESPOKE ATELIER
               </span>
             </motion.div>
@@ -71,7 +71,7 @@ export default function ConsultationBanner({ onBookConsultation }: ConsultationB
             >
               <button
                 onClick={onBookConsultation}
-                className="group inline-flex items-center gap-3.5 px-8 py-4 bg-[#C8A96B] hover:bg-[#FFFDF8] text-[#29231F] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+                className="group inline-flex items-center gap-3.5 px-8 py-4 bg-[#C5A15A] hover:bg-[#FFFDF8] text-[#30372F] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
               >
                 <span>BOOK A CONSULTATION</span>
                 <ArrowRight
@@ -102,10 +102,10 @@ export default function ConsultationBanner({ onBookConsultation }: ConsultationB
                 loading="lazy"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#29231F]/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/40 via-transparent to-transparent pointer-events-none" />
 
               {/* Accent corner text */}
-              <div className="absolute bottom-3 left-3 px-3 py-1 bg-[#29231F]/80 backdrop-blur-sm border border-[#FFFDF8]/10 text-[9px] font-sans tracking-[0.25em] uppercase text-[#FFFDF8]">
+              <div className="absolute bottom-3 left-3 px-3 py-1 bg-[#30372F]/80 backdrop-blur-sm border border-[#FFFDF8]/10 text-[9px] font-sans tracking-[0.25em] uppercase text-[#FFFDF8]">
                 Bespoke Pearl Curation
               </div>
             </motion.div>

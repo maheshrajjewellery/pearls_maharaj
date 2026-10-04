@@ -48,11 +48,6 @@ export default function AboutPage() {
       {/* 09 — FINAL CTA */}
       <AboutCTA />
 
-      {/* Global Modals & Drawers */}
-      <CartDrawer />
-      <SearchModal />
-      <QuickViewModal />
-      <PearlGuideModal />
     </div>
   );
 }

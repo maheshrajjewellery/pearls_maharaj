@@ -55,11 +55,6 @@ export default function ContactPage() {
       {/* 08 — FINAL CTA */}
       <ContactCTA onContactClick={() => scrollToForm()} />
 
-      {/* Global Modals & Drawers */}
-      <CartDrawer />
-      <SearchModal />
-      <QuickViewModal />
-      <PearlGuideModal />
     </div>
   );
 }

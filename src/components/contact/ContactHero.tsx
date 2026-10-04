@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
+﻿import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useShop } from '@/context/ShopContext';
 
 const editorialEase = [0.22, 1, 0.36, 1] as const;
 
@@ -9,10 +10,15 @@ interface ContactHeroProps {
 
 export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
   const prefersReduced = useReducedMotion();
+  const { cmsData } = useShop();
+
+  const contactCMS = cmsData?.contact;
+  const heroHeading = contactCMS?.heroHeading || 'Private Client Concierge & Consultations';
+  const heroSubheading = contactCMS?.heroSubheading || "Connect with our master jewelers, arrange private appointments, or request bespoke pearl commissions.";
 
   return (
     <section
-      className="relative w-full min-h-[48vh] lg:h-[52vh] max-h-[640px] bg-[#F7F3EC] flex items-center border-b border-[#29231F]/10 overflow-hidden"
+      className="relative w-full min-h-[48vh] lg:h-[52vh] max-h-[640px] bg-[#F7F3EC] flex items-center border-b border-[#30372F]/10 overflow-hidden"
       aria-label="Maharaj Jewellery Contact Hero"
     >
       {/* Subtle ambient luxury gradient */}
@@ -35,8 +41,8 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
               transition={{ duration: 0.8, delay: 0.15, ease: editorialEase }}
               className="flex items-center gap-3 mb-3.5 sm:mb-4"
             >
-              <span className="h-px w-6 bg-[#C8A96B]" />
-              <p className="text-[#C8A96B] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
+              <span className="h-px w-6 bg-[#C5A15A]" />
+              <p className="text-[#C5A15A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
                 MAHARAJ JEWELLERY
               </p>
             </motion.div>
@@ -46,11 +52,9 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
               initial={{ opacity: 0, y: prefersReduced ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.25, ease: editorialEase }}
-              className="font-serif font-normal text-[#29231F] text-[clamp(34px,5.2vw,62px)] leading-[1.05] tracking-[-0.015em] mb-4 sm:mb-5"
+              className="font-serif font-normal text-[#30372F] text-[clamp(30px,4.5vw,56px)] leading-[1.05] tracking-[-0.015em] mb-4 sm:mb-5 uppercase"
             >
-              <span className="block">LET'S CREATE</span>
-              <span className="block italic font-light text-[#29231F]/90">SOMETHING</span>
-              <span className="block">TIMELESS.</span>
+              {heroHeading}
             </motion.h1>
 
             {/* Supporting Text */}
@@ -58,9 +62,9 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
               initial={{ opacity: 0, y: prefersReduced ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.38, ease: editorialEase }}
-              className="text-[#29231F]/80 text-[14px] sm:text-[15px] lg:text-[16px] font-sans font-light leading-[1.65] max-w-[480px] mb-6 sm:mb-7"
+              className="text-[#30372F]/80 text-[14px] sm:text-[15px] lg:text-[16px] font-sans font-light leading-[1.65] max-w-[480px] mb-6 sm:mb-7"
             >
-              Whether you're searching for a signature pearl piece, planning your bridal jewellery or simply want to know more, we're here to help.
+              {heroSubheading}
             </motion.p>
 
             {/* CTA Button */}
@@ -71,7 +75,7 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
             >
               <button
                 onClick={onScrollToForm}
-                className="group inline-flex items-center gap-3.5 px-7 py-3.5 bg-[#29231F] hover:bg-[#C8A96B] text-[#FFFDF8] hover:text-[#29231F] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_16px_rgba(41,35,31,0.08)]"
+                className="group inline-flex items-center gap-3.5 px-7 py-3.5 bg-[#30372F] hover:bg-[#C5A15A] text-[#FFFDF8] hover:text-[#30372F] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_16px_rgba(41,35,31,0.08)]"
               >
                 <span>START A CONVERSATION</span>
                 <ArrowRight
@@ -99,11 +103,11 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
               />
 
               {/* Gentle inner frame & vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#29231F]/20 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute inset-0 border border-[#C8A96B]/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#30372F]/20 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 border border-[#C5A15A]/20 pointer-events-none" />
 
               {/* Discreet badge */}
-              <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-[#FFFDF8]/90 backdrop-blur-sm border border-[#29231F]/10 text-[9px] font-sans tracking-[0.22em] uppercase text-[#29231F]">
+              <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-[#FFFDF8]/90 backdrop-blur-sm border border-[#30372F]/10 text-[9px] font-sans tracking-[0.22em] uppercase text-[#30372F]">
                 Bespoke Atelier
               </div>
             </motion.div>

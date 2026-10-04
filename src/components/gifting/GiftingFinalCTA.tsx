@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import { finalCtaData } from '@/data/giftingData';
 import { ArrowRight } from 'lucide-react';
@@ -13,7 +13,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
   return (
     <section
       ref={ref}
-      className="relative w-full bg-[#29231F] text-[#FFFDF8] py-20 lg:py-24 px-6 sm:px-10 lg:px-16 overflow-hidden"
+      className="relative w-full bg-[#30372F] text-[#FFFDF8] py-20 lg:py-24 px-6 sm:px-10 lg:px-16 overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="absolute inset-0 bg-radial from-[#3D332E]/40 via-transparent to-transparent pointer-events-none" />
@@ -27,7 +27,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
               initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-medium text-[#C8A96B] mb-3"
+              className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-medium text-[#C5A15A] mb-3"
             >
               MAHARAJ CORPORATE CONCIERGE
             </motion.span>
@@ -40,7 +40,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
             >
               <span>{finalCtaData.headingLine1}</span>
               <br />
-              <span className="italic text-[#C8A96B] font-light">{finalCtaData.headingLine2}</span>
+              <span className="italic text-[#C5A15A] font-light">{finalCtaData.headingLine2}</span>
             </motion.h2>
 
             <motion.p
@@ -57,7 +57,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
               initial={{ opacity: 0, y: 15 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#C8A96B] text-[#29231F] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:bg-[#FFFDF8] hover:text-[#29231F] shadow-md"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#C5A15A] text-[#30372F] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:bg-[#FFFDF8] hover:text-[#30372F] shadow-md"
             >
               <span>{finalCtaData.ctaText}</span>
               <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -70,7 +70,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
               initial={{ opacity: 0, scale: 0.95 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden border border-[#C8A96B]/30 p-2 bg-[#29231F]"
+              className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden border border-[#C5A15A]/30 p-2 bg-[#30372F]"
             >
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <img
@@ -89,7 +89,7 @@ export default function GiftingFinalCTA({ onStartConversation }: GiftingFinalCTA
               </div>
 
               {/* Decorative subtle ring */}
-              <div className="absolute -inset-2 rounded-full border border-[#C8A96B]/20 pointer-events-none" />
+              <div className="absolute -inset-2 rounded-full border border-[#C5A15A]/20 pointer-events-none" />
             </motion.div>
           </div>
 

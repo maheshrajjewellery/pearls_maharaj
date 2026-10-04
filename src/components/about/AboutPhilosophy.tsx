@@ -1,11 +1,16 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
+import { useShop } from '@/context/ShopContext';
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPhilosophy() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
   const prefersReduced = useReducedMotion();
+  const { cmsData } = useShop();
+
+  const aboutCMS = cmsData?.about;
+  const philosophyText = aboutCMS?.philosophyText || 'Maharaj Jewellery brings together the natural beauty of pearls, refined design and careful craftsmanship to create pieces meant to be remembered.';
 
   const quoteLines = [
     '“Jewellery should not simply be worn.',
@@ -78,7 +83,7 @@ export default function AboutPhilosophy() {
               className="max-w-[620px]"
             >
               <p className="text-cocoa-200/80 text-[16px] sm:text-[17px] font-sans font-normal leading-[1.7] text-balance">
-                Maharaj Jewellery brings together the natural beauty of pearls, refined design and careful craftsmanship to create pieces meant to be remembered.
+                {philosophyText}
               </p>
             </motion.div>
 
