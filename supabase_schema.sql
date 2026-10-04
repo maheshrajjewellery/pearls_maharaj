@@ -518,6 +518,53 @@ DROP POLICY IF EXISTS "Allow admin all cms_content" ON cms_content;
 CREATE POLICY "Allow public read cms_content" ON cms_content FOR SELECT USING (true);
 CREATE POLICY "Allow admin all cms_content" ON cms_content FOR ALL USING (true) WITH CHECK (true);
 
+-- ====================================================================
+-- 18. CREATE TABLE: homepage_hero_banners (Multiple Homepage Banners)
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS homepage_hero_banners (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  title TEXT NOT NULL DEFAULT 'MAHARAJ JEWELLERY',
+  subtitle TEXT NOT NULL DEFAULT 'The Purest Pearl Elegance',
+  description TEXT,
+  image_url TEXT NOT NULL,
+  image_path TEXT,
+  mobile_image_url TEXT,
+  mobile_image_path TEXT,
+  cta_text TEXT DEFAULT 'EXPLORE THE COLLECTION',
+  cta_link TEXT DEFAULT '/shop',
+  display_order INTEGER DEFAULT 1,
+  is_active BOOLEAN DEFAULT true,
+  status TEXT DEFAULT 'Published' CHECK (status IN ('Published', 'Draft')),
+  image_position TEXT DEFAULT 'center center',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_homepage_hero_banners_display_order ON homepage_hero_banners(display_order);
+CREATE INDEX IF NOT EXISTS idx_homepage_hero_banners_status ON homepage_hero_banners(status);
+
+DROP TRIGGER IF EXISTS set_homepage_hero_banners_updated_at ON homepage_hero_banners;
+CREATE TRIGGER set_homepage_hero_banners_updated_at
+BEFORE UPDATE ON homepage_hero_banners
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+ALTER TABLE homepage_hero_banners ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read homepage_hero_banners" ON homepage_hero_banners;
+DROP POLICY IF EXISTS "Allow admin full access homepage_hero_banners" ON homepage_hero_banners;
+CREATE POLICY "Allow public read homepage_hero_banners" ON homepage_hero_banners FOR SELECT USING (true);
+CREATE POLICY "Allow admin full access homepage_hero_banners" ON homepage_hero_banners FOR ALL USING (true) WITH CHECK (true);
+
+-- SEED HOMEPAGE HERO BANNERS
+INSERT INTO homepage_hero_banners (id, title, subtitle, description, image_url, mobile_image_url, cta_text, cta_link, display_order, is_active, status, image_position)
+VALUES 
+  ('slide-01', 'MAHARAJ JEWELLERY', 'The Purest Pearl Elegance', 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'EXPLORE THE COLLECTION', '/shop', 1, true, 'Published', 'center center'),
+  ('slide-02', 'ROYAL HERITAGE', 'South Sea Pearl Strands', 'Hand-selected golden and white South Sea pearls set in 18K gold fittings.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'DISCOVER SOUTH SEA', '/shop?category=saltwater', 2, true, 'Published', 'center center'),
+  ('slide-03', 'THE BRIDAL EDIT', 'Sacred Bridal Heirloom Collection', 'Ornate pearl chokers, layered necklaces, and matching earrings crafted for unforgettable moments.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'EXPLORE BRIDAL', '/shop?category=bridal', 3, true, 'Published', 'center center')
+ON CONFLICT (id) DO UPDATE 
+SET title = EXCLUDED.title, subtitle = EXCLUDED.subtitle, description = EXCLUDED.description, image_url = EXCLUDED.image_url;
+
+
 
 
 

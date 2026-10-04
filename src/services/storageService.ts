@@ -247,3 +247,37 @@ export const uploadHeroBannerImage = async (file: File): Promise<CMSHeroUploadRe
     };
   }
 };
+
+export const deleteHeroBannerImage = async (imagePathOrUrl?: string): Promise<boolean> => {
+  if (!imagePathOrUrl || imagePathOrUrl.startsWith('blob:') || imagePathOrUrl.startsWith('data:') || imagePathOrUrl.startsWith('/images/')) {
+    return true;
+  }
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+
+  try {
+    let filePath = imagePathOrUrl;
+    if (imagePathOrUrl.includes('cms/')) {
+      const parts = imagePathOrUrl.split('cms/');
+      if (parts.length > 1) {
+        filePath = 'cms/' + parts[1];
+      }
+    } else if (imagePathOrUrl.includes('product-images/')) {
+      const parts = imagePathOrUrl.split('product-images/');
+      if (parts.length > 1) {
+        filePath = parts[1];
+      }
+    }
+
+    const { error: cmsErr } = await supabase.storage.from('cms').remove([filePath]);
+    if (cmsErr) {
+      await supabase.storage.from(BUCKET_NAME).remove([filePath]);
+    }
+    return true;
+  } catch (err) {
+    console.warn('[Storage] Warning deleting hero banner image:', err);
+    return false;
+  }
+};
+
