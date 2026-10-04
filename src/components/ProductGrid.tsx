@@ -1,24 +1,25 @@
-﻿import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from '@/hooks/useInView';
 import ProductCard from './ProductCard';
 import { useShop } from '@/context/ShopContext';
 
 export default function ProductGrid() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
-  const { products, cmsData } = useShop();
+  const { products, cmsData, isLoading } = useShop();
 
-  const gridCMS = cmsData?.homepage?.discoverCategories;
+  const featuredCMS = cmsData?.homepage?.featuredCollections;
 
-  if (gridCMS && gridCMS.active === false) return null;
+  if (featuredCMS && featuredCMS.active === false) return null;
 
-  const title = gridCMS?.title || 'New Arrivals & Signature Pieces';
-  const subtitle = gridCMS?.subtitle || 'Handcrafted creations celebrating the organic radiance of South Sea and Tahitian pearls.';
+  const title = featuredCMS?.title || 'New Arrivals & Signature Pieces';
+  const subtitle = featuredCMS?.subtitle || 'Handcrafted creations celebrating the organic radiance of South Sea and Tahitian pearls.';
 
   // Pick active products for the homepage (featured or new arrivals)
   const displayProducts = products.filter((p) => p.isFeatured || p.isNewArrival).slice(0, 8);
+  const finalProducts = displayProducts.length > 0 ? displayProducts : products.slice(0, 8);
 
   return (
-    <section ref={ref} className="bg-[#F7F3EB] py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-14 border-b border-[#30372F]/08">
+    <section ref={ref} className="bg-[#FFFDF8] py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-14 border-b border-[#30372F]/08">
       <div className="max-w-[1400px] mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
@@ -28,7 +29,7 @@ export default function ProductGrid() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="text-[#C5A15A] text-[10.5px] sm:text-[11px] font-sans tracking-[0.1em] uppercase font-medium mb-3"
           >
-            EXCLUSIVE CURATION
+            SIGNATURE SELECTION
           </motion.p>
 
           <motion.h2
@@ -51,13 +52,23 @@ export default function ProductGrid() {
         </div>
 
         {/* Product Grid: 2 Columns on Mobile/Tablet, 4 Columns on Desktop */}
-        {displayProducts.length === 0 ? (
-          <p className="text-center text-[#30372F]/50 italic py-8">
-            Loading database product curation...
+        {isLoading ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="flex flex-col space-y-3">
+                <div className="w-full aspect-[3/4] bg-[#30372F]/10 animate-pulse rounded-xs" />
+                <div className="h-4 w-3/4 bg-[#30372F]/10 animate-pulse rounded-xs" />
+                <div className="h-3 w-1/2 bg-[#30372F]/10 animate-pulse rounded-xs" />
+              </div>
+            ))}
+          </div>
+        ) : finalProducts.length === 0 ? (
+          <p className="text-center text-[#30372F]/60 font-serif italic py-8">
+            No featured products available at the moment.
           </p>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {displayProducts.map((product, i) => (
+            {finalProducts.map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} />
             ))}
           </div>
@@ -66,3 +77,4 @@ export default function ProductGrid() {
     </section>
   );
 }
+
