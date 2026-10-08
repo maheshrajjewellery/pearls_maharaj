@@ -1,17 +1,17 @@
-﻿import { useRef, useMemo } from 'react';
+﻿import { useRef, useMemo } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useSpring,
   useReducedMotion,
-} from 'framer-motion';
+} from "framer-motion";
 
 /**
  * Necklace path — graceful U curve. ViewBox 0 0 600 320.
  */
 const NECKLACE_PATH =
-  'M 40 60 C 40 240, 160 300, 300 300 C 440 300, 560 240, 560 60';
+  "M 40 60 C 40 240, 160 300, 300 300 C 440 300, 560 240, 560 60";
 
 const PEARL_POSITIONS = [
   { x: 60, y: 92 },
@@ -45,7 +45,7 @@ export default function PearlExperience() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ["start start", "end end"],
   });
 
   const progress = useSpring(scrollYProgress, {
@@ -66,10 +66,18 @@ export default function PearlExperience() {
   const chainDraw = useTransform(progress, [0.35, 0.6], [0, 1]);
   const chainOpacity = useTransform(progress, [0.3, 0.45], [0, 1]);
 
-  const sweepX = useTransform(progress, [0.82, 0.95], ['-20%', '120%']);
-  const sweepOpacity = useTransform(progress, [0.82, 0.86, 0.92, 0.95], [0, 0.9, 0.9, 0]);
+  const sweepX = useTransform(progress, [0.82, 0.95], ["-20%", "120%"]);
+  const sweepOpacity = useTransform(
+    progress,
+    [0.82, 0.86, 0.92, 0.95],
+    [0, 0.9, 0.9, 0],
+  );
 
-  const glowOpacity = useTransform(progress, [0, 0.5, 0.85, 1], [0.05, 0.25, 0.45, 0.35]);
+  const glowOpacity = useTransform(
+    progress,
+    [0, 0.5, 0.85, 1],
+    [0.05, 0.25, 0.45, 0.35],
+  );
 
   const titleOpacity = useTransform(progress, [0.9, 1], [0, 1]);
   const titleY = useTransform(progress, [0.9, 1], [14, 0]);
@@ -87,17 +95,24 @@ export default function PearlExperience() {
         const travelEnd = travelStart + 0.18;
         const attachStart = 0.55 + i * 0.024;
         const attachEnd = attachStart + 0.08;
-        return { appearStart, appearEnd, travelStart, travelEnd, attachStart, attachEnd };
+        return {
+          appearStart,
+          appearEnd,
+          travelStart,
+          travelEnd,
+          attachStart,
+          attachEnd,
+        };
       }),
-    []
+    [],
   );
 
   return (
     <section
       ref={containerRef}
-      aria-label="The Maharaj signature — made to last"
+      aria-label="The MAHESHRAJ signature — made to last"
       className="relative bg-[#12100E] select-none"
-      style={{ height: reduced ? '60vh' : '115vh' }}
+      style={{ height: reduced ? "60vh" : "115vh" }}
     >
       <div className="sticky top-0 h-screen min-h-[560px] max-h-[780px] w-full overflow-hidden flex items-center justify-center">
         {/* Ambient */}
@@ -105,14 +120,14 @@ export default function PearlExperience() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 55% 50% at 50% 55%, rgba(200,169,107,0.14) 0%, rgba(18,16,14,0) 70%), radial-gradient(ellipse at 50% 50%, rgba(28,23,20,0.9) 0%, #12100E 100%)',
+              "radial-gradient(ellipse 55% 50% at 50% 55%, rgba(200,169,107,0.14) 0%, rgba(18,16,14,0) 70%), radial-gradient(ellipse at 50% 50%, rgba(28,23,20,0.9) 0%, #12100E 100%)",
           }}
         />
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,0.6) 100%)',
+              "radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,0.6) 100%)",
           }}
         />
 
@@ -128,15 +143,15 @@ export default function PearlExperience() {
           {/* Necklace scene — compact */}
           <div
             className="relative w-full max-w-[640px]"
-            style={{ aspectRatio: '600 / 360' }}
+            style={{ aspectRatio: "600 / 360" }}
           >
             <motion.div
               aria-hidden
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse 60% 55% at 50% 55%, rgba(200,169,107,0.35) 0%, rgba(200,169,107,0) 65%)',
-                filter: 'blur(40px)',
+                  "radial-gradient(ellipse 60% 55% at 50% 55%, rgba(200,169,107,0.35) 0%, rgba(200,169,107,0) 65%)",
+                filter: "blur(40px)",
                 opacity: reduced ? 0.3 : glowOpacity,
               }}
             />
@@ -158,15 +173,33 @@ export default function PearlExperience() {
                   <stop offset="50%" stopColor="#E8D9B8" />
                   <stop offset="100%" stopColor="#8a7440" />
                 </linearGradient>
-                <filter id="chainGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <filter
+                  id="chainGlow"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
                   <feGaussianBlur stdDeviation="1.2" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
-                <filter id="pearlShadow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="#000" floodOpacity="0.55" />
+                <filter
+                  id="pearlShadow"
+                  x="-50%"
+                  y="-50%"
+                  width="200%"
+                  height="200%"
+                >
+                  <feDropShadow
+                    dx="0"
+                    dy="3"
+                    stdDeviation="3"
+                    floodColor="#000"
+                    floodOpacity="0.55"
+                  />
                 </filter>
               </defs>
 
@@ -190,42 +223,45 @@ export default function PearlExperience() {
                 const appearOpacity = useTransform(
                   progress,
                   [t.appearStart, t.appearEnd],
-                  [0, 1]
+                  [0, 1],
                 );
                 const appearBlur = useTransform(
                   progress,
                   [t.appearStart, t.appearEnd],
-                  [4, 0]
+                  [4, 0],
                 );
-                const appearFilter = useTransform(appearBlur, (v) => `blur(${v}px)`);
+                const appearFilter = useTransform(
+                  appearBlur,
+                  (v) => `blur(${v}px)`,
+                );
 
                 const x = useTransform(
                   progress,
                   [t.travelStart, t.travelEnd],
-                  [start.x, pos.x]
+                  [start.x, pos.x],
                 );
                 const y = useTransform(
                   progress,
                   [t.travelStart, t.travelEnd],
-                  [start.y, pos.y]
+                  [start.y, pos.y],
                 );
 
                 const settleScale = useTransform(
                   progress,
                   [t.attachStart, t.attachStart + 0.03, t.attachEnd],
-                  [1, 1.06, 1]
+                  [1, 1.06, 1],
                 );
 
                 const rotate = useTransform(
                   progress,
                   [t.travelStart, t.travelEnd],
-                  [0, (i % 2 === 0 ? 1 : -1) * 18]
+                  [0, (i % 2 === 0 ? 1 : -1) * 18],
                 );
 
                 const pinOpacity = useTransform(
                   progress,
                   [t.attachStart, t.attachStart + 0.02],
-                  [0, 1]
+                  [0, 1],
                 );
 
                 const r = 17 + (i % 3) * 1.5;
@@ -239,9 +275,9 @@ export default function PearlExperience() {
                       rotate: reduced ? 0 : rotate,
                       scale: reduced ? 1 : settleScale,
                       opacity: reduced ? 1 : appearOpacity,
-                      filter: reduced ? 'none' : appearFilter,
-                      transformOrigin: 'center',
-                      transformBox: 'fill-box',
+                      filter: reduced ? "none" : appearFilter,
+                      transformOrigin: "center",
+                      transformBox: "fill-box",
                     }}
                   >
                     <motion.circle
@@ -251,7 +287,13 @@ export default function PearlExperience() {
                       fill="#C5A15A"
                       style={{ opacity: reduced ? 1 : pinOpacity }}
                     />
-                    <circle cx="0" cy="0" r={r} fill="url(#pearlGrad)" filter="url(#pearlShadow)" />
+                    <circle
+                      cx="0"
+                      cy="0"
+                      r={r}
+                      fill="url(#pearlGrad)"
+                      filter="url(#pearlShadow)"
+                    />
                     <ellipse
                       cx={-r * 0.3}
                       cy={-r * 0.35}
@@ -280,9 +322,9 @@ export default function PearlExperience() {
                 style={{
                   opacity: reduced ? 0 : sweepOpacity,
                   x: reduced ? 0 : sweepX,
-                  mixBlendMode: 'screen',
-                  filter: 'blur(14px)',
-                  pointerEvents: 'none',
+                  mixBlendMode: "screen",
+                  filter: "blur(14px)",
+                  pointerEvents: "none",
                 }}
               />
             </svg>
@@ -297,10 +339,11 @@ export default function PearlExperience() {
             }}
           >
             <p className="text-[10px] sm:text-[11px] font-sans tracking-[0.32em] uppercase text-[#C5A15A] mb-2.5">
-              The Maharaj Signature
+              The MAHESHRAJ Signature
             </p>
             <h2 className="font-serif text-[#F7F3EC] text-[30px] sm:text-[42px] lg:text-[52px] font-normal leading-[0.98] tracking-[-0.015em]">
-              MADE <span className="italic font-light text-[#E8D9B8]">TO LAST.</span>
+              MADE{" "}
+              <span className="italic font-light text-[#E8D9B8]">TO LAST.</span>
             </h2>
             <p className="mt-3 text-[#F7F3EC]/65 text-[13px] sm:text-[14px] font-sans font-light leading-relaxed max-w-[380px] mx-auto">
               Crafted piece by piece.

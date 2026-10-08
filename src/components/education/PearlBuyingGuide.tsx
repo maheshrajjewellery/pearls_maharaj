@@ -1,8 +1,16 @@
-import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { Sparkles, Shapes, Palette, Ruler, Eye, Crown, ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import {
+  Sparkles,
+  Shapes,
+  Palette,
+  Ruler,
+  Eye,
+  Crown,
+  ArrowRight,
+} from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -18,64 +26,76 @@ interface BuyingStep {
 
 const buyingSteps: BuyingStep[] = [
   {
-    step: '01',
-    title: 'START WITH LUSTER',
-    subtitle: 'The Heart of the Pearl',
+    step: "01",
+    title: "START WITH LUSTER",
+    subtitle: "The Heart of the Pearl",
     icon: Sparkles,
     description:
-      'Luster is the most crucial attribute. Look for sharp, mirror-like reflections where light sources have defined boundaries rather than a fuzzy, chalky glow.',
-    expertTip: 'A smaller pearl with intense mirror luster is consistently more striking than a larger, dull gem.',
-    image: 'https://images.pexels.com/photos/10877350/pexels-photo-10877350.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Luster is the most crucial attribute. Look for sharp, mirror-like reflections where light sources have defined boundaries rather than a fuzzy, chalky glow.",
+    expertTip:
+      "A smaller pearl with intense mirror luster is consistently more striking than a larger, dull gem.",
+    image:
+      "https://images.pexels.com/photos/10877350/pexels-photo-10877350.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
-    step: '02',
-    title: 'CONSIDER SHAPE',
-    subtitle: 'Symmetry vs Organic Art',
+    step: "02",
+    title: "CONSIDER SHAPE",
+    subtitle: "Symmetry vs Organic Art",
     icon: Shapes,
     description:
-      'Decide between the classical symmetry of a spherical Akoya or South Sea strand and the poetic, sculptural individuality of baroque and teardrop formations.',
-    expertTip: 'For traditional formalwear, choose round; for modern avant-garde couture, embrace organic baroques.',
-    image: 'https://images.pexels.com/photos/908183/pexels-photo-908183.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Decide between the classical symmetry of a spherical Akoya or South Sea strand and the poetic, sculptural individuality of baroque and teardrop formations.",
+    expertTip:
+      "For traditional formalwear, choose round; for modern avant-garde couture, embrace organic baroques.",
+    image:
+      "https://images.pexels.com/photos/908183/pexels-photo-908183.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
-    step: '03',
-    title: 'CHOOSE YOUR COLOR',
-    subtitle: 'Harmonize with Skin Tone',
+    step: "03",
+    title: "CHOOSE YOUR COLOR",
+    subtitle: "Harmonize with Skin Tone",
     icon: Palette,
     description:
-      'Select a hue that flatters your personal complexion. Cool skin tones shine in icy silver-white and dark Tahitians, while warm undertones radiate with cream and golden South Sea pearls.',
-    expertTip: 'Natural rose overtones provide a youthful blush effect against fair and medium complexions.',
-    image: 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Select a hue that flatters your personal complexion. Cool skin tones shine in icy silver-white and dark Tahitians, while warm undertones radiate with cream and golden South Sea pearls.",
+    expertTip:
+      "Natural rose overtones provide a youthful blush effect against fair and medium complexions.",
+    image:
+      "https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
-    step: '04',
-    title: 'SELECT YOUR SIZE',
-    subtitle: 'Scale to the Occasion',
+    step: "04",
+    title: "SELECT YOUR SIZE",
+    subtitle: "Scale to the Occasion",
     icon: Ruler,
     description:
-      'Match the millimeter diameter to your wardrobe needs. 6–7mm offers understated daily refinement; 8–9mm makes a confident luxury statement; 10mm+ commands regal grand presence.',
-    expertTip: 'For a first investment strand, 7.0–7.5mm provides the most versatile proportion for day-to-evening transitions.',
-    image: 'https://images.pexels.com/photos/9429420/pexels-photo-9429420.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Match the millimeter diameter to your wardrobe needs. 6–7mm offers understated daily refinement; 8–9mm makes a confident luxury statement; 10mm+ commands regal grand presence.",
+    expertTip:
+      "For a first investment strand, 7.0–7.5mm provides the most versatile proportion for day-to-evening transitions.",
+    image:
+      "https://images.pexels.com/photos/9429420/pexels-photo-9429420.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
-    step: '05',
-    title: 'CHECK THE SURFACE',
-    subtitle: 'Authentic Organic Character',
+    step: "05",
+    title: "CHECK THE SURFACE",
+    subtitle: "Authentic Organic Character",
     icon: Eye,
     description:
-      'Examine the pearl up close. Minor organic blemishes are proof of natural genesis. Focus on whether the blemishes are concentrated near the drill holes where they remain hidden.',
-    expertTip: 'Flawlessness is rare; prioritize how clean the pearl looks when viewed at an arm’s length conversational distance.',
-    image: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Examine the pearl up close. Minor organic blemishes are proof of natural genesis. Focus on whether the blemishes are concentrated near the drill holes where they remain hidden.",
+    expertTip:
+      "Flawlessness is rare; prioritize how clean the pearl looks when viewed at an arm’s length conversational distance.",
+    image:
+      "https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
-    step: '06',
-    title: 'MATCH YOUR STYLE',
-    subtitle: 'Select Precious Mountings',
+    step: "06",
+    title: "MATCH YOUR STYLE",
+    subtitle: "Select Precious Mountings",
     icon: Crown,
     description:
-      'Pair your pearls with the appropriate precious metal. Hand-knotted silk cords protect strands, while 18k yellow, rose, and white gold settings complement specific overtone profiles.',
-    expertTip: 'Ensure strands are strung on individually knotted silk to prevent pearls rubbing against each other.',
-    image: 'https://images.pexels.com/photos/17555289/pexels-photo-17555289.jpeg?auto=compress&cs=tinysrgb&w=800',
+      "Pair your pearls with the appropriate precious metal. Hand-knotted silk cords protect strands, while 18k yellow, rose, and white gold settings complement specific overtone profiles.",
+    expertTip:
+      "Ensure strands are strung on individually knotted silk to prevent pearls rubbing against each other.",
+    image:
+      "https://images.pexels.com/photos/17555289/pexels-photo-17555289.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
 ];
 
@@ -92,7 +112,6 @@ export default function PearlBuyingGuide() {
       aria-label="How to choose a pearl - buying guide"
     >
       <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
-        
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20">
           <motion.div
@@ -114,7 +133,10 @@ export default function PearlBuyingGuide() {
             transition={{ duration: 0.8, delay: 0.1, ease: luxuryEase }}
             className="font-serif text-cocoa-300 text-[clamp(32px,4.5vw,54px)] font-normal leading-[1.05] tracking-[-0.01em]"
           >
-            CHOOSING YOUR <span className="italic font-serif font-light text-cocoa-200">PEARL.</span>
+            CHOOSING YOUR{" "}
+            <span className="italic font-serif font-light text-cocoa-200">
+              PEARL.
+            </span>
           </motion.h2>
 
           <motion.p
@@ -123,7 +145,8 @@ export default function PearlBuyingGuide() {
             transition={{ duration: 0.8, delay: 0.2, ease: luxuryEase }}
             className="mt-3 text-cocoa-100/80 text-[14px] sm:text-[15px] font-sans font-light max-w-lg mx-auto leading-relaxed"
           >
-            A six-step connoisseur guide curated by Maharaj master gemologists to assist you in selecting your ideal heirloom piece.
+            A six-step connoisseur guide curated by MAHESHRAJ master gemologists
+            to assist you in selecting your ideal heirloom piece.
           </motion.p>
         </div>
 
@@ -137,7 +160,11 @@ export default function PearlBuyingGuide() {
                 key={stepItem.step}
                 initial={{ opacity: 0, y: prefersReduced ? 0 : 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.1 + i * 0.08, ease: luxuryEase }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.1 + i * 0.08,
+                  ease: luxuryEase,
+                }}
                 className="group bg-pearlIvory-50 border border-[rgba(41,35,31,0.08)] hover:border-champagne-300/60 rounded-[2px] overflow-hidden shadow-[0_4px_20px_rgba(41,35,31,0.03)] hover:shadow-[0_12px_32px_rgba(41,35,31,0.08)] transition-all duration-500 flex flex-col justify-between"
               >
                 {/* Small Editorial Image Accent with Step Overlay */}
@@ -178,7 +205,7 @@ export default function PearlBuyingGuide() {
                   {/* Specialist Tip */}
                   <div className="p-3.5 bg-pearlIvory-100 border-l-2 border-champagne-300 rounded-r-[1px]">
                     <span className="text-[10px] font-sans font-medium tracking-widest uppercase text-cocoa-300 block mb-1">
-                      Maharaj Specialist Tip
+                      MAHESHRAJ Specialist Tip
                     </span>
                     <p className="text-xs font-light text-cocoa-200 leading-relaxed italic">
                       "{stepItem.expertTip}"
@@ -189,7 +216,6 @@ export default function PearlBuyingGuide() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

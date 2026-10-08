@@ -1,35 +1,45 @@
-﻿import { motion } from 'framer-motion';
-import { ArrowRight, Gift, Award, Sparkles } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
-import { useShop } from '@/context/ShopContext';
+﻿import { motion } from "framer-motion";
+import { ArrowRight, Gift, Award, Sparkles } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { useShop } from "@/context/ShopContext";
 
 export default function CorporateGiftingSection() {
   const { setCurrentPage, cmsData } = useShop();
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
 
   const giftCMS = cmsData?.homepage?.giftingSection || {
-    title: cmsData?.corporate?.heroHeading || 'The Art of Corporate Gifting',
-    subtitle: cmsData?.corporate?.heroSubheading || 'Honor key milestones, valued partners, and executive achievements with handcrafted South Sea pearl jewellery presented in custom engraved leather boxes.',
-    image: cmsData?.corporate?.heroImage || 'https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    title: cmsData?.corporate?.heroHeading || "The Art of Corporate Gifting",
+    subtitle:
+      cmsData?.corporate?.heroSubheading ||
+      "Honor key milestones, valued partners, and executive achievements with handcrafted South Sea pearl jewellery presented in custom engraved leather boxes.",
+    image:
+      cmsData?.corporate?.heroImage ||
+      "https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=1200",
     active: true,
   };
 
   if (giftCMS.active === false) return null;
 
-  const title = giftCMS.title || 'The Art of Corporate Gifting';
-  const subtitle = giftCMS.subtitle || 'Honor key milestones, valued partners, and executive achievements with handcrafted South Sea pearl jewellery presented in custom engraved leather boxes.';
-  const giftImg = giftCMS.image && giftCMS.image.trim() !== '' 
-    ? giftCMS.image 
-    : 'https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=1200';
+  const title = giftCMS.title || "The Art of Corporate Gifting";
+  const subtitle =
+    giftCMS.subtitle ||
+    "Honor key milestones, valued partners, and executive achievements with handcrafted South Sea pearl jewellery presented in custom engraved leather boxes.";
+  const giftImg =
+    giftCMS.image && giftCMS.image.trim() !== ""
+      ? giftCMS.image
+      : "https://images.pexels.com/photos/10681031/pexels-photo-10681031.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
   const handleExploreGifting = () => {
-    setCurrentPage('gifting');
-    window.history.pushState({}, '', '/gifting');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("gifting");
+    window.history.pushState({}, "", "/gifting");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <section ref={ref} className="bg-[#30372F] py-16 sm:py-20 lg:py-28 px-6 lg:px-14 text-white overflow-hidden">
+    <section
+      ref={ref}
+      className="bg-[#30372F] py-16 sm:py-20 lg:py-28 px-6 lg:px-14 text-white overflow-hidden"
+    >
       <div className="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         {/* Visual Packaging Image: Desktop Left / Mobile Top */}
         <div className="lg:col-span-6 relative w-full max-w-[540px] lg:max-w-none mx-auto">
@@ -41,7 +51,7 @@ export default function CorporateGiftingSection() {
           >
             <img
               src={giftImg}
-              alt="Maharaj Corporate Gifting Presentation Box"
+              alt="MAHESHRAJ Corporate Gifting Presentation Box"
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -56,7 +66,7 @@ export default function CorporateGiftingSection() {
                 </span>
               </div>
               <span className="hidden sm:inline-block text-[9.5px] font-sans tracking-[0.2em] uppercase text-[#C5A15A]">
-                MAHARAJ VAULT
+                MAHESHRAJ VAULT
               </span>
             </div>
           </motion.div>
@@ -82,17 +92,33 @@ export default function CorporateGiftingSection() {
             {/* Benefits Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 pt-4 border-t border-white/10">
               <div className="flex items-start gap-3">
-                <Award className="text-[#C5A15A] flex-shrink-0 mt-1" size={18} strokeWidth={1.5} />
+                <Award
+                  className="text-[#C5A15A] flex-shrink-0 mt-1"
+                  size={18}
+                  strokeWidth={1.5}
+                />
                 <div>
-                  <h4 className="font-serif text-base text-white font-normal mb-0.5">Custom Insignia</h4>
-                  <p className="text-white/70 text-xs font-sans font-normal">Monogramming & gold foil logo stamping</p>
+                  <h4 className="font-serif text-base text-white font-normal mb-0.5">
+                    Custom Insignia
+                  </h4>
+                  <p className="text-white/70 text-xs font-sans font-normal">
+                    Monogramming & gold foil logo stamping
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Sparkles className="text-[#C5A15A] flex-shrink-0 mt-1" size={18} strokeWidth={1.5} />
+                <Sparkles
+                  className="text-[#C5A15A] flex-shrink-0 mt-1"
+                  size={18}
+                  strokeWidth={1.5}
+                />
                 <div>
-                  <h4 className="font-serif text-base text-white font-normal mb-0.5">Dedicated Concierge</h4>
-                  <p className="text-white/70 text-xs font-sans font-normal">White-glove corporate assistance</p>
+                  <h4 className="font-serif text-base text-white font-normal mb-0.5">
+                    Dedicated Concierge
+                  </h4>
+                  <p className="text-white/70 text-xs font-sans font-normal">
+                    White-glove corporate assistance
+                  </p>
                 </div>
               </div>
             </div>
@@ -102,7 +128,10 @@ export default function CorporateGiftingSection() {
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#C5A15A] text-[#30372F] hover:bg-[#D8C49A] transition-colors duration-300 text-xs font-sans tracking-[0.1em] uppercase font-medium rounded-[2px] cursor-pointer min-touch-target w-full sm:w-auto"
             >
               <span>Explore Corporate Gifting</span>
-              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />
+              <ArrowRight
+                size={15}
+                className="group-hover:translate-x-1 transition-transform duration-300"
+              />
             </button>
           </motion.div>
         </div>

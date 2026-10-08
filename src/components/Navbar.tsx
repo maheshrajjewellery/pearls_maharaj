@@ -150,7 +150,7 @@ export default function Navbar() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (action === "dashboard") {
       setCurrentPage("dashboard");
-      window.history.pushState({}, "", "/dashboard");
+      window.history.pushState({}, "", "/customer/dashboard");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (action === "admin") {
       setCurrentPage("admin");
@@ -208,11 +208,11 @@ export default function Navbar() {
             <button
               onClick={() => handleNavClick("home")}
               className="flex items-center justify-center group focus:outline-none"
-              aria-label="Maharaj Jewellery Home"
+              aria-label="MAHESHRAJ Jewellery Home"
             >
               <img
                 src="image.png"
-                alt="Maharaj Jewellery"
+                alt="MAHESHRAJ Jewellery"
                 width={180}
                 height={80}
                 className="h-14 lg:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
@@ -369,7 +369,7 @@ export default function Navbar() {
             </nav>
 
             {/* RIGHT UTILITY ICONS */}
-            <div className="flex items-center gap-4 lg:gap-5">
+            <div className="flex items-center gap-2 sm:gap-4 lg:gap-5">
               {/* Mail Button */}
               <button
                 onClick={() => handleNavClick("contact")}
@@ -393,7 +393,7 @@ export default function Navbar() {
               {/* Account Button */}
               <button
                 onClick={() => handleNavClick(user ? "dashboard" : "login")}
-                className="hidden sm:flex items-center gap-2 p-1.5 text-[#F5EBDD] hover:text-[#C5A15A] transition-colors focus:outline-none"
+                className="flex items-center gap-2 p-1.5 text-[#F5EBDD] hover:text-[#C5A15A] transition-colors focus:outline-none"
                 aria-label="User Account"
                 title={user ? `Signed in as ${user.name}` : "User Account"}
               >
@@ -457,7 +457,7 @@ export default function Navbar() {
                 <span className="font-serif text-2xl font-normal text-[#F5EBDD]">
                   Pearls{" "}
                   <span className="italic font-light text-sm text-[#C5A15A]">
-                    by mangatrai
+                    by MAHESHRAJ
                   </span>
                 </span>
               </button>
@@ -481,11 +481,34 @@ export default function Navbar() {
                   {label}
                 </button>
               ))}
+
+              {/* Login / Account button in Mobile Menu Drawer */}
+              <button
+                onClick={() => handleNavClick(user ? "dashboard" : "login")}
+                className="flex items-center gap-2.5 mt-4 px-6 py-2.5 rounded-full border border-[#C5A15A]/50 text-[#C5A15A] hover:bg-[#C5A15A]/10 transition-colors font-sans text-sm tracking-wider uppercase font-medium"
+              >
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.name}
+                    className="w-5 h-5 rounded-full object-cover border border-[#C5A15A]"
+                  />
+                ) : user ? (
+                  <div className="w-5 h-5 rounded-full bg-[#C5A15A] text-[#30372F] text-[9px] font-bold flex items-center justify-center uppercase">
+                    {user.name.charAt(0)}
+                  </div>
+                ) : (
+                  <User size={18} strokeWidth={1.5} />
+                )}
+                <span>
+                  {user ? `My Account (${user.name})` : "Sign In / Login"}
+                </span>
+              </button>
             </div>
 
             <div className="px-6 py-6 border-t border-[rgba(197,161,90,0.25)] text-center flex-shrink-0">
               <p className="font-sans text-[11px] tracking-widest uppercase text-[#F5EBDD]/60 font-light">
-                PEARLS BY MANGATRAI • ESTD 1905
+                PEARLS BY MAHESHRAJ • ESTD 1905
               </p>
             </div>
           </motion.div>

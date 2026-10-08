@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   ShopCategory,
   PearlType,
@@ -12,32 +19,41 @@ import {
   FilterState,
   CartItem,
   UserProfile,
-} from '@/types/shop';
+} from "@/types/shop";
 
 export type { UserProfile };
 
-import { fetchProductsFromDb, fetchProductBySlugFromDb } from '@/services/productService';
-import { fetchCategoriesFromDb, dbToAdminCategory } from '@/services/categoryService';
-import { AdminCategory } from '@/types/admin';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import {
+  fetchProductsFromDb,
+  fetchProductBySlugFromDb,
+} from "@/services/productService";
+import {
+  fetchCategoriesFromDb,
+  dbToAdminCategory,
+} from "@/services/categoryService";
+import { AdminCategory } from "@/types/admin";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
-import { DashboardTab, ExtendedUserProfile } from '@/types/customer';
-import { AdminOrder } from '@/types/admin';
-import { Coupon, validateCouponCode } from '@/services/checkoutService';
-import { subscribeToOrdersRealtime, fetchOrdersFromDb } from '@/services/orderService';
+import { DashboardTab, ExtendedUserProfile } from "@/types/customer";
+import { AdminOrder } from "@/types/admin";
+import { Coupon, validateCouponCode } from "@/services/checkoutService";
+import {
+  subscribeToOrdersRealtime,
+  fetchOrdersFromDb,
+} from "@/services/orderService";
 import {
   fetchAllCMSData,
   AllCMSData,
   defaultContactCMS,
   defaultCorporateCMS,
   defaultFooterCMS,
-} from '@/services/cmsService';
+} from "@/services/cmsService";
 import {
   initialHomepageCMS,
   initialAboutCMS,
   initialPearlEducationCMS,
   initialBridalCMS,
-} from '@/admin/data/adminMockData';
+} from "@/admin/data/adminMockData";
 
 interface ShopContextType {
   user: ExtendedUserProfile | null;
@@ -78,7 +94,7 @@ interface ShopContextType {
     pearlType?: PearlType;
     stone?: StoneFilter;
     color?: ColorFilter;
-    preset?: 'bestsellers' | 'new-arrivals' | null;
+    preset?: "bestsellers" | "new-arrivals" | null;
   }) => void;
   setSearchQuery: (query: string) => void;
   setSortOption: (sort: SortOption) => void;
@@ -89,9 +105,17 @@ interface ShopContextType {
   isWishlisted: (productId: string) => boolean;
   wishlistCount: number;
   cart: CartItem[];
-  addToCart: (product: ShopProduct, quantity?: number, selectedSize?: string) => void;
+  addToCart: (
+    product: ShopProduct,
+    quantity?: number,
+    selectedSize?: string,
+  ) => void;
   removeFromCart: (productId: string, selectedSize?: string) => void;
-  updateCartQuantity: (productId: string, quantity: number, selectedSize?: string) => void;
+  updateCartQuantity: (
+    productId: string,
+    quantity: number,
+    selectedSize?: string,
+  ) => void;
   clearCart: () => void;
   cartCount: number;
   cartSubtotal: number;
@@ -99,10 +123,43 @@ interface ShopContextType {
   setActiveOrder: (order: AdminOrder | null) => void;
   appliedCoupon: Coupon | null;
   couponDiscount: number;
-  applyCouponCode: (code: string) => { isValid: boolean; errorMessage?: string };
+  applyCouponCode: (code: string) => {
+    isValid: boolean;
+    errorMessage?: string;
+  };
   removeCouponCode: () => void;
-  currentPage: 'home' | 'shop' | 'about' | 'contact' | 'collections' | 'bridal' | 'education' | 'gifting' | 'login' | 'admin' | 'dashboard' | 'callback' | 'checkout' | 'checkout-success';
-  setCurrentPage: (page: 'home' | 'shop' | 'about' | 'contact' | 'collections' | 'bridal' | 'education' | 'gifting' | 'login' | 'admin' | 'dashboard' | 'callback' | 'checkout' | 'checkout-success') => void;
+  currentPage:
+    | "home"
+    | "shop"
+    | "about"
+    | "contact"
+    | "collections"
+    | "bridal"
+    | "education"
+    | "gifting"
+    | "login"
+    | "admin"
+    | "dashboard"
+    | "callback"
+    | "checkout"
+    | "checkout-success";
+  setCurrentPage: (
+    page:
+      | "home"
+      | "shop"
+      | "about"
+      | "contact"
+      | "collections"
+      | "bridal"
+      | "education"
+      | "gifting"
+      | "login"
+      | "admin"
+      | "dashboard"
+      | "callback"
+      | "checkout"
+      | "checkout-success",
+  ) => void;
   activeDashboardTab: DashboardTab;
   setActiveDashboardTab: (tab: DashboardTab) => void;
   navigateToProduct: (product: ShopProduct) => void;
@@ -113,29 +170,31 @@ interface ShopContextType {
 }
 
 const initialFilterState: FilterState = {
-  category: 'all',
+  category: "all",
   pearlTypes: [],
   stones: [],
   priceRanges: [],
   materials: [],
   collections: [],
   colors: [],
-  searchQuery: '',
+  searchQuery: "",
   preset: null,
 };
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
 
-export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [dbProducts, setDbProducts] = useState<ShopProduct[]>([]);
   const [dbCategories, setDbCategories] = useState<AdminCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // User Profile State
   const [user, setUser] = useState<ExtendedUserProfile | null>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem('maharaj_user');
+        const saved = localStorage.getItem("MAHESHRAJ_user");
         if (saved) return JSON.parse(saved);
       } catch {}
     }
@@ -144,36 +203,47 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setUserProfile = useCallback((newUser: ExtendedUserProfile | null) => {
     setUser(newUser);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (newUser) {
-        localStorage.setItem('maharaj_user', JSON.stringify(newUser));
+        localStorage.setItem("MAHESHRAJ_user", JSON.stringify(newUser));
       } else {
-        localStorage.removeItem('maharaj_user');
+        localStorage.removeItem("MAHESHRAJ_user");
       }
     }
   }, []);
 
-  const updateUserProfile = useCallback((updates: Partial<ExtendedUserProfile>) => {
-    setUser((prev) => {
-      if (!prev) return null;
-      const updated = { ...prev, ...updates };
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('maharaj_user', JSON.stringify(updated));
-        try {
-          const registeredUsersStr = localStorage.getItem('maharaj_registered_users');
-          if (registeredUsersStr) {
-            let registeredUsers: ExtendedUserProfile[] = JSON.parse(registeredUsersStr);
-            const idx = registeredUsers.findIndex((u) => u.email.toLowerCase() === updated.email.toLowerCase());
-            if (idx >= 0) {
-              registeredUsers[idx] = { ...registeredUsers[idx], ...updated };
-              localStorage.setItem('maharaj_registered_users', JSON.stringify(registeredUsers));
+  const updateUserProfile = useCallback(
+    (updates: Partial<ExtendedUserProfile>) => {
+      setUser((prev) => {
+        if (!prev) return null;
+        const updated = { ...prev, ...updates };
+        if (typeof window !== "undefined") {
+          localStorage.setItem("MAHESHRAJ_user", JSON.stringify(updated));
+          try {
+            const registeredUsersStr = localStorage.getItem(
+              "MAHESHRAJ_registered_users",
+            );
+            if (registeredUsersStr) {
+              let registeredUsers: ExtendedUserProfile[] =
+                JSON.parse(registeredUsersStr);
+              const idx = registeredUsers.findIndex(
+                (u) => u.email.toLowerCase() === updated.email.toLowerCase(),
+              );
+              if (idx >= 0) {
+                registeredUsers[idx] = { ...registeredUsers[idx], ...updated };
+                localStorage.setItem(
+                  "MAHESHRAJ_registered_users",
+                  JSON.stringify(registeredUsers),
+                );
+              }
             }
-          }
-        } catch {}
-      }
-      return updated;
-    });
-  }, []);
+          } catch {}
+        }
+        return updated;
+      });
+    },
+    [],
+  );
 
   const logoutUser = useCallback(() => {
     setUserProfile(null);
@@ -183,38 +253,60 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [setUserProfile]);
 
   // Dashboard Tab state
-  const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTab>(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('/dashboard/orders')) return 'orders';
-      if (path.includes('/dashboard/wishlist')) return 'wishlist';
-      if (path.includes('/dashboard/profile')) return 'profile';
-      if (path.includes('/dashboard/addresses')) return 'addresses';
-      if (path.includes('/dashboard/payments')) return 'payments';
-      if (path.includes('/dashboard/settings')) return 'settings';
-    }
-    return 'overview';
-  });
+  const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTab>(
+    () => {
+      if (typeof window !== "undefined") {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes("/dashboard/orders")) return "orders";
+        if (path.includes("/dashboard/wishlist")) return "wishlist";
+        if (path.includes("/dashboard/profile")) return "profile";
+        if (path.includes("/dashboard/addresses")) return "addresses";
+        if (path.includes("/dashboard/payments")) return "payments";
+        if (path.includes("/dashboard/settings")) return "settings";
+      }
+      return "overview";
+    },
+  );
 
   // Page routing state
-  const [currentPage, setCurrentPage] = useState<'home' | 'shop' | 'about' | 'contact' | 'collections' | 'bridal' | 'education' | 'gifting' | 'login' | 'admin' | 'dashboard' | 'callback' | 'checkout' | 'checkout-success'>(() => {
-    if (typeof window !== 'undefined') {
+  const [currentPage, setCurrentPage] = useState<
+    | "home"
+    | "shop"
+    | "about"
+    | "contact"
+    | "collections"
+    | "bridal"
+    | "education"
+    | "gifting"
+    | "login"
+    | "admin"
+    | "dashboard"
+    | "callback"
+    | "checkout"
+    | "checkout-success"
+  >(() => {
+    if (typeof window !== "undefined") {
       const path = window.location.pathname.toLowerCase();
-      if (path.includes('admin')) return 'admin';
-      if (path.includes('callback')) return 'callback';
-      if (path.includes('dashboard')) return 'dashboard';
-      if (path.includes('checkout/success') || path.includes('checkout-success')) return 'checkout-success';
-      if (path.includes('checkout')) return 'checkout';
-      if (path.includes('login')) return 'login';
-      if (path.includes('gifting') || path.includes('corporate')) return 'gifting';
-      if (path.includes('education')) return 'education';
-      if (path.includes('contact')) return 'contact';
-      if (path.includes('about')) return 'about';
-      if (path.includes('shop')) return 'shop';
-      if (path.includes('bridal')) return 'bridal';
-      if (path.includes('collection')) return 'collections';
+      if (path.includes("admin")) return "admin";
+      if (path.includes("callback")) return "callback";
+      if (path.includes("dashboard")) return "dashboard";
+      if (
+        path.includes("checkout/success") ||
+        path.includes("checkout-success")
+      )
+        return "checkout-success";
+      if (path.includes("checkout")) return "checkout";
+      if (path.includes("login")) return "login";
+      if (path.includes("gifting") || path.includes("corporate"))
+        return "gifting";
+      if (path.includes("education")) return "education";
+      if (path.includes("contact")) return "contact";
+      if (path.includes("about")) return "about";
+      if (path.includes("shop")) return "shop";
+      if (path.includes("bridal")) return "bridal";
+      if (path.includes("collection")) return "collections";
     }
-    return 'login';
+    return "login";
   });
 
   // Global Supabase Auth Listener for Google OAuth session processing across all pages
@@ -225,40 +317,83 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const handleSessionUser = (sbUser: any, provider?: string) => {
       const meta = sbUser.user_metadata || {};
+      const userEmail = (sbUser.email || meta.email || "").toLowerCase().trim();
+      const isEmailAdmin = userEmail === "maheshtadakalle@gmail.com";
+
       let profile: ExtendedUserProfile = {
         id: sbUser.id,
         googleId: meta.sub || sbUser.id,
-        name: meta.full_name || meta.name || sbUser.email?.split('@')[0] || 'Customer',
-        email: sbUser.email || '',
-        avatarUrl: meta.avatar_url || meta.picture || '',
-        provider: provider || sbUser.app_metadata?.provider || 'google',
+        name:
+          meta.full_name ||
+          meta.name ||
+          sbUser.email?.split("@")[0] ||
+          "Customer",
+        email: sbUser.email || "",
+        avatarUrl: meta.avatar_url || meta.picture || "",
+        provider: provider || sbUser.app_metadata?.provider || "google",
       };
 
+      if (isEmailAdmin) {
+        // Handle admin session: Activate admin session and open Executive Admin Dashboard
+        if (typeof window !== "undefined") {
+          localStorage.setItem("MAHESHRAJ_admin_session", "active");
+          localStorage.setItem("MAHESHRAJ_admin_email", userEmail);
+          const token =
+            localStorage.getItem("MAHESHRAJ_admin_token") ||
+            `admin_oauth_${Date.now()}`;
+          localStorage.setItem("MAHESHRAJ_admin_token", token);
+
+          const path = window.location.pathname.toLowerCase();
+          if (
+            path.includes("login") ||
+            path.includes("/admin/dashboard") ||
+            window.location.search.includes("code")
+          ) {
+            setCurrentPage("admin");
+            window.history.replaceState({}, "", "/admin/dashboard");
+          }
+        }
+        return;
+      }
+
       try {
-        const registeredUsersStr = localStorage.getItem('maharaj_registered_users');
-        let registeredUsers: ExtendedUserProfile[] = registeredUsersStr ? JSON.parse(registeredUsersStr) : [];
-        const existingIdx = registeredUsers.findIndex((u) => u.email.toLowerCase() === profile.email.toLowerCase());
+        const registeredUsersStr = localStorage.getItem(
+          "MAHESHRAJ_registered_users",
+        );
+        let registeredUsers: ExtendedUserProfile[] = registeredUsersStr
+          ? JSON.parse(registeredUsersStr)
+          : [];
+        const existingIdx = registeredUsers.findIndex(
+          (u) => u.email.toLowerCase() === profile.email.toLowerCase(),
+        );
         if (existingIdx >= 0) {
           profile = { ...registeredUsers[existingIdx], ...profile };
           registeredUsers[existingIdx] = profile;
         } else {
           registeredUsers.push(profile);
         }
-        localStorage.setItem('maharaj_registered_users', JSON.stringify(registeredUsers));
+        localStorage.setItem(
+          "MAHESHRAJ_registered_users",
+          JSON.stringify(registeredUsers),
+        );
       } catch {}
 
       setUserProfile(profile);
 
-      // Auto-redirect customer to /dashboard on OAuth callback or login
-      if (typeof window !== 'undefined' && !profile.email.toLowerCase().includes('admin')) {
+      // Auto-redirect customer to /customer/dashboard on OAuth callback or login
+      if (typeof window !== "undefined") {
         const path = window.location.pathname.toLowerCase();
         const hasAuthParams =
-          window.location.hash.includes('access_token') ||
-          window.location.search.includes('code');
+          window.location.hash.includes("access_token") ||
+          window.location.search.includes("code");
 
-        if (path.includes('login') || path === '/' || hasAuthParams || path.includes('dashboard')) {
-          setCurrentPage('dashboard');
-          window.history.replaceState({}, '', '/dashboard');
+        if (
+          path.includes("login") ||
+          hasAuthParams ||
+          path.includes("/customer/dashboard")
+        ) {
+          setCurrentPage("dashboard");
+          window.history.replaceState({}, "", "/customer/dashboard");
         }
       }
     };
@@ -271,14 +406,22 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
           handleSessionUser(data.session.user);
         }
       })
-      .catch((err) => console.error('Error getting initial session:', err));
+      .catch((err) => console.error("Error getting initial session:", err));
 
     // Listen to Auth State Changes
-    const { data: authSubscription } = supabase.auth.onAuthStateChange((event, session) => {
-      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && session?.user && isMounted) {
-        handleSessionUser(session.user, session.user.app_metadata?.provider);
-      }
-    });
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (
+          (event === "SIGNED_IN" ||
+            event === "TOKEN_REFRESHED" ||
+            event === "INITIAL_SESSION") &&
+          session?.user &&
+          isMounted
+        ) {
+          handleSessionUser(session.user, session.user.app_metadata?.provider);
+        }
+      },
+    );
 
     return () => {
       isMounted = false;
@@ -302,7 +445,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const cms = await fetchAllCMSData();
       setCmsData(cms);
     } catch (err) {
-      console.error('Error fetching CMS data in ShopContext:', err);
+      console.error("Error fetching CMS data in ShopContext:", err);
     }
   }, []);
 
@@ -326,7 +469,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setDbProducts(prods);
       if (cms) setCmsData(cms);
     } catch (err) {
-      console.error('Error fetching public products & CMS from database:', err);
+      console.error("Error fetching public products & CMS from database:", err);
     } finally {
       setIsLoading(false);
     }
@@ -338,16 +481,18 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Filters & Sorting state
   const [filterState, setFilterState] = useState<FilterState>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const catParam = params.get('category') as ShopCategory | null;
-      const pearlParam = params.get('pearlType') as PearlType | null;
-      const collectionParam = params.get('collection') as CollectionFilter | null;
-      const searchParam = params.get('search') || '';
+      const catParam = params.get("category") as ShopCategory | null;
+      const pearlParam = params.get("pearlType") as PearlType | null;
+      const collectionParam = params.get(
+        "collection",
+      ) as CollectionFilter | null;
+      const searchParam = params.get("search") || "";
 
       return {
         ...initialFilterState,
-        category: catParam || 'all',
+        category: catParam || "all",
         pearlTypes: pearlParam ? [pearlParam] : [],
         collections: collectionParam ? [collectionParam] : [],
         searchQuery: searchParam,
@@ -356,11 +501,13 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return initialFilterState;
   });
 
-  const [sortOption, setSortOption] = useState<SortOption>('featured');
+  const [sortOption, setSortOption] = useState<SortOption>("featured");
 
   // Modals & Drawers state
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
-  const [quickViewProduct, setQuickViewProduct] = useState<ShopProduct | null>(null);
+  const [quickViewProduct, setQuickViewProduct] = useState<ShopProduct | null>(
+    null,
+  );
   const [isQuickViewLoading, setIsQuickViewLoading] = useState(false);
   const [isPearlGuideOpen, setIsPearlGuideOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -368,9 +515,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Wishlist state
   const [wishlist, setWishlist] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem('maharaj_wishlist');
+        const saved = localStorage.getItem("MAHESHRAJ_wishlist");
         return saved ? JSON.parse(saved) : [];
       } catch {
         return [];
@@ -381,9 +528,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Cart state
   const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem('maharaj_cart');
+        const saved = localStorage.getItem("MAHESHRAJ_cart");
         return saved ? JSON.parse(saved) : [];
       } catch {
         return [];
@@ -395,58 +542,64 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sync wishlist to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('maharaj_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem("MAHESHRAJ_wishlist", JSON.stringify(wishlist));
     } catch {}
   }, [wishlist]);
 
   // Sync cart to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('maharaj_cart', JSON.stringify(cart));
+      localStorage.setItem("MAHESHRAJ_cart", JSON.stringify(cart));
     } catch {}
   }, [cart]);
 
   // Sync URL query when filters or category changes
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const path = window.location.pathname.toLowerCase();
     // Do NOT alter URL query string if on auth callback route or when authorization code exists
-    if (path.includes('callback') || window.location.search.includes('code=') || window.location.search.includes('error=')) {
+    if (
+      path.includes("callback") ||
+      window.location.search.includes("code=") ||
+      window.location.search.includes("error=")
+    ) {
       return;
     }
 
     const params = new URLSearchParams();
-    if (filterState.category !== 'all') {
-      params.set('category', filterState.category);
+    if (filterState.category !== "all") {
+      params.set("category", filterState.category);
     }
     if (filterState.pearlTypes.length > 0) {
-      params.set('pearlType', filterState.pearlTypes.join(','));
+      params.set("pearlType", filterState.pearlTypes.join(","));
     }
     if (filterState.collections.length > 0) {
-      params.set('collection', filterState.collections.join(','));
+      params.set("collection", filterState.collections.join(","));
     }
     if (filterState.searchQuery) {
-      params.set('search', filterState.searchQuery);
+      params.set("search", filterState.searchQuery);
     }
-    if (sortOption !== 'featured') {
-      params.set('sort', sortOption);
+    if (sortOption !== "featured") {
+      params.set("sort", sortOption);
     }
 
     const newQuery = params.toString();
-    const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ''}`;
-    window.history.replaceState({}, '', newUrl);
+    const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ""}`;
+    window.history.replaceState({}, "", newUrl);
   }, [filterState, sortOption]);
 
   // Wishlist actions
   const toggleWishlist = useCallback((productId: string) => {
     setWishlist((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId],
     );
   }, []);
 
   const isWishlisted = useCallback(
     (productId: string) => wishlist.includes(productId),
-    [wishlist]
+    [wishlist],
   );
 
   // Cart actions
@@ -454,7 +607,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     (product: ShopProduct, quantity: number = 1, selectedSize?: string) => {
       setCart((prev) => {
         const existingIndex = prev.findIndex(
-          (item) => item.product.id === product.id && item.selectedSize === selectedSize
+          (item) =>
+            item.product.id === product.id &&
+            item.selectedSize === selectedSize,
         );
         if (existingIndex > -1) {
           const updated = [...prev];
@@ -468,16 +623,23 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       setIsCartOpen(true);
     },
-    []
+    [],
   );
 
-  const removeFromCart = useCallback((productId: string, selectedSize?: string) => {
-    setCart((prev) =>
-      prev.filter(
-        (item) => !(item.product.id === productId && item.selectedSize === selectedSize)
-      )
-    );
-  }, []);
+  const removeFromCart = useCallback(
+    (productId: string, selectedSize?: string) => {
+      setCart((prev) =>
+        prev.filter(
+          (item) =>
+            !(
+              item.product.id === productId &&
+              item.selectedSize === selectedSize
+            ),
+        ),
+      );
+    },
+    [],
+  );
 
   const updateCartQuantity = useCallback(
     (productId: string, quantity: number, selectedSize?: string) => {
@@ -487,39 +649,46 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       setCart((prev) =>
         prev.map((item) => {
-          if (item.product.id === productId && item.selectedSize === selectedSize) {
+          if (
+            item.product.id === productId &&
+            item.selectedSize === selectedSize
+          ) {
             return { ...item, quantity };
           }
           return item;
-        })
+        }),
       );
     },
-    [removeFromCart]
+    [removeFromCart],
   );
 
   const clearCart = useCallback(() => {
     setCart([]);
     setAppliedCoupon(null);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('maharaj_cart');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("MAHESHRAJ_cart");
     }
   }, []);
 
   const cartCount = useMemo(
     () => cart.reduce((total, item) => total + item.quantity, 0),
-    [cart]
+    [cart],
   );
 
   const cartSubtotal = useMemo(
-    () => cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
-    [cart]
+    () =>
+      cart.reduce(
+        (total, item) => total + item.product.price * item.quantity,
+        0,
+      ),
+    [cart],
   );
 
   // Active Checkout Order State
   const [activeOrder, setActiveOrder] = useState<AdminOrder | null>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem('maharaj_latest_order');
+        const saved = localStorage.getItem("MAHESHRAJ_latest_order");
         return saved ? JSON.parse(saved) : null;
       } catch {}
     }
@@ -529,11 +698,14 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (activeOrder) {
-        localStorage.setItem('maharaj_latest_order', JSON.stringify(activeOrder));
+        localStorage.setItem(
+          "MAHESHRAJ_latest_order",
+          JSON.stringify(activeOrder),
+        );
       } else {
-        localStorage.removeItem('maharaj_latest_order');
+        localStorage.removeItem("MAHESHRAJ_latest_order");
       }
     }
   }, [activeOrder]);
@@ -549,14 +721,16 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const res = await fetchOrdersFromDb({ pageSize: 1000 });
         const updated = res.orders.find(
-          (o) => o.id === targetId || o.orderNumber === targetNum
+          (o) => o.id === targetId || o.orderNumber === targetNum,
         );
         if (updated) {
-          console.log(`[ORDER TRACKING] Active order realtime update: ${updated.orderStatus}`);
+          console.log(
+            `[ORDER TRACKING] Active order realtime update: ${updated.orderStatus}`,
+          );
           setActiveOrder(updated);
         }
       } catch (err) {
-        console.warn('Realtime active order sync error:', err);
+        console.warn("Realtime active order sync error:", err);
       }
     });
 
@@ -579,10 +753,13 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { isValid: true };
       } else {
         setAppliedCoupon(null);
-        return { isValid: false, errorMessage: res.errorMessage || 'Invalid coupon code.' };
+        return {
+          isValid: false,
+          errorMessage: res.errorMessage || "Invalid coupon code.",
+        };
       }
     },
-    [cartSubtotal]
+    [cartSubtotal],
   );
 
   const removeCouponCode = useCallback(() => {
@@ -595,7 +772,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const togglePearlType = useCallback((pearlType: PearlType) => {
-    if (pearlType === 'All Types') {
+    if (pearlType === "All Types") {
       setFilterState((prev) => ({ ...prev, pearlTypes: [] }));
       return;
     }
@@ -652,22 +829,28 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }));
   }, []);
 
-  const applyMegaFilter = useCallback((params: {
-    category?: ShopCategory;
-    pearlType?: PearlType;
-    stone?: StoneFilter;
-    color?: ColorFilter;
-    preset?: 'bestsellers' | 'new-arrivals' | null;
-  }) => {
-    setFilterState({
-      ...initialFilterState,
-      category: params.category || 'all',
-      pearlTypes: params.pearlType && params.pearlType !== 'All Types' ? [params.pearlType] : [],
-      stones: params.stone ? [params.stone] : [],
-      colors: params.color ? [params.color] : [],
-      preset: params.preset || null,
-    });
-  }, []);
+  const applyMegaFilter = useCallback(
+    (params: {
+      category?: ShopCategory;
+      pearlType?: PearlType;
+      stone?: StoneFilter;
+      color?: ColorFilter;
+      preset?: "bestsellers" | "new-arrivals" | null;
+    }) => {
+      setFilterState({
+        ...initialFilterState,
+        category: params.category || "all",
+        pearlTypes:
+          params.pearlType && params.pearlType !== "All Types"
+            ? [params.pearlType]
+            : [],
+        stones: params.stone ? [params.stone] : [],
+        colors: params.color ? [params.color] : [],
+        preset: params.preset || null,
+      });
+    },
+    [],
+  );
 
   const setSearchQuery = useCallback((searchQuery: string) => {
     setFilterState((prev) => ({ ...prev, searchQuery }));
@@ -676,50 +859,54 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const clearFilters = useCallback(() => {
     setFilterState({
       ...initialFilterState,
-      category: 'all',
-      searchQuery: '',
+      category: "all",
+      searchQuery: "",
     });
   }, []);
 
   const clearSingleFilter = useCallback((filterKey: string, value?: string) => {
     setFilterState((prev) => {
       switch (filterKey) {
-        case 'category':
-          return { ...prev, category: 'all' };
-        case 'pearlType':
+        case "category":
+          return { ...prev, category: "all" };
+        case "pearlType":
           return {
             ...prev,
             pearlTypes: value ? prev.pearlTypes.filter((v) => v !== value) : [],
           };
-        case 'stone':
+        case "stone":
           return {
             ...prev,
             stones: value ? prev.stones.filter((v) => v !== value) : [],
           };
-        case 'priceRange':
+        case "priceRange":
           return {
             ...prev,
-            priceRanges: value ? prev.priceRanges.filter((v) => v !== value) : [],
+            priceRanges: value
+              ? prev.priceRanges.filter((v) => v !== value)
+              : [],
           };
-        case 'material':
+        case "material":
           return {
             ...prev,
             materials: value ? prev.materials.filter((v) => v !== value) : [],
           };
-        case 'collection':
+        case "collection":
           return {
             ...prev,
-            collections: value ? prev.collections.filter((v) => v !== value) : [],
+            collections: value
+              ? prev.collections.filter((v) => v !== value)
+              : [],
           };
-        case 'color':
+        case "color":
           return {
             ...prev,
             colors: value ? prev.colors.filter((v) => v !== value) : [],
           };
-        case 'preset':
+        case "preset":
           return { ...prev, preset: null };
-        case 'search':
-          return { ...prev, searchQuery: '' };
+        case "search":
+          return { ...prev, searchQuery: "" };
         default:
           return prev;
       }
@@ -731,21 +918,21 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let result = [...dbProducts];
 
     // Presets from Mega Menu
-    if (filterState.preset === 'bestsellers') {
-      result = result.filter((p) => p.badge === 'BESTSELLER' || p.isFeatured);
-    } else if (filterState.preset === 'new-arrivals') {
-      result = result.filter((p) => p.isNewArrival || p.badge === 'NEW');
+    if (filterState.preset === "bestsellers") {
+      result = result.filter((p) => p.badge === "BESTSELLER" || p.isFeatured);
+    } else if (filterState.preset === "new-arrivals") {
+      result = result.filter((p) => p.isNewArrival || p.badge === "NEW");
     }
 
     // Category filter
-    if (filterState.category !== 'all') {
-      if (filterState.category === 'new-arrivals') {
+    if (filterState.category !== "all") {
+      if (filterState.category === "new-arrivals") {
         result = result.filter((p) => p.isNewArrival);
-      } else if (filterState.category === 'bestsellers') {
-        result = result.filter((p) => p.badge === 'BESTSELLER' || p.isFeatured);
+      } else if (filterState.category === "bestsellers") {
+        result = result.filter((p) => p.badge === "BESTSELLER" || p.isFeatured);
       } else {
         result = result.filter((p) => {
-          const cat = p.category.toLowerCase().replace(/\s+/g, '-');
+          const cat = p.category.toLowerCase().replace(/\s+/g, "-");
           const target = filterState.category.toLowerCase();
           return cat === target || p.category === filterState.category;
         });
@@ -754,14 +941,17 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Pearl type filter
     if (filterState.pearlTypes.length > 0) {
-      result = result.filter((p) => filterState.pearlTypes.includes(p.pearlType));
+      result = result.filter((p) =>
+        filterState.pearlTypes.includes(p.pearlType),
+      );
     }
 
     // Stone filter
     if (filterState.stones.length > 0) {
       result = result.filter((p) => {
         if (p.stone && filterState.stones.includes(p.stone)) return true;
-        const text = `${p.material} ${p.descriptor} ${p.shortDescription} ${p.name}`.toLowerCase();
+        const text =
+          `${p.material} ${p.descriptor} ${p.shortDescription} ${p.name}`.toLowerCase();
         return filterState.stones.some((st) => text.includes(st.toLowerCase()));
       });
     }
@@ -770,10 +960,10 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (filterState.priceRanges.length > 0) {
       result = result.filter((p) => {
         return filterState.priceRanges.some((range) => {
-          if (range === 'under-10k') return p.price < 10000;
-          if (range === '10k-25k') return p.price >= 10000 && p.price <= 25000;
-          if (range === '25k-50k') return p.price > 25000 && p.price <= 50000;
-          if (range === 'above-50k') return p.price > 50000;
+          if (range === "under-10k") return p.price < 10000;
+          if (range === "10k-25k") return p.price >= 10000 && p.price <= 25000;
+          if (range === "25k-50k") return p.price > 25000 && p.price <= 50000;
+          if (range === "above-50k") return p.price > 50000;
           return false;
         });
       });
@@ -781,12 +971,16 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Material filter
     if (filterState.materials.length > 0) {
-      result = result.filter((p) => filterState.materials.includes(p.materialFilter));
+      result = result.filter((p) =>
+        filterState.materials.includes(p.materialFilter),
+      );
     }
 
     // Collection filter
     if (filterState.collections.length > 0) {
-      result = result.filter((p) => filterState.collections.includes(p.collection));
+      result = result.filter((p) =>
+        filterState.collections.includes(p.collection),
+      );
     }
 
     // Color filter
@@ -796,12 +990,35 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const pColor = p.color.toLowerCase();
         return filterState.colors.some((c) => {
           const cLow = c.toLowerCase();
-          if (cLow === 'white' && pColor.includes('white')) return true;
-          if (cLow === 'black' && (pColor.includes('black') || pColor.includes('peacock'))) return true;
-          if (cLow === 'grey' && (pColor.includes('grey') || pColor.includes('silver'))) return true;
-          if (cLow === 'golden' && (pColor.includes('gold') || pColor.includes('champagne'))) return true;
-          if ((cLow === 'pink / peach' || cLow === 'pink' || cLow === 'peach') && (pColor.includes('pink') || pColor.includes('rose') || pColor.includes('blush') || pColor.includes('peach'))) return true;
-          if (cLow === 'multi-color' && (pColor.includes('multi') || pColor.includes('mix'))) return true;
+          if (cLow === "white" && pColor.includes("white")) return true;
+          if (
+            cLow === "black" &&
+            (pColor.includes("black") || pColor.includes("peacock"))
+          )
+            return true;
+          if (
+            cLow === "grey" &&
+            (pColor.includes("grey") || pColor.includes("silver"))
+          )
+            return true;
+          if (
+            cLow === "golden" &&
+            (pColor.includes("gold") || pColor.includes("champagne"))
+          )
+            return true;
+          if (
+            (cLow === "pink / peach" || cLow === "pink" || cLow === "peach") &&
+            (pColor.includes("pink") ||
+              pColor.includes("rose") ||
+              pColor.includes("blush") ||
+              pColor.includes("peach"))
+          )
+            return true;
+          if (
+            cLow === "multi-color" &&
+            (pColor.includes("multi") || pColor.includes("mix"))
+          )
+            return true;
           return false;
         });
       });
@@ -816,22 +1033,25 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
           p.descriptor.toLowerCase().includes(q) ||
           p.pearlType.toLowerCase().includes(q) ||
           p.collection.toLowerCase().includes(q) ||
-          p.material.toLowerCase().includes(q)
+          p.material.toLowerCase().includes(q),
       );
     }
 
     // Sorting
     switch (sortOption) {
-      case 'newest':
-        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case "newest":
+        result.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         break;
-      case 'price-low':
+      case "price-low":
         result.sort((a, b) => a.price - b.price);
         break;
-      case 'price-high':
+      case "price-high":
         result.sort((a, b) => b.price - a.price);
         break;
-      case 'featured':
+      case "featured":
       default:
         result.sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
         break;
@@ -842,7 +1062,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
-    if (filterState.category !== 'all') count += 1;
+    if (filterState.category !== "all") count += 1;
     if (filterState.preset) count += 1;
     count += filterState.pearlTypes.length;
     count += filterState.stones.length;
@@ -855,29 +1075,34 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [filterState]);
 
   // Modal actions
-  const openQuickView = useCallback(async (productOrId: ShopProduct | string) => {
-    if (typeof productOrId === 'string') {
-      setIsQuickViewLoading(true);
-      const found = dbProducts.find((p) => p.id === productOrId || p.slug === productOrId);
-      if (found) {
-        setQuickViewProduct(found);
-        setIsQuickViewLoading(false);
-      } else {
-        try {
-          const fetched = await fetchProductBySlugFromDb(productOrId);
-          setQuickViewProduct(fetched);
-        } catch (err) {
-          console.error('Error fetching quick view product by slug/id:', err);
-          setQuickViewProduct(null);
-        } finally {
+  const openQuickView = useCallback(
+    async (productOrId: ShopProduct | string) => {
+      if (typeof productOrId === "string") {
+        setIsQuickViewLoading(true);
+        const found = dbProducts.find(
+          (p) => p.id === productOrId || p.slug === productOrId,
+        );
+        if (found) {
+          setQuickViewProduct(found);
           setIsQuickViewLoading(false);
+        } else {
+          try {
+            const fetched = await fetchProductBySlugFromDb(productOrId);
+            setQuickViewProduct(fetched);
+          } catch (err) {
+            console.error("Error fetching quick view product by slug/id:", err);
+            setQuickViewProduct(null);
+          } finally {
+            setIsQuickViewLoading(false);
+          }
         }
+      } else {
+        setQuickViewProduct(productOrId);
+        setIsQuickViewLoading(false);
       }
-    } else {
-      setQuickViewProduct(productOrId);
-      setIsQuickViewLoading(false);
-    }
-  }, [dbProducts]);
+    },
+    [dbProducts],
+  );
 
   const closeQuickView = useCallback(() => {
     setQuickViewProduct(null);
@@ -900,9 +1125,12 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsSearchOpen(false);
   }, []);
 
-  const navigateToProduct = useCallback((product: ShopProduct) => {
-    openQuickView(product);
-  }, [openQuickView]);
+  const navigateToProduct = useCallback(
+    (product: ShopProduct) => {
+      openQuickView(product);
+    },
+    [openQuickView],
+  );
 
   return (
     <ShopContext.Provider
@@ -980,7 +1208,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useShop = () => {
   const context = useContext(ShopContext);
   if (!context) {
-    throw new Error('useShop must be used within a ShopProvider');
+    throw new Error("useShop must be used within a ShopProvider");
   }
   return context;
 };

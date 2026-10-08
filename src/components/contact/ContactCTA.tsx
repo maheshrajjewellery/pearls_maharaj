@@ -1,6 +1,6 @@
-﻿import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
+﻿import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
 
 interface ContactCTAProps {
   onContactClick: () => void;
@@ -20,7 +20,7 @@ export default function ContactCTA({ onContactClick }: ContactCTAProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)',
+            "radial-gradient(ellipse at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)",
         }}
       />
 
@@ -48,7 +48,9 @@ export default function ContactCTA({ onContactClick }: ContactCTAProps) {
         >
           YOUR NEXT PIECE
           <br />
-          <span className="italic font-light text-[#30372F]/90">STARTS WITH A CONVERSATION.</span>
+          <span className="italic font-light text-[#30372F]/90">
+            STARTS WITH A CONVERSATION.
+          </span>
         </motion.h2>
 
         {/* Supporting text */}
@@ -71,7 +73,7 @@ export default function ContactCTA({ onContactClick }: ContactCTAProps) {
             onClick={onContactClick}
             className="group inline-flex items-center gap-3.5 px-8 py-4 bg-[#30372F] hover:bg-[#C5A15A] text-[#FFFDF8] hover:text-[#30372F] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_16px_rgba(41,35,31,0.08)] border border-[#C5A15A]/30"
           >
-            <span>CONTACT MAHARAJ</span>
+            <span>CONTACT MAHESHRAJ</span>
             <ArrowRight
               size={15}
               strokeWidth={1.8}

@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -15,7 +15,7 @@ export default function EditorialPearlBanner() {
           <div className="lg:col-span-6 relative min-h-[260px] sm:min-h-[320px] lg:min-h-[440px] overflow-hidden bg-ivory-200">
             <img
               src="https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1400"
-              alt="Maharaj Jewellery Pearl Editorial"
+              alt="MAHESHRAJ Jewellery Pearl Editorial"
               className="w-full h-full object-cover object-[center_35%] transition-transform duration-1000 hover:scale-105"
               loading="lazy"
             />
@@ -49,7 +49,8 @@ export default function EditorialPearlBanner() {
 
               {/* Supporting Text */}
               <p className="text-cocoa-100 text-xs sm:text-sm font-light leading-relaxed mb-8">
-                Discover the characteristics, care and craftsmanship behind every pearl in the Maharaj vault.
+                Discover the characteristics, care and craftsmanship behind
+                every pearl in the MAHESHRAJ vault.
               </p>
 
               {/* Action Button */}

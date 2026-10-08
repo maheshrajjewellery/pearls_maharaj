@@ -53,7 +53,7 @@ export const artOfGivingData = {
   copyParagraph1:
     'In the world of corporate relationships, a gesture of appreciation should speak to enduring values. Fine pearl jewellery transcends conventional gifts, serving as an eloquent symbol of gratitude, milestone achievements, and partnership.',
   copyParagraph2:
-    'Each piece from Maharaj Jewellery is handcrafted with natural luster, refined gold, and immaculate attention to detail—ensuring your gift is cherished for decades.',
+    'Each piece from MAHESHRAJ Jewellery is handcrafted with natural luster, refined gold, and immaculate attention to detail—ensuring your gift is cherished for decades.',
   image: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1200',
 };
 

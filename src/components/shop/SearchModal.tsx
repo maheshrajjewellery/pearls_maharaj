@@ -1,22 +1,29 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
-import { ShopProduct } from '@/types/shop';
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, X, ArrowRight } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
+import { ShopProduct } from "@/types/shop";
 
 const popularKeywords = [
-  'South Sea',
-  'Akoya Choker',
-  'Bridal Sets',
-  'Pearl Earrings',
-  'Baroque Pendant',
-  'Emerald',
-  '18K Gold',
+  "South Sea",
+  "Akoya Choker",
+  "Bridal Sets",
+  "Pearl Earrings",
+  "Baroque Pendant",
+  "Emerald",
+  "18K Gold",
 ];
 
 export default function SearchModal() {
-  const { isSearchOpen, closeSearch, setSearchQuery, openQuickView, setCurrentPage, products } = useShop();
-  const [localQuery, setLocalQuery] = useState('');
+  const {
+    isSearchOpen,
+    closeSearch,
+    setSearchQuery,
+    openQuickView,
+    setCurrentPage,
+    products,
+  } = useShop();
+  const [localQuery, setLocalQuery] = useState("");
 
   const liveResults = useMemo(() => {
     if (!localQuery.trim()) return [];
@@ -27,7 +34,7 @@ export default function SearchModal() {
           p.name.toLowerCase().includes(q) ||
           p.descriptor.toLowerCase().includes(q) ||
           p.pearlType.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q)
+          p.category.toLowerCase().includes(q),
       )
       .slice(0, 5);
   }, [localQuery, products]);
@@ -43,14 +50,14 @@ export default function SearchModal() {
     e.preventDefault();
     if (localQuery.trim()) {
       setSearchQuery(localQuery.trim());
-      setCurrentPage('shop');
+      setCurrentPage("shop");
       closeSearch();
     }
   };
 
   const handleKeywordClick = (keyword: string) => {
     setSearchQuery(keyword);
-    setCurrentPage('shop');
+    setCurrentPage("shop");
     closeSearch();
   };
 
@@ -60,7 +67,7 @@ export default function SearchModal() {
         {/* Top Header with Close */}
         <div className="flex items-center justify-between px-6 sm:px-12 lg:px-20 h-24 border-b border-[rgba(41,35,31,0.1)]">
           <span className="font-serif text-xl tracking-[0.15em] text-cocoa-300 font-medium">
-            MAHARAJ
+            MAHESHRAJ
           </span>
           <button
             onClick={closeSearch}
@@ -90,7 +97,7 @@ export default function SearchModal() {
             {localQuery && (
               <button
                 type="button"
-                onClick={() => setLocalQuery('')}
+                onClick={() => setLocalQuery("")}
                 className="absolute right-0 top-1/2 -translate-y-1/2 text-cocoa-100 hover:text-cocoa-300 p-1"
               >
                 <X size={18} />

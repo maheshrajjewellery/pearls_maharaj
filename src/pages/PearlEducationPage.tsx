@@ -1,35 +1,35 @@
-import React, { useEffect } from 'react';
-import PearlHero from '@/components/education/PearlHero';
-import WhatIsAPearl from '@/components/education/WhatIsAPearl';
-import HowAPearlIsBorn from '@/components/education/HowAPearlIsBorn';
-import PearlTypes from '@/components/education/PearlTypes';
-import PearlAnatomy from '@/components/education/PearlAnatomy';
-import PearlShapes from '@/components/education/PearlShapes';
-import PearlColors from '@/components/education/PearlColors';
-import PearlLuster from '@/components/education/PearlLuster';
-import PearlSize from '@/components/education/PearlSize';
-import PearlQuality from '@/components/education/PearlQuality';
-import PearlComparison from '@/components/education/PearlComparison';
-import PearlBuyingGuide from '@/components/education/PearlBuyingGuide';
-import PearlCareGuide from '@/components/education/PearlCareGuide';
-import PearlMyths from '@/components/education/PearlMyths';
-import PearlEducationCTA from '@/components/education/PearlEducationCTA';
+import React, { useEffect } from "react";
+import PearlHero from "@/components/education/PearlHero";
+import WhatIsAPearl from "@/components/education/WhatIsAPearl";
+import HowAPearlIsBorn from "@/components/education/HowAPearlIsBorn";
+import PearlTypes from "@/components/education/PearlTypes";
+import PearlAnatomy from "@/components/education/PearlAnatomy";
+import PearlShapes from "@/components/education/PearlShapes";
+import PearlColors from "@/components/education/PearlColors";
+import PearlLuster from "@/components/education/PearlLuster";
+import PearlSize from "@/components/education/PearlSize";
+import PearlQuality from "@/components/education/PearlQuality";
+import PearlComparison from "@/components/education/PearlComparison";
+import PearlBuyingGuide from "@/components/education/PearlBuyingGuide";
+import PearlCareGuide from "@/components/education/PearlCareGuide";
+import PearlMyths from "@/components/education/PearlMyths";
+import PearlEducationCTA from "@/components/education/PearlEducationCTA";
 
 // Global Shop & Interactive Modals
-import CartDrawer from '@/components/shop/CartDrawer';
-import SearchModal from '@/components/shop/SearchModal';
-import QuickViewModal from '@/components/shop/QuickViewModal';
-import PearlGuideModal from '@/components/shop/PearlGuideModal';
+import CartDrawer from "@/components/shop/CartDrawer";
+import SearchModal from "@/components/shop/SearchModal";
+import QuickViewModal from "@/components/shop/QuickViewModal";
+import PearlGuideModal from "@/components/shop/PearlGuideModal";
 
 export default function PearlEducationPage() {
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.title = 'Pearl Education & Connoisseur Guide | Maharaj Jewellery';
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.title =
+      "Pearl Education & Connoisseur Guide | MAHESHRAJ Jewellery";
   }, []);
 
   return (
     <div className="w-full bg-[#F8F5F0] min-h-screen flex flex-col font-sans selection:bg-champagne-300 selection:text-cocoa-300">
-      
       {/* 01 — CINEMATIC PEARL HERO */}
       <PearlHero />
 
@@ -74,7 +74,6 @@ export default function PearlEducationPage() {
 
       {/* 15 — FINAL BRAND CTA */}
       <PearlEducationCTA />
-
     </div>
   );
 }

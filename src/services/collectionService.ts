@@ -2,8 +2,8 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { DbCollection } from '@/types/database';
 import { AdminCollection } from '@/types/admin';
 
-const LOCAL_STORAGE_KEY = 'maharaj_db_collections';
-const LOCAL_STORAGE_JUNCTION_KEY = 'maharaj_db_collection_products';
+const LOCAL_STORAGE_KEY = 'MAHESHRAJ_db_collections';
+const LOCAL_STORAGE_JUNCTION_KEY = 'MAHESHRAJ_db_collection_products';
 
 const initialCollections: AdminCollection[] = [
   {

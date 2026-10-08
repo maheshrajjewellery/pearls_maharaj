@@ -1,5 +1,5 @@
 -- ====================================================================
--- MAHARAJA JEWELLERY - DATABASE ARCHITECTURE & SEED MIGRATION
+-- MAhESHRAJ JEWELLERY - DATABASE ARCHITECTURE & SEED MIGRATION
 -- ====================================================================
 
 -- 1. EXTENSIONS
@@ -399,7 +399,7 @@ VALUES
   ('WELCOME10', '10% off on your luxury jewellery purchase', 'percentage', 10, 0, '2028-12-31 23:59:59+00', true),
   ('ROYAL15', '15% off on orders above ₹50,000', 'percentage', 15, 50000, '2028-12-31 23:59:59+00', true),
   ('PEARL5000', 'Flat ₹5,000 off on grand heritage orders above ₹1,00,000', 'fixed', 5000, 100000, '2028-12-31 23:59:59+00', true),
-  ('MAHARAJA20', '20% off on signature bridal suites above ₹1,50,000', 'percentage', 20, 150000, '2028-12-31 23:59:59+00', true)
+  ('MAHESHRAJA20', '20% off on signature bridal suites above ₹1,50,000', 'percentage', 20, 150000, '2028-12-31 23:59:59+00', true)
 ON CONFLICT (code) DO NOTHING;
 
 -- ====================================================================
@@ -523,7 +523,7 @@ CREATE POLICY "Allow admin all cms_content" ON cms_content FOR ALL USING (true) 
 -- ====================================================================
 CREATE TABLE IF NOT EXISTS homepage_hero_banners (
   id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
-  title TEXT NOT NULL DEFAULT 'MAHARAJ JEWELLERY',
+  title TEXT NOT NULL DEFAULT 'MAHESHRAJ JEWELLERY',
   subtitle TEXT NOT NULL DEFAULT 'The Purest Pearl Elegance',
   description TEXT,
   image_url TEXT NOT NULL,
@@ -558,7 +558,7 @@ CREATE POLICY "Allow admin full access homepage_hero_banners" ON homepage_hero_b
 -- SEED HOMEPAGE HERO BANNERS
 INSERT INTO homepage_hero_banners (id, title, subtitle, description, image_url, mobile_image_url, cta_text, cta_link, display_order, is_active, status, image_position)
 VALUES 
-  ('slide-01', 'MAHARAJ JEWELLERY', 'The Purest Pearl Elegance', 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'EXPLORE THE COLLECTION', '/shop', 1, true, 'Published', 'center center'),
+  ('slide-01', 'MAHESHRAJ JEWELLERY', 'The Purest Pearl Elegance', 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'EXPLORE THE COLLECTION', '/shop', 1, true, 'Published', 'center center'),
   ('slide-02', 'ROYAL HERITAGE', 'South Sea Pearl Strands', 'Hand-selected golden and white South Sea pearls set in 18K gold fittings.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'DISCOVER SOUTH SEA', '/shop?category=saltwater', 2, true, 'Published', 'center center'),
   ('slide-03', 'THE BRIDAL EDIT', 'Sacred Bridal Heirloom Collection', 'Ornate pearl chokers, layered necklaces, and matching earrings crafted for unforgettable moments.', '/images/pearl-banner.png', '/images/pearl-banner-mobile.png', 'EXPLORE BRIDAL', '/shop?category=bridal', 3, true, 'Published', 'center center')
 ON CONFLICT (id) DO UPDATE 

@@ -1,7 +1,7 @@
-﻿import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+﻿import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -14,16 +14,18 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
   const { cmsData } = useShop();
 
   const eduCMS = cmsData?.education;
-  const heroTitle = eduCMS?.heroTitle || 'UNDERSTAND THE PEARL.';
-  const heroSub = eduCMS?.heroSubtitle || 'Discover the natural beauty, character and craftsmanship behind every pearl.';
+  const heroTitle = eduCMS?.heroTitle || "UNDERSTAND THE PEARL.";
+  const heroSub =
+    eduCMS?.heroSubtitle ||
+    "Discover the natural beauty, character and craftsmanship behind every pearl.";
 
   const handleScrollDown = () => {
     if (onBeginExploring) {
       onBeginExploring();
     } else {
-      const target = document.getElementById('what-is-a-pearl');
+      const target = document.getElementById("what-is-a-pearl");
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+        target.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
@@ -31,14 +33,14 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
   return (
     <section
       className="relative w-full h-[65vh] min-h-[520px] max-h-[720px] bg-[#30372F] overflow-hidden flex flex-col justify-between items-center text-center select-none"
-      aria-label="Maharaj Pearl Education Hero"
+      aria-label="MAHESHRAJ Pearl Education Hero"
     >
       {/* Subtle ambient lighting vignette */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 45%, rgba(200, 169, 107, 0.09) 0%, rgba(41, 35, 31, 0.85) 60%, #30372F 100%)',
+            "radial-gradient(ellipse at 50% 45%, rgba(200, 169, 107, 0.09) 0%, rgba(41, 35, 31, 0.85) 60%, #30372F 100%)",
         }}
       />
 
@@ -47,8 +49,8 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
         className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
-            'radial-gradient(rgba(247, 243, 236, 0.4) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
+            "radial-gradient(rgba(247, 243, 236, 0.4) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
         }}
       />
 
@@ -63,7 +65,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
         >
           <span className="w-1.5 h-1.5 rounded-full bg-champagne-300 animate-pulse" />
           <p className="text-champagne-300 text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.35em] uppercase">
-            THE MAHARAJ PEARL GUIDE
+            THE MAHESHRAJ PEARL GUIDE
           </p>
         </motion.div>
       </div>
@@ -84,7 +86,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
             className="relative w-full h-full rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_-10px_25px_rgba(41,35,31,0.6),inset_0_4px_12px_rgba(255,255,255,0.8)] overflow-hidden"
             style={{
               background:
-                'radial-gradient(circle at 35% 30%, #FFFFFF 0%, #FFFDF8 22%, #F7F3EC 45%, #E8DCD5 70%, #B8A99A 90%, #5A4E48 100%)',
+                "radial-gradient(circle at 35% 30%, #FFFFFF 0%, #FFFDF8 22%, #F7F3EC 45%, #E8DCD5 70%, #B8A99A 90%, #5A4E48 100%)",
             }}
           >
             {/* Iridescent orient overtone layer */}
@@ -92,7 +94,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
               className="absolute inset-0 rounded-full opacity-60 mix-blend-color-dodge pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse at 40% 35%, rgba(200, 169, 107, 0.45) 0%, rgba(232, 220, 213, 0.3) 40%, rgba(184, 169, 154, 0.1) 80%, transparent 100%)',
+                  "radial-gradient(ellipse at 40% 35%, rgba(200, 169, 107, 0.45) 0%, rgba(232, 220, 213, 0.3) 40%, rgba(184, 169, 154, 0.1) 80%, transparent 100%)",
               }}
             />
 
@@ -101,7 +103,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
               className="absolute top-[18%] left-[24%] w-8 h-8 sm:w-10 sm:h-10 rounded-full blur-[1px] opacity-90 pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 80%)',
+                  "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 80%)",
               }}
             />
 
@@ -110,15 +112,15 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
               className="absolute bottom-[10%] right-[16%] w-16 h-10 rounded-full blur-[6px] opacity-35 pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse, rgba(200,169,107,0.7) 0%, transparent 80%)',
+                  "radial-gradient(ellipse, rgba(200,169,107,0.7) 0%, transparent 80%)",
               }}
             />
 
             {/* Subtle moving light sweep across the pearl surface */}
             <motion.div
-              initial={{ x: '-120%', opacity: 0 }}
+              initial={{ x: "-120%", opacity: 0 }}
               animate={{
-                x: ['-120%', '160%'],
+                x: ["-120%", "160%"],
                 opacity: [0, 0.6, 0.6, 0],
               }}
               transition={{
@@ -126,7 +128,7 @@ export default function PearlHero({ onBeginExploring }: PearlHeroProps) {
                 delay: 1.2,
                 repeat: Infinity,
                 repeatDelay: 5,
-                ease: 'easeInOut',
+                ease: "easeInOut",
               }}
               className="absolute inset-0 -skew-x-12 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none blur-[4px]"
             />

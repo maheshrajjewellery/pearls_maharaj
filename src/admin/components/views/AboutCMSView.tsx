@@ -94,7 +94,7 @@ export const AboutCMSView: React.FC = () => {
 
           <div className="md:col-span-2">
             <label className="block font-medium text-[#30372F] mb-1">
-              The Maharaj Pearl Story
+              The MAHESHRAJ Pearl Story
             </label>
             <textarea
               rows={4}

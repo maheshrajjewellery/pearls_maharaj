@@ -3,7 +3,7 @@ import { DbProduct, DbProductImage, DbProductWithRelations, ProductFilterParams 
 import { ShopProduct, ShopCategory, PearlType, MaterialFilter, CollectionFilter, ColorFilter } from '@/types/shop';
 import { deleteProductImage } from './storageService';
 
-const LOCAL_STORAGE_KEY = 'maharaj_db_products';
+const LOCAL_STORAGE_KEY = 'MAHESHRAJ_db_products';
 
 // Slug generator
 export const generateProductSlug = (name: string): string => {
@@ -581,7 +581,7 @@ export const deleteAllProductsFromDb = async (): Promise<boolean> => {
   setLocalProducts([]);
   if (typeof window !== 'undefined') {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
-    localStorage.removeItem('maharaj_admin_products');
+    localStorage.removeItem('MAHESHRAJ_admin_products');
   }
   return true;
 };

@@ -98,7 +98,7 @@ const defaultDemoAddresses: Record<string, CustomerAddress[]> = {
 // ADDRESS STORAGE HELPERS
 export const getCustomerAddresses = (email: string): CustomerAddress[] => {
   if (typeof window === 'undefined' || !email) return [];
-  const key = `maharaj_addresses_${email.toLowerCase()}`;
+  const key = `MAHESHRAJ_addresses_${email.toLowerCase()}`;
   try {
     const saved = localStorage.getItem(key);
     if (saved) {
@@ -120,7 +120,7 @@ export const getCustomerAddresses = (email: string): CustomerAddress[] => {
 
 export const saveCustomerAddresses = (email: string, addresses: CustomerAddress[]): void => {
   if (typeof window === 'undefined' || !email) return;
-  const key = `maharaj_addresses_${email.toLowerCase()}`;
+  const key = `MAHESHRAJ_addresses_${email.toLowerCase()}`;
   try {
     localStorage.setItem(key, JSON.stringify(addresses));
   } catch (err) {
@@ -209,7 +209,7 @@ export const getCustomerOrders = (email: string): AdminOrder[] => {
 
   let allOrdersMatched: AdminOrder[] = [];
   try {
-    const savedAll = localStorage.getItem('maharaj_all_orders');
+    const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
     if (savedAll) {
       const allOrders: AdminOrder[] = JSON.parse(savedAll);
       allOrdersMatched = allOrders.filter((o) => o.customerEmail.toLowerCase() === cleanEmail);
@@ -223,7 +223,7 @@ export const getCustomerOrders = (email: string): AdminOrder[] => {
     return allOrdersMatched;
   }
 
-  const key = `maharaj_orders_${cleanEmail}`;
+  const key = `MAHESHRAJ_orders_${cleanEmail}`;
   try {
     const saved = localStorage.getItem(key);
     if (saved) {
@@ -239,11 +239,11 @@ export const getCustomerOrders = (email: string): AdminOrder[] => {
 export const saveCustomerOrders = (email: string, orders: AdminOrder[]): void => {
   if (typeof window === 'undefined' || !email) return;
   const cleanEmail = email.trim().toLowerCase();
-  const key = `maharaj_orders_${cleanEmail}`;
+  const key = `MAHESHRAJ_orders_${cleanEmail}`;
   try {
     localStorage.setItem(key, JSON.stringify(orders));
 
-    const savedAll = localStorage.getItem('maharaj_all_orders');
+    const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
     let allOrders: AdminOrder[] = savedAll ? JSON.parse(savedAll) : [];
 
     for (const o of orders) {
@@ -254,7 +254,7 @@ export const saveCustomerOrders = (email: string, orders: AdminOrder[]): void =>
         allOrders.unshift(o);
       }
     }
-    localStorage.setItem('maharaj_all_orders', JSON.stringify(allOrders));
+    localStorage.setItem('MAHESHRAJ_all_orders', JSON.stringify(allOrders));
   } catch (err) {
     console.error('Error saving customer orders:', err);
   }
@@ -325,11 +325,11 @@ export const fetchCustomersFromDb = async (
   let localUsers: any[] = [];
   if (typeof window !== 'undefined') {
     try {
-      const savedReg = localStorage.getItem('maharaj_registered_users');
+      const savedReg = localStorage.getItem('MAHESHRAJ_registered_users');
       if (savedReg) {
         localUsers = JSON.parse(savedReg);
       }
-      const savedUser = localStorage.getItem('maharaj_user');
+      const savedUser = localStorage.getItem('MAHESHRAJ_user');
       if (savedUser) {
         const single = JSON.parse(savedUser);
         if (!localUsers.some((u) => u.email?.toLowerCase() === single.email?.toLowerCase())) {
@@ -685,21 +685,21 @@ export const updateCustomerStatusInDb = async (
     // 2. Update in LocalStorage registered users
     if (typeof window !== 'undefined') {
       try {
-        const savedReg = localStorage.getItem('maharaj_registered_users');
+        const savedReg = localStorage.getItem('MAHESHRAJ_registered_users');
         if (savedReg) {
           let regUsers: any[] = JSON.parse(savedReg);
           regUsers = regUsers.map((u) =>
             u.email?.toLowerCase() === cleanEmail ? { ...u, status: newStatus } : u
           );
-          localStorage.setItem('maharaj_registered_users', JSON.stringify(regUsers));
+          localStorage.setItem('MAHESHRAJ_registered_users', JSON.stringify(regUsers));
         }
 
-        const savedUser = localStorage.getItem('maharaj_user');
+        const savedUser = localStorage.getItem('MAHESHRAJ_user');
         if (savedUser) {
           const single = JSON.parse(savedUser);
           if (single.email?.toLowerCase() === cleanEmail) {
             single.status = newStatus;
-            localStorage.setItem('maharaj_user', JSON.stringify(single));
+            localStorage.setItem('MAHESHRAJ_user', JSON.stringify(single));
           }
         }
       } catch {}

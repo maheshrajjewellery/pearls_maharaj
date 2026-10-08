@@ -1,6 +1,6 @@
-﻿import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+﻿import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const editorialEase = [0.22, 1, 0.36, 1] as const;
 
@@ -13,20 +13,23 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
   const { cmsData } = useShop();
 
   const contactCMS = cmsData?.contact;
-  const heroHeading = contactCMS?.heroHeading || 'Private Client Concierge & Consultations';
-  const heroSubheading = contactCMS?.heroSubheading || "Connect with our master jewelers, arrange private appointments, or request bespoke pearl commissions.";
+  const heroHeading =
+    contactCMS?.heroHeading || "Private Client Concierge & Consultations";
+  const heroSubheading =
+    contactCMS?.heroSubheading ||
+    "Connect with our master jewelers, arrange private appointments, or request bespoke pearl commissions.";
 
   return (
     <section
       className="relative w-full min-h-[48vh] lg:h-[52vh] max-h-[640px] bg-[#F7F3EC] flex items-center border-b border-[#30372F]/10 overflow-hidden"
-      aria-label="Maharaj Jewellery Contact Hero"
+      aria-label="MAHESHRAJ Jewellery Contact Hero"
     >
       {/* Subtle ambient luxury gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 85% 30%, rgba(200, 169, 107, 0.09) 0%, rgba(247, 243, 236, 0) 65%), radial-gradient(ellipse at 15% 85%, rgba(232, 220, 213, 0.45) 0%, rgba(247, 243, 236, 0) 70%)',
+            "radial-gradient(ellipse at 85% 30%, rgba(200, 169, 107, 0.09) 0%, rgba(247, 243, 236, 0) 65%), radial-gradient(ellipse at 15% 85%, rgba(232, 220, 213, 0.45) 0%, rgba(247, 243, 236, 0) 70%)",
         }}
       />
 
@@ -43,7 +46,7 @@ export default function ContactHero({ onScrollToForm }: ContactHeroProps) {
             >
               <span className="h-px w-6 bg-[#C5A15A]" />
               <p className="text-[#C5A15A] text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.3em] uppercase">
-                MAHARAJ JEWELLERY
+                MAHESHRAJ JEWELLERY
               </p>
             </motion.div>
 

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import {
   CheckCircle2,
@@ -29,7 +29,7 @@ export default function OrderConfirmationPage() {
   const handleViewOrders = () => {
     setActiveDashboardTab('orders');
     setCurrentPage('dashboard');
-    if (typeof window !== 'undefined') window.history.pushState({}, '', '/dashboard/orders');
+    if (typeof window !== 'undefined') window.history.pushState({}, '', '/customer/dashboard/orders');
   };
 
   const handlePrint = () => {

@@ -1,6 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -9,35 +9,35 @@ export default function AboutHero() {
   const prefersReduced = useReducedMotion();
 
   const aboutCMS = cmsData?.about;
-  const heroHeading = aboutCMS?.heroHeading || 'BEAUTY, CRAFTED TO LAST.';
-  const heroImg = aboutCMS?.heroImage && aboutCMS.heroImage.trim() !== ''
-    ? aboutCMS.heroImage
-    : 'https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1400';
+  const heroHeading = aboutCMS?.heroHeading || "BEAUTY, CRAFTED TO LAST.";
+  const heroImg =
+    aboutCMS?.heroImage && aboutCMS.heroImage.trim() !== ""
+      ? aboutCMS.heroImage
+      : "https://images.pexels.com/photos/922567/pexels-photo-922567.jpeg?auto=compress&cs=tinysrgb&w=1400";
 
   const handleExplore = () => {
-    setCurrentPage('shop');
-    setCategory('all');
-    window.history.pushState({}, '', '/shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("shop");
+    setCategory("all");
+    window.history.pushState({}, "", "/shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <section
       className="relative w-full h-[72vh] sm:h-[75vh] min-h-[540px] max-h-[760px] bg-pearlIvory-100 overflow-hidden flex items-center select-none border-b border-cocoa-300/10"
-      aria-label="Maharaj Jewellery About Hero"
+      aria-label="MAHESHRAJ Jewellery About Hero"
     >
       {/* Background ambient lighting */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 80% 40%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 65%), radial-gradient(ellipse at 20% 70%, rgba(232, 220, 213, 0.5) 0%, rgba(247, 243, 236, 0) 70%)',
+            "radial-gradient(ellipse at 80% 40%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 65%), radial-gradient(ellipse at 20% 70%, rgba(232, 220, 213, 0.5) 0%, rgba(247, 243, 236, 0) 70%)",
         }}
       />
 
       <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 h-full flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center h-full py-10 lg:py-0">
-          
           {/* LEFT: Editorial Text Content (55% on Desktop) */}
           <div className="lg:col-span-7 xl:col-span-6 flex flex-col justify-center max-w-[620px] lg:max-w-none">
             {/* Small Eyebrow */}
@@ -49,7 +49,7 @@ export default function AboutHero() {
             >
               <span className="h-px w-6 bg-champagne-300" />
               <p className="text-champagne-400 text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.1em] uppercase">
-                MAHARAJ JEWELLERY
+                MAHESHRAJ JEWELLERY
               </p>
             </motion.div>
 
@@ -74,7 +74,8 @@ export default function AboutHero() {
               transition={{ duration: 0.85, delay: 0.8, ease: luxuryEase }}
               className="text-cocoa-200/80 text-[15px] sm:text-[16px] lg:text-[17px] font-sans font-normal leading-[1.65] max-w-[480px] mb-7 sm:mb-9"
             >
-              Discover the story behind a jewellery house built around the timeless beauty of pearls.
+              Discover the story behind a jewellery house built around the
+              timeless beauty of pearls.
             </motion.p>
 
             {/* CTA Button */}
@@ -107,7 +108,7 @@ export default function AboutHero() {
             >
               <img
                 src={heroImg}
-                alt="Maharaj Jewellery luxury pearl campaign"
+                alt="MAHESHRAJ Jewellery luxury pearl campaign"
                 className="w-full h-full object-cover object-[68%_32%]"
                 fetchPriority="high"
               />
@@ -122,7 +123,6 @@ export default function AboutHero() {
               </div>
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>

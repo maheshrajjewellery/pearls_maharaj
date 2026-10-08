@@ -98,8 +98,8 @@ export const VALID_COUPONS: Record<string, Coupon> = {
     expiryDate: '2028-12-31',
     isActive: true,
   },
-  MAHARAJA20: {
-    code: 'MAHARAJA20',
+  MAHESHRAJA20: {
+    code: 'MAHESHRAJA20',
     description: '20% off on signature bridal suites above ₹1,50,000',
     discountType: 'percentage',
     discountValue: 20,
@@ -420,10 +420,10 @@ export const createFinalCheckoutOrder = async (
     // Save into all-orders store for admin sync
     if (typeof window !== 'undefined') {
       try {
-        const savedAll = localStorage.getItem('maharaj_all_orders');
+        const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
         let allOrders: AdminOrder[] = savedAll ? JSON.parse(savedAll) : [];
         allOrders.unshift(newOrder);
-        localStorage.setItem('maharaj_all_orders', JSON.stringify(allOrders));
+        localStorage.setItem('MAHESHRAJ_all_orders', JSON.stringify(allOrders));
       } catch {}
     }
 

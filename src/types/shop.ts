@@ -135,5 +135,6 @@ export interface UserProfile {
   email: string;
   avatarUrl?: string;
   provider?: string;
+  role?: 'admin' | 'customer' | 'user' | string;
 }
 

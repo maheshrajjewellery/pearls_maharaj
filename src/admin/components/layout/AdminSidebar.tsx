@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { useAdmin, AdminTab } from "../../context/AdminContext";
 import {
   LayoutDashboard,
@@ -9,7 +9,6 @@ import {
   Users,
   Briefcase,
   FileText,
-  Megaphone,
   Star,
   BarChart3,
   Settings,
@@ -25,17 +24,23 @@ import { getPublicStoreUrl } from "@/lib/siteUrl";
 interface SidebarProps {
   isMobileOpen?: boolean;
   onCloseMobile?: () => void;
+  onTabSelect?: (tab: AdminTab) => void;
 }
 
 export const AdminSidebar: React.FC<SidebarProps> = ({
   isMobileOpen = false,
   onCloseMobile,
+  onTabSelect,
 }) => {
   const { activeTab, setActiveTab, expandedGroups, toggleGroup, logout } =
     useAdmin();
 
   const handleNavClick = (tab: AdminTab) => {
-    setActiveTab(tab);
+    if (onTabSelect) {
+      onTabSelect(tab);
+    } else {
+      setActiveTab(tab);
+    }
     if (onCloseMobile) onCloseMobile();
   };
 
@@ -69,7 +74,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
       <div className="p-6 border-b border-[#30372F]/10 flex items-center justify-between bg-[#F7F3EC]">
         <div className="flex flex-col">
           <span className="font-serif text-xl tracking-[0.25em] text-[#30372F] font-light leading-none">
-            MAHARAJ
+            MAHESHRAJ
           </span>
           <span className="text-[9px] tracking-[0.35em] text-[#C5A15A] uppercase font-medium mt-1">
             JEWELLERY
@@ -103,20 +108,20 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
           </div>
         </button>
 
-        {/* LIVE STORE (EXTERNAL PUBLIC STOREFRONT LINK) */}
+        {/* LIVE STORE (PUBLIC STOREFRONT LINK) */}
         <a
-          href={getPublicStoreUrl()}
+          href={getPublicStoreUrl("/")}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
             if (onCloseMobile) onCloseMobile();
           }}
           className="group flex items-center justify-between px-4 py-2.5 text-xs tracking-wider uppercase transition-all duration-200 text-[#30372F]/70 hover:text-[#30372F] hover:bg-[#F5EBDD]/50"
-          title="Open Live Customer Storefront in New Tab"
+          title="Open Customer Storefront in New Tab"
         >
           <div className="flex items-center gap-3">
             <Store className="w-4 h-4 text-[#C5A15A]" />
-            <span className="font-medium">Store</span>
+            <span className="font-medium">Storefront</span>
           </div>
           <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity text-[#C5A15A]" />
         </a>
@@ -271,40 +276,6 @@ export const AdminSidebar: React.FC<SidebarProps> = ({
                 className={subNavItemClass("contact-cms")}
               >
                 <span>Contact Us</span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* MARKETING GROUP */}
-        <div>
-          <button
-            onClick={() => toggleGroup("marketing")}
-            className="w-full flex items-center justify-between px-4 py-2.5 text-xs tracking-wider uppercase text-[#30372F]/70 hover:text-[#30372F] hover:bg-[#F5EBDD]/50 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <Megaphone className="w-4 h-4 text-[#30372F]/60" />
-              <span>Marketing</span>
-            </div>
-            {expandedGroups.marketing ? (
-              <ChevronDown className="w-3.5 h-3.5 text-[#30372F]/40" />
-            ) : (
-              <ChevronRight className="w-3.5 h-3.5 text-[#30372F]/40" />
-            )}
-          </button>
-          {expandedGroups.marketing && (
-            <div className="mt-1 space-y-0.5 border-l border-[#30372F]/10 ml-5">
-              <button
-                onClick={() => handleNavClick("banners")}
-                className={subNavItemClass("banners")}
-              >
-                <span>Banners</span>
-              </button>
-              <button
-                onClick={() => handleNavClick("newsletter")}
-                className={subNavItemClass("newsletter")}
-              >
-                <span>Newsletter</span>
               </button>
             </div>
           )}

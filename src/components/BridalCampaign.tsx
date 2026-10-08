@@ -1,44 +1,57 @@
-﻿import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { bridalImage, bridalImageMobile } from '@/data/mockData';
-import { useShop } from '@/context/ShopContext';
+﻿import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { bridalImage, bridalImageMobile } from "@/data/mockData";
+import { useShop } from "@/context/ShopContext";
 
 export default function BridalCampaign() {
   const { setCurrentPage, setCategory, cmsData } = useShop();
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const bridalCMS = cmsData?.homepage?.bridalSection || {
-    heading: cmsData?.bridal?.heroHeading || 'Bridal Elegance For Sacred Moments',
-    subtitle: cmsData?.bridal?.heroSubheading || 'Discover majestic South Sea pearl strands, royal chokers, and diamond drop earrings crafted for sacred wedding celebrations.',
-    image: cmsData?.bridal?.heroImage || (isMobile ? bridalImageMobile : bridalImage),
-    ctaText: 'Explore Bridal Collection',
+    heading:
+      cmsData?.bridal?.heroHeading || "Bridal Elegance For Sacred Moments",
+    subtitle:
+      cmsData?.bridal?.heroSubheading ||
+      "Discover majestic South Sea pearl strands, royal chokers, and diamond drop earrings crafted for sacred wedding celebrations.",
+    image:
+      cmsData?.bridal?.heroImage ||
+      (isMobile ? bridalImageMobile : bridalImage),
+    ctaText: "Explore Bridal Collection",
     active: true,
   };
 
   if (bridalCMS.active === false) return null;
 
-  const bgImage = bridalCMS.image && bridalCMS.image.trim() !== '' 
-    ? bridalCMS.image 
-    : (isMobile ? bridalImageMobile : bridalImage);
-  const heading = bridalCMS.heading || 'Bridal Elegance For Sacred Moments';
-  const subtitle = bridalCMS.subtitle || 'Discover majestic South Sea pearl strands, royal chokers, and diamond drop earrings crafted for sacred wedding celebrations.';
-  const ctaText = bridalCMS.ctaText || 'Explore Bridal Collection';
+  const bgImage =
+    bridalCMS.image && bridalCMS.image.trim() !== ""
+      ? bridalCMS.image
+      : isMobile
+        ? bridalImageMobile
+        : bridalImage;
+  const heading = bridalCMS.heading || "Bridal Elegance For Sacred Moments";
+  const subtitle =
+    bridalCMS.subtitle ||
+    "Discover majestic South Sea pearl strands, royal chokers, and diamond drop earrings crafted for sacred wedding celebrations.";
+  const ctaText = bridalCMS.ctaText || "Explore Bridal Collection";
 
   return (
-    <section ref={ref} className="relative min-h-[580px] lg:min-h-[640px] w-full overflow-hidden bg-[#30372F] flex flex-col justify-center">
+    <section
+      ref={ref}
+      className="relative min-h-[580px] lg:min-h-[640px] w-full overflow-hidden bg-[#30372F] flex flex-col justify-center"
+    >
       {/* Background Image Container */}
       <motion.div
         className="absolute inset-0 z-0"
-        initial={{ clipPath: 'inset(100% 0 0 0)' }}
-        animate={inView ? { clipPath: 'inset(0 0 0 0)' } : {}}
+        initial={{ clipPath: "inset(100% 0 0 0)" }}
+        animate={inView ? { clipPath: "inset(0 0 0 0)" } : {}}
         transition={{ duration: 1.4, ease: [0.77, 0, 0.175, 1] }}
       >
         <motion.img
           src={bgImage}
-          alt="Maharaj Bridal Pearl Jewellery Campaign"
+          alt="MAHESHRAJ Bridal Pearl Jewellery Campaign"
           className="w-full h-full object-cover object-[center_35%]"
           initial={{ scale: 1.04 }}
           animate={inView ? { scale: 1 } : {}}
@@ -66,7 +79,11 @@ export default function BridalCampaign() {
             <motion.span
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="block"
             >
               {heading}
@@ -90,15 +107,19 @@ export default function BridalCampaign() {
           >
             <button
               onClick={() => {
-                setCurrentPage('shop');
-                setCategory('bridal');
-                window.history.pushState({}, '', '/shop?category=bridal');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setCurrentPage("shop");
+                setCategory("bridal");
+                window.history.pushState({}, "", "/shop?category=bridal");
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-[#C5A15A] text-white text-xs font-sans tracking-[0.1em] uppercase font-medium hover:bg-[#C5A15A] hover:text-[#30372F] transition-all duration-400 group cursor-pointer rounded-[2px] min-touch-target w-full sm:w-auto"
             >
               <span>{ctaText}</span>
-              <ArrowRight size={15} strokeWidth={1.5} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+              <ArrowRight
+                size={15}
+                strokeWidth={1.5}
+                className="group-hover:translate-x-1.5 transition-transform duration-300"
+              />
             </button>
           </motion.div>
         </div>

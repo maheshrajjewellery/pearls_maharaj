@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -13,7 +13,7 @@ export default function ShopHero() {
         className="absolute inset-0 pointer-events-none opacity-40"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 40%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)',
+            "radial-gradient(ellipse at 50% 40%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)",
         }}
       />
 
@@ -27,7 +27,7 @@ export default function ShopHero() {
         >
           <span className="h-px w-6 bg-champagne-300/60 hidden sm:inline-block" />
           <span className="text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-champagne-500">
-            MAHARAJ JEWELLERY
+            MAHESHRAJ JEWELLERY
           </span>
           <span className="h-px w-6 bg-champagne-300/60 hidden sm:inline-block" />
         </motion.div>

@@ -3,7 +3,7 @@ import { DbCategory } from '@/types/database';
 import { AdminCategory } from '@/types/admin';
 import { ShopCategory } from '@/types/shop';
 
-const LOCAL_STORAGE_KEY = 'maharaj_db_categories';
+const LOCAL_STORAGE_KEY = 'MAHESHRAJ_db_categories';
 
 // Initial seed categories fallback
 const initialCategories: DbCategory[] = [
@@ -316,7 +316,7 @@ export const deleteCategoryFromDb = async (categoryId: string): Promise<boolean>
 
   // Also check local products store if fallback
   if (!hasProducts && typeof window !== 'undefined') {
-    const savedProducts = localStorage.getItem('maharaj_admin_products');
+    const savedProducts = localStorage.getItem('MAHESHRAJ_admin_products');
     if (savedProducts) {
       try {
         const prods = JSON.parse(savedProducts);

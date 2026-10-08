@@ -1,15 +1,20 @@
-﻿import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { craftStages, craftsmanshipBg } from '@/data/mockData';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+﻿import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { craftStages, craftsmanshipBg } from "@/data/mockData";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
-import { useShop } from '@/context/ShopContext';
+import { useShop } from "@/context/ShopContext";
 
 export default function Craftsmanship() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const prefersReduced = useReducedMotion();
   const { cmsData } = useShop();
 
@@ -17,36 +22,41 @@ export default function Craftsmanship() {
 
   if (craftCMS && craftCMS.active === false) return null;
 
-  const bgImg = craftCMS?.bgImage && craftCMS.bgImage.trim() !== '' ? craftCMS.bgImage : craftsmanshipBg;
-  const heading = craftCMS?.heading || 'Crafted to Last';
-  const subtitle = craftCMS?.subtitle || 'Observe how raw organic pearls transform into fine jewellery heirlooms through our 5-stage creation sequence.';
+  const bgImg =
+    craftCMS?.bgImage && craftCMS.bgImage.trim() !== ""
+      ? craftCMS.bgImage
+      : craftsmanshipBg;
+  const heading = craftCMS?.heading || "Crafted to Last";
+  const subtitle =
+    craftCMS?.subtitle ||
+    "Observe how raw organic pearls transform into fine jewellery heirlooms through our 5-stage creation sequence.";
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start start', 'end end'],
+    offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-58%']);
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-58%"]);
 
   return (
     <section
       ref={sectionRef}
       className="relative bg-[#30372F] text-white overflow-hidden"
-      style={{ height: isMobile || prefersReduced ? 'auto' : '130vh' }}
+      style={{ height: isMobile || prefersReduced ? "auto" : "130vh" }}
     >
       <div
         ref={ref}
         className={`${
           isMobile || prefersReduced
-            ? 'py-16 px-6'
-            : 'sticky top-0 h-screen min-h-[600px] max-h-[860px] flex flex-col justify-center'
+            ? "py-16 px-6"
+            : "sticky top-0 h-screen min-h-[600px] max-h-[860px] flex flex-col justify-center"
         }`}
       >
         {/* Background image & gradient overlay */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={bgImg}
-            alt="Maharaj Craftsmanship background"
+            alt="MAHESHRAJ Craftsmanship background"
             className="w-full h-full object-cover opacity-20"
             loading="lazy"
           />
@@ -88,7 +98,10 @@ export default function Craftsmanship() {
           <div className="flex items-center justify-between px-12 relative">
             <div className="absolute left-12 right-12 top-1/2 -translate-y-1/2 h-[1px] bg-[#C5A15A]/30 z-0" />
             {craftStages.map((stage) => (
-              <div key={stage.number} className="relative z-10 flex flex-col items-center">
+              <div
+                key={stage.number}
+                className="relative z-10 flex flex-col items-center"
+              >
                 <span className="w-4 h-4 rounded-full bg-[#30372F] border-2 border-[#C5A15A] flex items-center justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A15A]" />
                 </span>

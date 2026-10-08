@@ -184,7 +184,7 @@ export const initialCollections: AdminCollection[] = [
 export const initialHomepageCMS: HomepageCMS = {
   hero: {
     heading: 'The Purest Pearl Elegance',
-    subtitle: 'MAHARAJ JEWELLERY',
+    subtitle: 'MAHESHRAJ JEWELLERY',
     description: 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.',
     bgImage: '/images/pearl-banner.png',
     ctaText: 'EXPLORE THE COLLECTION',
@@ -194,7 +194,7 @@ export const initialHomepageCMS: HomepageCMS = {
   heroSlides: [
     {
       id: 'slide-01',
-      title: 'MAHARAJ JEWELLERY',
+      title: 'MAHESHRAJ JEWELLERY',
       subtitle: 'The Purest Pearl Elegance',
       description: 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.',
       imageUrl: '/images/pearl-banner.png',
@@ -253,7 +253,7 @@ export const initialHomepageCMS: HomepageCMS = {
   },
   pearlStory: {
     heading: 'A Legacy of Radiance',
-    content: 'For over three decades, Maharaj Jewellery has preserved the sacred art of pearl selection and gold smithing. Every pearl in our collection is hand-evaluated for luster, overtones, and surface perfection.',
+    content: 'For over three decades, MAHESHRAJ Jewellery has preserved the sacred art of pearl selection and gold smithing. Every pearl in our collection is hand-evaluated for luster, overtones, and surface perfection.',
     image: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1000',
     ctaText: 'DISCOVER OUR HERITAGE',
     ctaLink: '/about',
@@ -285,11 +285,11 @@ export const initialHomepageCMS: HomepageCMS = {
     active: true,
   },
   editorialGallery: {
-    title: 'The Maharaj World',
+    title: 'The MAHESHRAJ World',
     active: true,
   },
   newsletter: {
-    title: 'Join The Maharaj Inner Circle',
+    title: 'Join The MAHESHRAJ Inner Circle',
     subtitle: 'Receive private invitations to preview limited edition releases and pearl education masterclasses.',
     active: true,
   },
@@ -300,8 +300,8 @@ export const initialAboutCMS: AboutCMS = {
   heroImage: 'https://images.pexels.com/photos/6263146/pexels-photo-6263146.jpeg?auto=compress&cs=tinysrgb&w=1920',
   philosophyHeading: 'Our Philosophy',
   philosophyText: 'We believe jewellery should not merely adorn, but evoke an indelible sense of emotion, history, and royal dignity.',
-  storyHeading: 'The Maharaj Pearl Heritage',
-  storyText: 'Founded in 1994, Maharaj Jewellery set out with a single ambition: to curate the finest natural and cultured pearls from the South Pacific and Japan, matching them with hand-sculpted 18K and 22K gold settings.',
+  storyHeading: 'The MAHESHRAJ Pearl Heritage',
+  storyText: 'Founded in 1994, MAHESHRAJ Jewellery set out with a single ambition: to curate the finest natural and cultured pearls from the South Pacific and Japan, matching them with hand-sculpted 18K and 22K gold settings.',
   storyImage: 'https://images.pexels.com/photos/6766733/pexels-photo-6766733.jpeg?auto=compress&cs=tinysrgb&w=1000',
   craftHeading: 'Uncompromising Mastery',
   craftText: 'Each master jeweler in our Hyderabad atelier has spent over 20 years honing techniques passed down through generations of royal court goldsmiths.',
@@ -354,21 +354,21 @@ export const initialBridalCMS: BridalCMS = {
 };
 
 export const initialSettings: AdminSettings = {
-  storeName: 'Maharaj Jewellery',
-  storeEmail: 'concierge@maharajjewellery.com',
+  storeName: 'MAHESHRAJ Jewellery',
+  storeEmail: 'concierge@MAHESHRAJjewellery.com',
   storePhone: '+91 (040) 2355-8899',
-  storeAddress: 'Maharaj House, Road No. 36, Jubilee Hills, Hyderabad, Telangana 500033',
+  storeAddress: 'MAHESHRAJ House, Road No. 36, Jubilee Hills, Hyderabad, Telangana 500033',
   currency: 'INR (₹)',
   taxRatePercent: 3, // 3% GST on jewellery
   freeShippingThreshold: 50000,
   standardShippingFee: 1500,
   expressShippingFee: 3500,
-  socialInstagram: 'https://instagram.com/maharajjewellery',
-  socialFacebook: 'https://facebook.com/maharajjewellery',
-  socialPinterest: 'https://pinterest.com/maharajjewellery',
+  socialInstagram: 'https://instagram.com/MAHESHRAJjewellery',
+  socialFacebook: 'https://facebook.com/MAHESHRAJjewellery',
+  socialPinterest: 'https://pinterest.com/MAHESHRAJjewellery',
   socialWhatsapp: '+919876543210',
-  seoDefaultTitle: 'Maharaj Jewellery | Luxury South Sea & Akoya Pearls',
-  seoDefaultDescription: 'Discover imperial luxury pearl necklaces, earrings, rings and bespoke bridal collections by Maharaj Jewellery.',
+  seoDefaultTitle: 'MAHESHRAJ Jewellery | Luxury South Sea & Akoya Pearls',
+  seoDefaultDescription: 'Discover imperial luxury pearl necklaces, earrings, rings and bespoke bridal collections by MAHESHRAJ Jewellery.',
   enableGuestCheckout: true,
   enableReviews: true,
 };

@@ -1,27 +1,29 @@
-﻿import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
-import { useShop } from '@/context/ShopContext';
+﻿import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { useShop } from "@/context/ShopContext";
 
 export default function Newsletter() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
   const { cmsData } = useShop();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const newsletterCMS = cmsData?.homepage?.newsletter;
 
   if (newsletterCMS && newsletterCMS.active === false) return null;
 
-  const title = newsletterCMS?.title || 'Enter The World Of Maharaj.';
-  const subtitle = newsletterCMS?.subtitle || 'Discover new collections, jewellery stories and exclusive launches.';
+  const title = newsletterCMS?.title || "Enter The World Of MAHESHRAJ.";
+  const subtitle =
+    newsletterCMS?.subtitle ||
+    "Discover new collections, jewellery stories and exclusive launches.";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.trim()) {
       setSubmitted(true);
-      setEmail('');
+      setEmail("");
       setTimeout(() => setSubmitted(false), 4000);
     }
   };
@@ -67,7 +69,11 @@ export default function Newsletter() {
             className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#30372F] text-[#F7F3EB] text-xs font-sans tracking-[0.1em] uppercase font-medium hover:bg-[#C5A15A] hover:text-[#30372F] transition-colors duration-500 whitespace-nowrap group min-touch-target"
           >
             Subscribe
-            <ArrowRight size={16} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-400" />
+            <ArrowRight
+              size={16}
+              strokeWidth={1.5}
+              className="group-hover:translate-x-2 transition-transform duration-400"
+            />
           </button>
         </motion.form>
 

@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -11,7 +11,7 @@ export default function AboutBrandStatement() {
     <section
       ref={ref}
       className="relative w-full h-[52vh] sm:h-[58vh] min-h-[440px] max-h-[620px] bg-cocoa-300 overflow-hidden flex items-center justify-center select-none"
-      aria-label="Maharaj Jewellery Editorial Brand Statement"
+      aria-label="MAHESHRAJ Jewellery Editorial Brand Statement"
     >
       {/* Background Photography (Full-Width Macro Pearl Imagery) */}
       <div className="absolute inset-0 z-0">
@@ -32,7 +32,6 @@ export default function AboutBrandStatement() {
 
       {/* Foreground Content */}
       <div className="relative z-10 max-w-[1080px] mx-auto px-6 sm:px-10 text-center flex flex-col items-center">
-        
         {/* Small Brand Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: prefersReduced ? 0 : 16 }}
@@ -42,7 +41,7 @@ export default function AboutBrandStatement() {
         >
           <span className="h-px w-6 bg-champagne-300/60" />
           <p className="text-champagne-300 text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.1em] uppercase">
-            MAHARAJ JEWELLERY
+            MAHESHRAJ JEWELLERY
           </p>
           <span className="h-px w-6 bg-champagne-300/60" />
         </motion.div>
@@ -74,11 +73,10 @@ export default function AboutBrandStatement() {
         {/* Minimal Champagne Accent */}
         <motion.div
           initial={{ width: 0, opacity: 0 }}
-          animate={inView ? { width: '60px', opacity: 1 } : {}}
+          animate={inView ? { width: "60px", opacity: 1 } : {}}
           transition={{ duration: 1, delay: 0.5, ease: luxuryEase }}
           className="h-px bg-champagne-300/60"
         />
-
       </div>
     </section>
   );

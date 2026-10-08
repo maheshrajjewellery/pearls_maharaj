@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { Plus, Minus, HelpCircle, CheckCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { Plus, Minus, HelpCircle, CheckCircle } from "lucide-react";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -14,45 +14,46 @@ interface MythItem {
 
 const pearlMyths: MythItem[] = [
   {
-    id: 'myth-1',
-    question: 'Are all genuine pearls perfectly round?',
-    mythSummary: 'Myth: Only round pearls are genuine or valuable.',
+    id: "myth-1",
+    question: "Are all genuine pearls perfectly round?",
+    mythSummary: "Myth: Only round pearls are genuine or valuable.",
     factExplanation:
-      'Fact: Perfectly spherical pearls represent a tiny fraction of global harvests. Pearls naturally grow into ovals, buttons, teardrops, and asymmetrical baroques. High-luster baroque and drop pearls are revered in high jewellery for their unique sculptural artistry.',
+      "Fact: Perfectly spherical pearls represent a tiny fraction of global harvests. Pearls naturally grow into ovals, buttons, teardrops, and asymmetrical baroques. High-luster baroque and drop pearls are revered in high jewellery for their unique sculptural artistry.",
   },
   {
-    id: 'myth-2',
-    question: 'Are cultured pearls real pearls?',
-    mythSummary: 'Myth: Cultured pearls are synthetic or imitation gems.',
+    id: "myth-2",
+    question: "Are cultured pearls real pearls?",
+    mythSummary: "Myth: Cultured pearls are synthetic or imitation gems.",
     factExplanation:
-      'Fact: Cultured pearls are 100% genuine organic gemstones. The only difference between natural and cultured pearls is that human pearl farmers carefully initiate the biological process by introducing a nucleus into the oyster. The mollusk itself deposits every single layer of natural nacre.',
+      "Fact: Cultured pearls are 100% genuine organic gemstones. The only difference between natural and cultured pearls is that human pearl farmers carefully initiate the biological process by introducing a nucleus into the oyster. The mollusk itself deposits every single layer of natural nacre.",
   },
   {
-    id: 'myth-3',
-    question: 'Do pearls last forever without specialized care?',
-    mythSummary: 'Myth: Pearls are mineral stones that resist all chemicals.',
+    id: "myth-3",
+    question: "Do pearls last forever without specialized care?",
+    mythSummary: "Myth: Pearls are mineral stones that resist all chemicals.",
     factExplanation:
-      'Fact: Pearl nacre is organic calcium carbonate (aragonite) held together by conchiolin protein. Contact with acidic perfumes, pool chlorine, or household cleaners will slowly erode the nacre and dull the luster. With simple routine care, pearls easily endure for generations.',
+      "Fact: Pearl nacre is organic calcium carbonate (aragonite) held together by conchiolin protein. Contact with acidic perfumes, pool chlorine, or household cleaners will slowly erode the nacre and dull the luster. With simple routine care, pearls easily endure for generations.",
   },
   {
-    id: 'myth-4',
-    question: 'Is a larger pearl always higher in quality than a smaller pearl?',
-    mythSummary: 'Myth: Diameter is the single deciding metric of luxury.',
+    id: "myth-4",
+    question:
+      "Is a larger pearl always higher in quality than a smaller pearl?",
+    mythSummary: "Myth: Diameter is the single deciding metric of luxury.",
     factExplanation:
-      'Fact: Luster, surface clarity, nacre thickness, and optical symmetry outweigh size. A luminous, mirror-like 7.5mm Akoya pearl is far more precious and visually captivating than a dull, chalky 11mm pearl with heavy blemishes.',
+      "Fact: Luster, surface clarity, nacre thickness, and optical symmetry outweigh size. A luminous, mirror-like 7.5mm Akoya pearl is far more precious and visually captivating than a dull, chalky 11mm pearl with heavy blemishes.",
   },
   {
-    id: 'myth-5',
-    question: 'Should you scrape pearls on your teeth to test authenticity?',
-    mythSummary: 'Myth: Rubbing against enamel is a safe home test.',
+    id: "myth-5",
+    question: "Should you scrape pearls on your teeth to test authenticity?",
+    mythSummary: "Myth: Rubbing against enamel is a safe home test.",
     factExplanation:
-      'Fact: While genuine nacre feels subtly gritty against tooth enamel due to microscopic aragonite platelets (whereas glass or plastic feels slick), biting or scraping can scratch delicate nacre layers. Visual inspection under magnification is the safe and professional method.',
+      "Fact: While genuine nacre feels subtly gritty against tooth enamel due to microscopic aragonite platelets (whereas glass or plastic feels slick), biting or scraping can scratch delicate nacre layers. Visual inspection under magnification is the safe and professional method.",
   },
 ];
 
 export default function PearlMyths() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
-  const [openId, setOpenId] = useState<string | null>('myth-1');
+  const [openId, setOpenId] = useState<string | null>("myth-1");
   const prefersReduced = useReducedMotion();
 
   const toggleAccordion = (id: string) => {
@@ -67,7 +68,6 @@ export default function PearlMyths() {
       aria-label="Pearl myths and facts"
     >
       <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16">
-        
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-18">
           <motion.div
@@ -89,7 +89,10 @@ export default function PearlMyths() {
             transition={{ duration: 0.8, delay: 0.1, ease: luxuryEase }}
             className="font-serif text-cocoa-300 text-[clamp(32px,4.5vw,54px)] font-normal leading-[1.05] tracking-[-0.01em]"
           >
-            PEARL MYTHS <span className="italic font-serif font-light text-cocoa-200">& FACTS.</span>
+            PEARL MYTHS{" "}
+            <span className="italic font-serif font-light text-cocoa-200">
+              & FACTS.
+            </span>
           </motion.h2>
 
           <motion.p
@@ -98,7 +101,8 @@ export default function PearlMyths() {
             transition={{ duration: 0.8, delay: 0.2, ease: luxuryEase }}
             className="mt-3 text-cocoa-100/80 text-[14px] sm:text-[15px] font-sans font-light max-w-lg mx-auto leading-relaxed"
           >
-            Dispel common misconceptions with scientific, factual insights curated by Maharaj gemological researchers.
+            Dispel common misconceptions with scientific, factual insights
+            curated by MAHESHRAJ gemological researchers.
           </motion.p>
         </div>
 
@@ -112,11 +116,15 @@ export default function PearlMyths() {
                 key={item.id}
                 initial={{ opacity: 0, y: prefersReduced ? 0 : 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.1 + idx * 0.07, ease: luxuryEase }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.1 + idx * 0.07,
+                  ease: luxuryEase,
+                }}
                 className={`border transition-all duration-300 rounded-[2px] overflow-hidden ${
                   isOpen
-                    ? 'bg-pearlIvory-50 border-champagne-400 shadow-[0_4px_20px_rgba(200,169,107,0.1)]'
-                    : 'bg-pearlIvory-50/70 border-[rgba(41,35,31,0.08)] hover:border-champagne-300/40'
+                    ? "bg-pearlIvory-50 border-champagne-400 shadow-[0_4px_20px_rgba(200,169,107,0.1)]"
+                    : "bg-pearlIvory-50/70 border-[rgba(41,35,31,0.08)] hover:border-champagne-300/40"
                 }`}
               >
                 {/* Header Button */}
@@ -136,7 +144,11 @@ export default function PearlMyths() {
                   </div>
 
                   <div className="w-8 h-8 rounded-full bg-pearlIvory-100 border border-[rgba(41,35,31,0.08)] flex items-center justify-center text-cocoa-300 flex-shrink-0">
-                    {isOpen ? <Minus size={15} strokeWidth={1.8} /> : <Plus size={15} strokeWidth={1.8} />}
+                    {isOpen ? (
+                      <Minus size={15} strokeWidth={1.8} />
+                    ) : (
+                      <Plus size={15} strokeWidth={1.8} />
+                    )}
                   </div>
                 </button>
 
@@ -146,13 +158,16 @@ export default function PearlMyths() {
                     <motion.div
                       id={`myth-content-${item.id}`}
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: luxuryEase }}
                     >
                       <div className="px-5 pb-6 sm:px-6 sm:pb-7 pt-2 border-t border-[rgba(41,35,31,0.06)] space-y-3">
                         <div className="flex items-center gap-2 text-cocoa-100 text-xs font-mono">
-                          <HelpCircle size={13} className="text-champagne-400" />
+                          <HelpCircle
+                            size={13}
+                            className="text-champagne-400"
+                          />
                           <span className="italic">{item.mythSummary}</span>
                         </div>
                         <p className="text-sm font-sans font-light text-cocoa-200 leading-relaxed pl-5 border-l-2 border-champagne-300">
@@ -166,7 +181,6 @@ export default function PearlMyths() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

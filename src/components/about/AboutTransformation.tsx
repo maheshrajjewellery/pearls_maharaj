@@ -1,4 +1,4 @@
-﻿import { useRef, useState } from 'react';
+﻿import { useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -6,7 +6,7 @@ import {
   useSpring,
   useReducedMotion,
   AnimatePresence,
-} from 'framer-motion';
+} from "framer-motion";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -19,28 +19,32 @@ interface StageInfo {
 
 const stages: StageInfo[] = [
   {
-    tag: 'STAGE 01',
-    title: 'FROM NATURE',
-    subtitle: 'The Organic Origin',
-    description: 'An unblemished natural pearl formed slowly in deep marine currents, glowing with internal iridescence.',
+    tag: "STAGE 01",
+    title: "FROM NATURE",
+    subtitle: "The Organic Origin",
+    description:
+      "An unblemished natural pearl formed slowly in deep marine currents, glowing with internal iridescence.",
   },
   {
-    tag: 'STAGE 02',
-    title: 'TO DESIGN',
-    subtitle: 'Architectural Blueprint',
-    description: 'Fine champagne gold guide lines and geometric proportions are drawn around the gem’s contours.',
+    tag: "STAGE 02",
+    title: "TO DESIGN",
+    subtitle: "Architectural Blueprint",
+    description:
+      "Fine champagne gold guide lines and geometric proportions are drawn around the gem’s contours.",
   },
   {
-    tag: 'STAGE 03',
-    title: 'TO CRAFT',
-    subtitle: 'Atelier Metallurgy',
-    description: 'Master artisans hand-forge the 18K gold setting, embracing the pearl in seamless royal prong filigree.',
+    tag: "STAGE 03",
+    title: "TO CRAFT",
+    subtitle: "Atelier Metallurgy",
+    description:
+      "Master artisans hand-forge the 18K gold setting, embracing the pearl in seamless royal prong filigree.",
   },
   {
-    tag: 'STAGE 04',
-    title: 'TO YOU',
-    subtitle: 'The Heirloom Finished',
-    description: 'The completed Maharaj signature masterpiece gleams, ready to become a timeless part of your story.',
+    tag: "STAGE 04",
+    title: "TO YOU",
+    subtitle: "The Heirloom Finished",
+    description:
+      "The completed MAHESHRAJ signature masterpiece gleams, ready to become a timeless part of your story.",
   },
 ];
 
@@ -51,7 +55,7 @@ export default function AboutTransformation() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ["start start", "end end"],
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -69,7 +73,11 @@ export default function AboutTransformation() {
 
   // Computed visual properties
   // Gold geometry lines (Design phase)
-  const designLinesOpacity = useTransform(smoothProgress, [0.18, 0.32, 0.75, 0.85], [0, 1, 1, 0.3]);
+  const designLinesOpacity = useTransform(
+    smoothProgress,
+    [0.18, 0.32, 0.75, 0.85],
+    [0, 1, 1, 0.3],
+  );
   const designLinesScale = useTransform(smoothProgress, [0.2, 0.45], [0.85, 1]);
   const designDashOffset = useTransform(smoothProgress, [0.2, 0.45], [300, 0]);
 
@@ -78,19 +86,35 @@ export default function AboutTransformation() {
   const craftScale = useTransform(smoothProgress, [0.45, 0.65], [0.92, 1]);
 
   // Final jewellery brilliance / chain / sweep (To You phase)
-  const finalJewelleryOpacity = useTransform(smoothProgress, [0.68, 0.82], [0, 1]);
-  const lightSweepX = useTransform(smoothProgress, [0.78, 0.95], ['-100%', '200%']);
-  const lightSweepOpacity = useTransform(smoothProgress, [0.78, 0.83, 0.92, 0.96], [0, 0.8, 0.8, 0]);
+  const finalJewelleryOpacity = useTransform(
+    smoothProgress,
+    [0.68, 0.82],
+    [0, 1],
+  );
+  const lightSweepX = useTransform(
+    smoothProgress,
+    [0.78, 0.95],
+    ["-100%", "200%"],
+  );
+  const lightSweepOpacity = useTransform(
+    smoothProgress,
+    [0.78, 0.83, 0.92, 0.96],
+    [0, 0.8, 0.8, 0],
+  );
 
   // Pearl subtle breathing / vertical travel
   const pearlY = useTransform(smoothProgress, [0, 0.5, 1], [0, -10, 0]);
-  const pearlGlow = useTransform(smoothProgress, [0, 0.5, 0.85, 1], [0.2, 0.4, 0.65, 0.5]);
+  const pearlGlow = useTransform(
+    smoothProgress,
+    [0, 0.5, 0.85, 1],
+    [0.2, 0.4, 0.65, 0.5],
+  );
 
   // Stage text active index calculation for scroll
   const [activeStageIndex, setActiveStageIndex] = useState(0);
 
   // Sync active stage based on scroll or manual click
-  smoothProgress.on('change', (latest) => {
+  smoothProgress.on("change", (latest) => {
     if (manualStage === null) {
       if (latest < 0.28) setActiveStageIndex(0);
       else if (latest < 0.55) setActiveStageIndex(1);
@@ -99,19 +123,22 @@ export default function AboutTransformation() {
     }
   });
 
-  const currentDisplayStage = manualStage !== null ? manualStage : activeStageIndex;
+  const currentDisplayStage =
+    manualStage !== null ? manualStage : activeStageIndex;
   const currentInfo = stages[currentDisplayStage];
 
   return (
     <section
       ref={containerRef}
       className="relative bg-[#30372F] text-pearlIvory-50 select-none overflow-hidden"
-      style={{ height: prefersReduced ? 'auto' : '170vh' }}
+      style={{ height: prefersReduced ? "auto" : "170vh" }}
       aria-label="From Pearl to Jewellery Transformation"
     >
       <div
         className={`${
-          prefersReduced ? 'relative py-24 sm:py-28' : 'sticky top-0 h-screen min-h-[620px] max-h-[880px]'
+          prefersReduced
+            ? "relative py-24 sm:py-28"
+            : "sticky top-0 h-screen min-h-[620px] max-h-[880px]"
         } w-full flex flex-col items-center justify-center px-6 sm:px-10`}
       >
         {/* Ambient background illumination */}
@@ -119,7 +146,7 @@ export default function AboutTransformation() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 65% 55% at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(23, 20, 18, 0.85) 60%, #30372F 100%)',
+              "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(23, 20, 18, 0.85) 60%, #30372F 100%)",
           }}
         />
 
@@ -135,7 +162,6 @@ export default function AboutTransformation() {
 
         {/* Central Stage Container (Aspect Controlled) */}
         <div className="relative z-10 w-full max-w-[620px] aspect-[1/1] sm:aspect-[4/3] max-h-[420px] flex items-center justify-center">
-          
           {/* Radial soft spotlight behind pearl */}
           <motion.div
             className="absolute w-[280px] sm:w-[360px] h-[280px] sm:h-[360px] rounded-full bg-champagne-300/15 blur-[60px] pointer-events-none"
@@ -159,7 +185,13 @@ export default function AboutTransformation() {
               </radialGradient>
 
               {/* Gold Polished Gradient */}
-              <linearGradient id="goldFiligree" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="goldFiligree"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#D4BE8A" />
                 <stop offset="35%" stopColor="#FFFDF8" />
                 <stop offset="70%" stopColor="#C5A15A" />
@@ -167,12 +199,30 @@ export default function AboutTransformation() {
               </linearGradient>
 
               {/* Pearl Shadow Filter */}
-              <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#000000" floodOpacity="0.6" />
+              <filter
+                id="softShadow"
+                x="-30%"
+                y="-30%"
+                width="160%"
+                height="160%"
+              >
+                <feDropShadow
+                  dx="0"
+                  dy="8"
+                  stdDeviation="10"
+                  floodColor="#000000"
+                  floodOpacity="0.6"
+                />
               </filter>
 
               {/* Gold Line Glow Filter */}
-              <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <filter
+                id="goldGlow"
+                x="-30%"
+                y="-30%"
+                width="160%"
+                height="160%"
+              >
                 <feGaussianBlur stdDeviation="1.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
@@ -210,7 +260,7 @@ export default function AboutTransformation() {
               style={{
                 opacity: prefersReduced ? 0.3 : designLinesOpacity,
                 scale: prefersReduced ? 1 : designLinesScale,
-                transformOrigin: '250px 250px',
+                transformOrigin: "250px 250px",
               }}
             >
               {/* Outer compass grid */}
@@ -234,9 +284,25 @@ export default function AboutTransformation() {
                 opacity="0.4"
               />
               {/* Crosshair guide lines */}
-              <line x1="110" y1="250" x2="390" y2="250" stroke="#C5A15A" strokeWidth="0.6" opacity="0.35" />
-              <line x1="250" y1="110" x2="250" y2="390" stroke="#C5A15A" strokeWidth="0.6" opacity="0.35" />
-              
+              <line
+                x1="110"
+                y1="250"
+                x2="390"
+                y2="250"
+                stroke="#C5A15A"
+                strokeWidth="0.6"
+                opacity="0.35"
+              />
+              <line
+                x1="250"
+                y1="110"
+                x2="250"
+                y2="390"
+                stroke="#C5A15A"
+                strokeWidth="0.6"
+                opacity="0.35"
+              />
+
               {/* Golden ratio diamond enclosure */}
               <polygon
                 points="250,135 365,250 250,365 135,250"
@@ -253,7 +319,7 @@ export default function AboutTransformation() {
               style={{
                 opacity: prefersReduced ? 1 : craftOpacity,
                 scale: prefersReduced ? 1 : craftScale,
-                transformOrigin: '250px 250px',
+                transformOrigin: "250px 250px",
               }}
             >
               {/* Filigree halo ring */}
@@ -266,7 +332,7 @@ export default function AboutTransformation() {
                 strokeWidth="2.2"
                 filter="url(#goldGlow)"
               />
-              
+
               {/* 8-Point Goldsmith Setting Prongs */}
               {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
                 const rad = (deg * Math.PI) / 180;
@@ -274,7 +340,14 @@ export default function AboutTransformation() {
                 const py = 250 + Math.sin(rad) * 88;
                 return (
                   <g key={deg}>
-                    <circle cx={px} cy={py} r="4.2" fill="url(#goldFiligree)" stroke="#8A6E30" strokeWidth="0.6" />
+                    <circle
+                      cx={px}
+                      cy={py}
+                      r="4.2"
+                      fill="url(#goldFiligree)"
+                      stroke="#8A6E30"
+                      strokeWidth="0.6"
+                    />
                     <circle cx={px} cy={py} r="1.5" fill="#FFFDF8" />
                   </g>
                 );
@@ -293,7 +366,7 @@ export default function AboutTransformation() {
             <motion.g
               style={{
                 y: prefersReduced ? 0 : pearlY,
-                transformOrigin: '250px 250px',
+                transformOrigin: "250px 250px",
               }}
             >
               {/* Pearl sphere */}
@@ -304,7 +377,7 @@ export default function AboutTransformation() {
                 fill="url(#naturePearlGrad)"
                 filter="url(#softShadow)"
               />
-              
+
               {/* Internal nacre highlight / luster curve */}
               <ellipse
                 cx="225"
@@ -339,9 +412,9 @@ export default function AboutTransformation() {
               style={{
                 opacity: prefersReduced ? 0 : lightSweepOpacity,
                 x: prefersReduced ? 0 : lightSweepX,
-                mixBlendMode: 'screen',
-                filter: 'blur(20px)',
-                pointerEvents: 'none',
+                mixBlendMode: "screen",
+                filter: "blur(20px)",
+                pointerEvents: "none",
               }}
             />
           </svg>
@@ -381,8 +454,8 @@ export default function AboutTransformation() {
                 onClick={() => setManualStage(idx)}
                 className={`px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-[11px] font-sans tracking-[0.2em] uppercase transition-all duration-300 border ${
                   isActive
-                    ? 'bg-champagne-300 text-cocoa-400 border-champagne-300 font-medium shadow-[0_0_12px_rgba(200,169,107,0.3)]'
-                    : 'bg-transparent text-pearlIvory-300/60 border-pearlIvory-300/20 hover:border-champagne-300/50 hover:text-pearlIvory-50'
+                    ? "bg-champagne-300 text-cocoa-400 border-champagne-300 font-medium shadow-[0_0_12px_rgba(200,169,107,0.3)]"
+                    : "bg-transparent text-pearlIvory-300/60 border-pearlIvory-300/20 hover:border-champagne-300/50 hover:text-pearlIvory-50"
                 }`}
               >
                 {stage.title}

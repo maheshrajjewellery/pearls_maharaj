@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -158,7 +158,7 @@ export default function DashboardPage() {
     setActiveDashboardTab(tab);
     const subPath = tab === "overview" ? "" : `/${tab}`;
     if (typeof window !== "undefined") {
-      window.history.pushState({}, "", `/dashboard${subPath}`);
+      window.history.pushState({}, "", `/customer/dashboard${subPath}`);
     }
   };
 
@@ -578,9 +578,7 @@ export default function DashboardPage() {
                                 className="w-16 h-16 object-cover border border-[#171310]/15 shrink-0 bg-white"
                               />
                             ) : (
-                              <div
-                                className="w-16 h-16 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0"
-                              >
+                              <div className="w-16 h-16 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0">
                                 <Package size={24} />
                               </div>
                             )}
@@ -690,9 +688,7 @@ export default function DashboardPage() {
                         className="border border-[#171310]/15 bg-[#FAF7F2] overflow-hidden"
                       >
                         {/* Order Header */}
-                        <div
-                          className="p-4 bg-[#F5EBDD]/50 border-b border-[#171310]/10 flex flex-wrap items-center justify-between gap-4"
-                        >
+                        <div className="p-4 bg-[#F5EBDD]/50 border-b border-[#171310]/10 flex flex-wrap items-center justify-between gap-4">
                           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs">
                             <div>
                               <span className="text-[#171310]/50 block text-[10px] uppercase tracking-wider font-semibold">
@@ -762,16 +758,14 @@ export default function DashboardPage() {
                                     className="w-16 h-16 object-cover border border-[#171310]/15 shrink-0 bg-white"
                                   />
                                 ) : (
-                                  <div
-                                    className="w-16 h-16 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0"
-                                  >
+                                  <div className="w-16 h-16 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0">
                                     <Package size={24} />
                                   </div>
                                 )}
                                 <div className="space-y-0.5">
                                   <h4 className="font-serif text-sm font-normal text-[#171310]">
                                     {item.product?.name ||
-                                      "Maharaj Pearl Jewellery"}
+                                      "MAHESHRAJ Pearl Jewellery"}
                                   </h4>
                                   {item.selectedSize && (
                                     <p className="font-sans text-[11px] text-[#171310]/60">
@@ -1279,7 +1273,7 @@ export default function DashboardPage() {
                     <span>PCI-DSS Compliant Security Guarantee</span>
                   </div>
                   <p className="text-amber-900/80 leading-relaxed font-light">
-                    For your financial safety, Maharaj Jewellery never stores
+                    For your financial safety, MAHESHRAJ Jewellery never stores
                     raw credit card numbers, CVVs, or UPI PINs. All payment
                     transactions are encrypted and processed through certified
                     PCI-DSS payment gateways.
@@ -1734,15 +1728,13 @@ export default function DashboardPage() {
                           className="w-14 h-14 object-cover border border-[#171310]/15 shrink-0 bg-white"
                         />
                       ) : (
-                        <div
-                          className="w-14 h-14 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0"
-                        >
+                        <div className="w-14 h-14 bg-[#F5EBDD] flex items-center justify-center text-[#171310]/40 shrink-0">
                           <Package size={20} />
                         </div>
                       )}
                       <div>
                         <h5 className="font-serif text-sm font-normal text-[#171310]">
-                          {item.product?.name || "Maharaj Pearl Jewellery"}
+                          {item.product?.name || "MAHESHRAJ Pearl Jewellery"}
                         </h5>
                         {item.selectedSize && (
                           <p className="font-sans text-[11px] text-[#171310]/60">

@@ -260,7 +260,7 @@ export const fetchOrdersFromDb = async (
   // Combine with LocalStorage orders if available to prevent data loss
   if (typeof window !== 'undefined') {
     try {
-      const savedAll = localStorage.getItem('maharaj_all_orders');
+      const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
       if (savedAll) {
         const localOrders: AdminOrder[] = JSON.parse(savedAll);
         // Merge without duplicates
@@ -453,10 +453,10 @@ export const updateOrderStatusInDb = async (
     // 5. Sync in LocalStorage
     if (typeof window !== 'undefined') {
       try {
-        const savedAll = localStorage.getItem('maharaj_all_orders');
+        const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
         let all: AdminOrder[] = savedAll ? JSON.parse(savedAll) : [];
         all = all.map((o) => (o.id === existing.id ? updatedOrder : o));
-        localStorage.setItem('maharaj_all_orders', JSON.stringify(all));
+        localStorage.setItem('MAHESHRAJ_all_orders', JSON.stringify(all));
       } catch {}
     }
 
@@ -552,10 +552,10 @@ export const cancelOrderInDb = async (
     // Save to LocalStorage
     if (typeof window !== 'undefined') {
       try {
-        const savedAll = localStorage.getItem('maharaj_all_orders');
+        const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
         let all: AdminOrder[] = savedAll ? JSON.parse(savedAll) : [];
         all = all.map((o) => (o.id === existing.id ? updatedOrder : o));
-        localStorage.setItem('maharaj_all_orders', JSON.stringify(all));
+        localStorage.setItem('MAHESHRAJ_all_orders', JSON.stringify(all));
       } catch {}
     }
 
@@ -637,10 +637,10 @@ export const refundOrderInDb = async (
     // Save to LocalStorage
     if (typeof window !== 'undefined') {
       try {
-        const savedAll = localStorage.getItem('maharaj_all_orders');
+        const savedAll = localStorage.getItem('MAHESHRAJ_all_orders');
         let all: AdminOrder[] = savedAll ? JSON.parse(savedAll) : [];
         all = all.map((o) => (o.id === existing.id ? updatedOrder : o));
-        localStorage.setItem('maharaj_all_orders', JSON.stringify(all));
+        localStorage.setItem('MAHESHRAJ_all_orders', JSON.stringify(all));
       } catch {}
     }
 

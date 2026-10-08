@@ -51,8 +51,8 @@ export const defaultContactCMS: ContactCMS = {
   heroHeading: 'Private Client Concierge & Consultations',
   heroSubheading: 'Connect with our master jewelers, arrange private appointments, or request bespoke pearl commissions.',
   phone: '+91 (040) 6688 9900',
-  email: 'concierge@maharajjewellery.com',
-  address: 'Maharaj Heritage Palace, Road No. 10, Jubilee Hills, Hyderabad, Telangana 500033',
+  email: 'concierge@MAHESHRAJjewellery.com',
+  address: 'MAHESHRAJ Heritage Palace, Road No. 10, Jubilee Hills, Hyderabad, Telangana 500033',
   workingHours: 'Monday to Saturday: 10:30 AM – 7:30 PM (IST)',
   consultationHeading: 'Schedule a Private Consultation',
   consultationDescription: 'Experience our royal heritage pearl collections with a personal jewellery master in our private salon or online.',
@@ -62,8 +62,8 @@ export const defaultCorporateCMS: CorporateCMS = {
   heroHeading: 'Royal Corporate Gifting & Bespoke Commissions',
   heroSubheading: 'Elevate executive relationships with handcrafted South Sea pearl heirlooms and custom engraved gold keepsake cases.',
   heroImage: 'https://images.pexels.com/photos/10061399/pexels-photo-10061399.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  overviewText: 'Maharaj Jewellery curates prestigious gifts for board members, valued clients, and executive milestones. Each commission comes in signature velvet velvet boxes with certificate of authenticity.',
-  benefitsHeading: 'The Maharaj Distinction in Corporate Gifting',
+  overviewText: 'MAHESHRAJ Jewellery curates prestigious gifts for board members, valued clients, and executive milestones. Each commission comes in signature velvet velvet boxes with certificate of authenticity.',
+  benefitsHeading: 'The MAHESHRAJ Distinction in Corporate Gifting',
   benefits: [
     { title: 'Custom Hallmark & Engraving', desc: 'Personalized corporate logos, initials, and commemorative messaging on 18K gold backplates.' },
     { title: 'Luxury Velvet Presentation', desc: 'Bespoke royal blue and gold foil presentation boxes handcrafted by royal artisans.' },
@@ -75,12 +75,12 @@ export const defaultCorporateCMS: CorporateCMS = {
 export const defaultFooterCMS: FooterCMS = {
   tagline: 'Preserving the centuries-old legacy of royal Indian court jewellery and pristine South Sea pearls.',
   phone: '+91 (040) 6688 9900',
-  email: 'concierge@maharajjewellery.com',
-  address: 'Maharaj Heritage Palace, Jubilee Hills, Hyderabad',
-  copyrightText: '© 2026 MAHARAJ JEWELLERY. ALL RIGHTS RESERVED.',
-  socialInstagram: 'https://instagram.com/maharajjewellery',
-  socialFacebook: 'https://facebook.com/maharajjewellery',
-  socialPinterest: 'https://pinterest.com/maharajjewellery',
+  email: 'concierge@MAHESHRAJjewellery.com',
+  address: 'MAHESHRAJ Heritage Palace, Jubilee Hills, Hyderabad',
+  copyrightText: '© 2026 MAHESHRAJ JEWELLERY. ALL RIGHTS RESERVED.',
+  socialInstagram: 'https://instagram.com/MAHESHRAJjewellery',
+  socialFacebook: 'https://facebook.com/MAHESHRAJjewellery',
+  socialPinterest: 'https://pinterest.com/MAHESHRAJjewellery',
   socialWhatsapp: 'https://wa.me/9104066889900',
 };
 
@@ -94,7 +94,7 @@ export interface AllCMSData {
   footer: FooterCMS;
 }
 
-const LOCAL_STORAGE_PREFIX = 'maharaj_cms_';
+const LOCAL_STORAGE_PREFIX = 'MAHESHRAJ_cms_';
 
 /**
  * Fetch hero banners directly from `homepage_hero_banners` table in Supabase
@@ -109,7 +109,7 @@ export async function fetchHeroBannersFromDb(): Promise<HomepageHeroSlide[] | nu
     if (!error && data && data.length > 0) {
       return data.map((item) => ({
         id: item.id,
-        title: item.title || 'MAHARAJ JEWELLERY',
+        title: item.title || 'MAHESHRAJ JEWELLERY',
         subtitle: item.subtitle || 'The Purest Pearl Elegance',
         description: item.description || '',
         imageUrl: item.image_url,

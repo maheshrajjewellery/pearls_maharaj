@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Mail,
@@ -12,14 +12,14 @@ import {
   Sparkles,
   AlertCircle,
   ChevronDown,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   contactConfig,
   interestOptions,
   budgetOptions,
   InterestType,
-} from '@/data/contactData';
-import { useInView } from '@/hooks/useInView';
+} from "@/data/contactData";
+import { useInView } from "@/hooks/useInView";
 
 interface FormState {
   fullName: string;
@@ -49,12 +49,12 @@ export default function ConsultationFormSection({
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
 
   const [formData, setFormData] = useState<FormState>({
-    fullName: '',
-    email: '',
-    phone: '',
-    interest: 'Jewellery Enquiry',
-    budget: '',
-    message: '',
+    fullName: "",
+    email: "",
+    phone: "",
+    interest: "Jewellery Enquiry",
+    budget: "",
+    message: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -66,7 +66,7 @@ export default function ConsultationFormSection({
   useEffect(() => {
     if (selectedInterest) {
       const match = interestOptions.find(
-        (opt) => opt.toLowerCase() === selectedInterest.toLowerCase()
+        (opt) => opt.toLowerCase() === selectedInterest.toLowerCase(),
       );
       if (match) {
         setFormData((prev) => ({ ...prev, interest: match }));
@@ -74,20 +74,26 @@ export default function ConsultationFormSection({
     }
   }, [selectedInterest]);
 
-  const validateField = (name: keyof FormState, value: string): string | undefined => {
+  const validateField = (
+    name: keyof FormState,
+    value: string,
+  ): string | undefined => {
     switch (name) {
-      case 'fullName':
-        if (!value.trim()) return 'Please provide your full name.';
-        if (value.trim().length < 2) return 'Full name must be at least 2 characters.';
+      case "fullName":
+        if (!value.trim()) return "Please provide your full name.";
+        if (value.trim().length < 2)
+          return "Full name must be at least 2 characters.";
         return undefined;
-      case 'email':
-        if (!value.trim()) return 'Please provide your email address.';
+      case "email":
+        if (!value.trim()) return "Please provide your email address.";
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value.trim())) return 'Please enter a valid email address.';
+        if (!emailRegex.test(value.trim()))
+          return "Please enter a valid email address.";
         return undefined;
-      case 'message':
-        if (!value.trim()) return 'Please tell us about your enquiry.';
-        if (value.trim().length < 10) return 'Message should be at least 10 characters.';
+      case "message":
+        if (!value.trim()) return "Please tell us about your enquiry.";
+        if (value.trim().length < 10)
+          return "Message should be at least 10 characters.";
         return undefined;
       default:
         return undefined;
@@ -101,7 +107,9 @@ export default function ConsultationFormSection({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -115,9 +123,9 @@ export default function ConsultationFormSection({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const nameError = validateField('fullName', formData.fullName);
-    const emailError = validateField('email', formData.email);
-    const messageError = validateField('message', formData.message);
+    const nameError = validateField("fullName", formData.fullName);
+    const emailError = validateField("email", formData.email);
+    const messageError = validateField("message", formData.message);
 
     const newErrors: FormErrors = {
       fullName: nameError,
@@ -132,7 +140,7 @@ export default function ConsultationFormSection({
     });
 
     if (nameError || emailError || messageError) {
-      newErrors.general = 'Please check the highlighted fields below.';
+      newErrors.general = "Please check the highlighted fields below.";
       setErrors(newErrors);
       return;
     }
@@ -152,12 +160,12 @@ export default function ConsultationFormSection({
 
   const handleResetForm = () => {
     setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      interest: 'Jewellery Enquiry',
-      budget: '',
-      message: '',
+      fullName: "",
+      email: "",
+      phone: "",
+      interest: "Jewellery Enquiry",
+      budget: "",
+      message: "",
     });
     setErrors({});
     setTouched({});
@@ -201,20 +209,24 @@ export default function ConsultationFormSection({
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="font-sans text-[15px] sm:text-[16px] text-[#30372F]/75 font-light leading-relaxed"
           >
-            Tell us a little about what you're looking for and our team will get back to you.
+            Tell us a little about what you're looking for and our team will get
+            back to you.
           </motion.p>
         </div>
 
         {/* Grid: Left Form (58%) & Right Contact Info (42%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
-          
           {/* ========================================================= */}
           {/* LEFT: MINIMAL LUXURY CONSULTATION FORM                    */}
           {/* ========================================================= */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.85, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.85,
+              delay: 0.2,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="lg:col-span-7 bg-[#FFFDF8] p-8 sm:p-12 border border-[#30372F]/10 shadow-[0_4px_24px_rgba(41,35,31,0.04)] relative"
           >
             <AnimatePresence mode="wait">
@@ -241,7 +253,8 @@ export default function ConsultationFormSection({
                   </h3>
 
                   <p className="font-sans text-[15px] sm:text-[16px] text-[#30372F]/75 font-light max-w-[440px] leading-relaxed mb-8">
-                    Your enquiry has been received. Our team will get back to you shortly.
+                    Your enquiry has been received. Our team will get back to
+                    you shortly.
                   </p>
 
                   <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -261,8 +274,12 @@ export default function ConsultationFormSection({
                 </motion.div>
               ) : (
                 /* CONSULTATION FORM */
-                <form key="active-form" onSubmit={handleSubmit} noValidate className="space-y-7">
-                  
+                <form
+                  key="active-form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  className="space-y-7"
+                >
                   {/* General error notification */}
                   {errors.general && (
                     <motion.div
@@ -270,7 +287,10 @@ export default function ConsultationFormSection({
                       animate={{ opacity: 1, y: 0 }}
                       className="p-4 bg-[#E8DCD5]/70 border border-[#30372F]/15 flex items-center gap-3 text-[#30372F] text-[13px] font-sans"
                     >
-                      <AlertCircle size={17} className="text-[#C5A15A] flex-shrink-0" />
+                      <AlertCircle
+                        size={17}
+                        className="text-[#C5A15A] flex-shrink-0"
+                      />
                       <span>{errors.general}</span>
                     </motion.div>
                   )}
@@ -289,19 +309,24 @@ export default function ConsultationFormSection({
                       type="text"
                       value={formData.fullName}
                       onChange={handleChange}
-                      onBlur={() => handleBlur('fullName')}
+                      onBlur={() => handleBlur("fullName")}
                       placeholder="e.g. Eleanor Vance"
                       aria-required="true"
                       aria-invalid={touched.fullName && !!errors.fullName}
-                      aria-describedby={errors.fullName ? 'fullName-error' : undefined}
+                      aria-describedby={
+                        errors.fullName ? "fullName-error" : undefined
+                      }
                       className={`w-full min-h-[48px] bg-transparent border-b ${
                         touched.fullName && errors.fullName
-                          ? 'border-red-600/70'
-                          : 'border-[#30372F]/20 focus:border-[#C5A15A]'
+                          ? "border-red-600/70"
+                          : "border-[#30372F]/20 focus:border-[#C5A15A]"
                       } text-[#30372F] text-[15px] font-sans placeholder-[#30372F]/35 focus:outline-none transition-colors duration-300 pb-2`}
                     />
                     {touched.fullName && errors.fullName && (
-                      <p id="fullName-error" className="mt-1.5 text-[12px] text-red-700 font-sans">
+                      <p
+                        id="fullName-error"
+                        className="mt-1.5 text-[12px] text-red-700 font-sans"
+                      >
                         {errors.fullName}
                       </p>
                     )}
@@ -323,19 +348,24 @@ export default function ConsultationFormSection({
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        onBlur={() => handleBlur('email')}
+                        onBlur={() => handleBlur("email")}
                         placeholder="e.g. eleanor@example.com"
                         aria-required="true"
                         aria-invalid={touched.email && !!errors.email}
-                        aria-describedby={errors.email ? 'email-error' : undefined}
+                        aria-describedby={
+                          errors.email ? "email-error" : undefined
+                        }
                         className={`w-full min-h-[48px] bg-transparent border-b ${
                           touched.email && errors.email
-                            ? 'border-red-600/70'
-                            : 'border-[#30372F]/20 focus:border-[#C5A15A]'
+                            ? "border-red-600/70"
+                            : "border-[#30372F]/20 focus:border-[#C5A15A]"
                         } text-[#30372F] text-[15px] font-sans placeholder-[#30372F]/35 focus:outline-none transition-colors duration-300 pb-2`}
                       />
                       {touched.email && errors.email && (
-                        <p id="email-error" className="mt-1.5 text-[12px] text-red-700 font-sans">
+                        <p
+                          id="email-error"
+                          className="mt-1.5 text-[12px] text-red-700 font-sans"
+                        >
                           {errors.email}
                         </p>
                       )}
@@ -347,7 +377,10 @@ export default function ConsultationFormSection({
                         htmlFor="phone"
                         className="block text-[11px] font-sans font-medium tracking-[0.12em] uppercase text-[#30372F] mb-2"
                       >
-                        PHONE NUMBER <span className="text-[#30372F]/40 font-normal">(OPTIONAL)</span>
+                        PHONE NUMBER{" "}
+                        <span className="text-[#30372F]/40 font-normal">
+                          (OPTIONAL)
+                        </span>
                       </label>
                       <input
                         id="phone"
@@ -380,7 +413,11 @@ export default function ConsultationFormSection({
                           className="w-full min-h-[48px] bg-transparent border-b border-[#30372F]/20 focus:border-[#C5A15A] text-[#30372F] text-[15px] font-sans appearance-none focus:outline-none transition-colors duration-300 pb-2 pr-8 cursor-pointer"
                         >
                           {interestOptions.map((opt) => (
-                            <option key={opt} value={opt} className="bg-[#FFFDF8] text-[#30372F] py-2">
+                            <option
+                              key={opt}
+                              value={opt}
+                              className="bg-[#FFFDF8] text-[#30372F] py-2"
+                            >
                               {opt}
                             </option>
                           ))}
@@ -398,7 +435,10 @@ export default function ConsultationFormSection({
                         htmlFor="budget"
                         className="block text-[11px] font-sans font-medium tracking-[0.12em] uppercase text-[#30372F] mb-2"
                       >
-                        BUDGET RANGE <span className="text-[#30372F]/40 font-normal">(OPTIONAL)</span>
+                        BUDGET RANGE{" "}
+                        <span className="text-[#30372F]/40 font-normal">
+                          (OPTIONAL)
+                        </span>
                       </label>
                       <div className="relative">
                         <select
@@ -408,11 +448,18 @@ export default function ConsultationFormSection({
                           onChange={handleChange}
                           className="w-full min-h-[48px] bg-transparent border-b border-[#30372F]/20 focus:border-[#C5A15A] text-[#30372F] text-[15px] font-sans appearance-none focus:outline-none transition-colors duration-300 pb-2 pr-8 cursor-pointer"
                         >
-                          <option value="" className="bg-[#FFFDF8] text-[#30372F]/50">
+                          <option
+                            value=""
+                            className="bg-[#FFFDF8] text-[#30372F]/50"
+                          >
                             Select budget preference...
                           </option>
                           {budgetOptions.map((opt) => (
-                            <option key={opt} value={opt} className="bg-[#FFFDF8] text-[#30372F] py-2">
+                            <option
+                              key={opt}
+                              value={opt}
+                              className="bg-[#FFFDF8] text-[#30372F] py-2"
+                            >
                               {opt}
                             </option>
                           ))}
@@ -439,19 +486,24 @@ export default function ConsultationFormSection({
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      onBlur={() => handleBlur('message')}
+                      onBlur={() => handleBlur("message")}
                       placeholder="Share details about the piece you desire, occasion, or any specific requirements..."
                       aria-required="true"
                       aria-invalid={touched.message && !!errors.message}
-                      aria-describedby={errors.message ? 'message-error' : undefined}
+                      aria-describedby={
+                        errors.message ? "message-error" : undefined
+                      }
                       className={`w-full min-h-[100px] bg-transparent border-b ${
                         touched.message && errors.message
-                          ? 'border-red-600/70'
-                          : 'border-[#30372F]/20 focus:border-[#C5A15A]'
+                          ? "border-red-600/70"
+                          : "border-[#30372F]/20 focus:border-[#C5A15A]"
                       } text-[#30372F] text-[15px] font-sans placeholder-[#30372F]/35 focus:outline-none transition-colors duration-300 py-2 resize-y`}
                     />
                     {touched.message && errors.message && (
-                      <p id="message-error" className="mt-1.5 text-[12px] text-red-700 font-sans">
+                      <p
+                        id="message-error"
+                        className="mt-1.5 text-[12px] text-red-700 font-sans"
+                      >
                         {errors.message}
                       </p>
                     )}
@@ -464,7 +516,9 @@ export default function ConsultationFormSection({
                       disabled={isSubmitting}
                       className="group w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-4 px-9 py-4 bg-[#30372F] hover:bg-[#C5A15A] text-[#FFFDF8] hover:text-[#30372F] text-[12px] font-sans font-medium tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_4px_16px_rgba(41,35,31,0.08)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <span>{isSubmitting ? 'SENDING ENQUIRY...' : 'SEND ENQUIRY'}</span>
+                      <span>
+                        {isSubmitting ? "SENDING ENQUIRY..." : "SEND ENQUIRY"}
+                      </span>
                       <ArrowRight
                         size={15}
                         strokeWidth={1.8}
@@ -472,7 +526,8 @@ export default function ConsultationFormSection({
                       />
                     </button>
                     <p className="mt-3 text-[11px] font-sans text-[#30372F]/50">
-                      Your privacy is sacred. We never share your personal information.
+                      Your privacy is sacred. We never share your personal
+                      information.
                     </p>
                   </div>
                 </form>
@@ -481,12 +536,16 @@ export default function ConsultationFormSection({
           </motion.div>
 
           {/* ========================================================= */}
-          {/* RIGHT: CONNECT WITH MAHARAJ                               */}
+          {/* RIGHT: CONNECT WITH MAHESHRAJ                               */}
           {/* ========================================================= */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.85, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.85,
+              delay: 0.35,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="lg:col-span-5 flex flex-col space-y-8"
           >
             {/* Direct Channels Card */}
@@ -495,7 +554,7 @@ export default function ConsultationFormSection({
                 DIRECT CHANNELS
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl text-[#30372F] font-normal mb-6">
-                CONNECT WITH MAHARAJ
+                CONNECT WITH MAHESHRAJ
               </h3>
 
               <div className="space-y-6">
@@ -544,13 +603,15 @@ export default function ConsultationFormSection({
                     <p className="font-sans text-[13px] text-[#30372F]/80 leading-relaxed">
                       {contactConfig.hoursWeekday}
                       <br />
-                      <span className="text-[#C5A15A]">{contactConfig.hoursWeekend}</span>
+                      <span className="text-[#C5A15A]">
+                        {contactConfig.hoursWeekend}
+                      </span>
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* WHATSAPP BUTTON (Maharaj Palette, not bright green) */}
+              {/* WHATSAPP BUTTON (MAHESHRAJ Palette, not bright green) */}
               <div className="mt-8 pt-8 border-t border-[#30372F]/10">
                 <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#30372F]/50 block mb-3">
                   INSTANT ADVISORY
@@ -612,18 +673,22 @@ export default function ConsultationFormSection({
 
             {/* Private Guarantee Note */}
             <div className="p-6 bg-[#E8DCD5]/40 border border-[#30372F]/10 flex items-start gap-4">
-              <CheckCircle2 size={18} className="text-[#C5A15A] flex-shrink-0 mt-0.5" />
+              <CheckCircle2
+                size={18}
+                className="text-[#C5A15A] flex-shrink-0 mt-0.5"
+              />
               <div>
                 <h4 className="font-serif text-[17px] text-[#30372F] font-normal mb-1">
                   Private & Bespoke Consultation
                 </h4>
                 <p className="font-sans text-[13px] text-[#30372F]/75 leading-relaxed">
-                  Every enquiry is attended to personally by a senior pearl gemologist. We value discretion, heritage integrity, and lasting relationships.
+                  Every enquiry is attended to personally by a senior pearl
+                  gemologist. We value discretion, heritage integrity, and
+                  lasting relationships.
                 </p>
               </div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

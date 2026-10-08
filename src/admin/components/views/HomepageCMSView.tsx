@@ -45,7 +45,7 @@ export const HomepageCMSView: React.FC = () => {
     formData.heroSlides || [
       {
         id: "slide-01",
-        title: "MAHARAJ JEWELLERY",
+        title: "MAHESHRAJ JEWELLERY",
         subtitle: "The Purest Pearl Elegance",
         description:
           "Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.",
@@ -74,20 +74,31 @@ export const HomepageCMSView: React.FC = () => {
 
   // Slide Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSlide, setEditingSlide] =
-    useState<HomepageHeroSlide | null>(null);
-  const [slideToDelete, setSlideToDelete] = useState<HomepageHeroSlide | null>(null);
+  const [editingSlide, setEditingSlide] = useState<HomepageHeroSlide | null>(
+    null,
+  );
+  const [slideToDelete, setSlideToDelete] = useState<HomepageHeroSlide | null>(
+    null,
+  );
 
   // Preview Modal States
-  const [previewSlide, setPreviewSlide] = useState<HomepageHeroSlide | null>(null);
-  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
+  const [previewSlide, setPreviewSlide] = useState<HomepageHeroSlide | null>(
+    null,
+  );
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">(
+    "desktop",
+  );
 
   // Drag & Drop Cards State
   const [draggedCardIndex, setDraggedCardIndex] = useState<number | null>(null);
-  const [dragOverCardIndex, setDragOverCardIndex] = useState<number | null>(null);
+  const [dragOverCardIndex, setDragOverCardIndex] = useState<number | null>(
+    null,
+  );
 
   // Modal Drag & Drop Upload Zone State
-  const [dragOverModalZone, setDragOverModalZone] = useState<"desktop" | "mobile" | null>(null);
+  const [dragOverModalZone, setDragOverModalZone] = useState<
+    "desktop" | "mobile" | null
+  >(null);
 
   // Quick Replace State
   const [replacingSlideId, setReplacingSlideId] = useState<string | null>(null);
@@ -112,7 +123,9 @@ export const HomepageCMSView: React.FC = () => {
     }));
   };
 
-  const handleSave = async (updatedSlidesList: HomepageHeroSlide[] = slides) => {
+  const handleSave = async (
+    updatedSlidesList: HomepageHeroSlide[] = slides,
+  ) => {
     const sorted = [...updatedSlidesList].sort(
       (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0),
     );
@@ -123,7 +136,7 @@ export const HomepageCMSView: React.FC = () => {
         ...formData.hero,
         bgImage: sorted[0]?.imageUrl || "/images/pearl-banner.png",
         heading: sorted[0]?.subtitle || "The Purest Pearl Elegance",
-        subtitle: sorted[0]?.title || "MAHARAJ JEWELLERY",
+        subtitle: sorted[0]?.title || "MAHESHRAJ JEWELLERY",
         description:
           sorted[0]?.description ||
           "Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms.",
@@ -143,7 +156,9 @@ export const HomepageCMSView: React.FC = () => {
     setIsPublishing(true);
     await handleSave(slides);
     setIsPublishing(false);
-    setUploadSuccessMsg("Homepage hero banners updated & published live to database!");
+    setUploadSuccessMsg(
+      "Homepage hero banners updated & published live to database!",
+    );
     setTimeout(() => setUploadSuccessMsg(null), 4000);
   };
 
@@ -182,7 +197,9 @@ export const HomepageCMSView: React.FC = () => {
     setSlides(reordered);
     setDraggedCardIndex(null);
     handleSave(reordered);
-    setUploadSuccessMsg(`Banner "${draggedItem.subtitle}" moved to position #${targetIndex + 1}`);
+    setUploadSuccessMsg(
+      `Banner "${draggedItem.subtitle}" moved to position #${targetIndex + 1}`,
+    );
     setTimeout(() => setUploadSuccessMsg(null), 3000);
   };
 
@@ -223,7 +240,7 @@ export const HomepageCMSView: React.FC = () => {
   const handleOpenAddModal = () => {
     setEditingSlide({
       id: `slide-${Date.now()}`,
-      title: "MAHARAJ JEWELLERY",
+      title: "MAHESHRAJ JEWELLERY",
       subtitle: "New Pearl Collection",
       description:
         "Handcrafted South Sea and Akoya pearls set in bespoke gold.",
@@ -367,10 +384,12 @@ export const HomepageCMSView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FFFDF8] border border-[#30372F]/10 p-5 shadow-xs sticky top-0 z-30 backdrop-blur-md">
         <div>
           <h2 className="font-serif text-xl font-semibold text-[#30372F] flex items-center gap-2">
-            <Layers className="w-5 h-5 text-[#C5A15A]" /> Multiple Hero Banner Management
+            <Layers className="w-5 h-5 text-[#C5A15A]" /> Multiple Hero Banner
+            Management
           </h2>
           <p className="text-xs text-[#30372F]/60 mt-0.5">
-            Add, reorder, and publish hero slides dynamically from Admin CMS to Customer Homepage
+            Add, reorder, and publish hero slides dynamically from Admin CMS to
+            Customer Homepage
           </p>
         </div>
 
@@ -421,7 +440,10 @@ export const HomepageCMSView: React.FC = () => {
             <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
             {uploadError}
           </div>
-          <button onClick={() => setUploadError(null)} className="text-red-700 hover:text-black">
+          <button
+            onClick={() => setUploadError(null)}
+            className="text-red-700 hover:text-black"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -432,10 +454,12 @@ export const HomepageCMSView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#30372F]/10 gap-3">
           <div>
             <h3 className="font-serif text-xl font-semibold text-[#30372F] flex items-center gap-2">
-              <ImageIcon className="w-5 h-5 text-[#C5A15A]" /> ACTIVE HERO BANNERS ({slides.length})
+              <ImageIcon className="w-5 h-5 text-[#C5A15A]" /> ACTIVE HERO
+              BANNERS ({slides.length})
             </h3>
             <p className="text-xs text-[#30372F]/70 mt-0.5">
-              Drag cards to reorder slides, upload high-res campaign banners, toggle active slides, and manage CTA links.
+              Drag cards to reorder slides, upload high-res campaign banners,
+              toggle active slides, and manage CTA links.
             </p>
           </div>
           <button
@@ -461,7 +485,9 @@ export const HomepageCMSView: React.FC = () => {
                 setDragOverCardIndex(null);
               }}
               className={`bg-[#F8F5F0] border transition-all rounded overflow-hidden flex flex-col justify-between shadow-xs ${
-                dragOverCardIndex === index ? "border-[#C5A15A] border-2 scale-[1.01]" : ""
+                dragOverCardIndex === index
+                  ? "border-[#C5A15A] border-2 scale-[1.01]"
+                  : ""
               } ${
                 slide.isActive
                   ? "border-[#30372F]/20 hover:border-[#C5A15A]"
@@ -474,9 +500,12 @@ export const HomepageCMSView: React.FC = () => {
                   src={slide.imageUrl || "/images/pearl-banner.png"}
                   alt={slide.subtitle}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  style={{ objectPosition: slide.imagePosition || "center center" }}
+                  style={{
+                    objectPosition: slide.imagePosition || "center center",
+                  }}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/images/pearl-banner.png";
+                    (e.target as HTMLImageElement).src =
+                      "/images/pearl-banner.png";
                   }}
                 />
 
@@ -530,8 +559,12 @@ export const HomepageCMSView: React.FC = () => {
                     "{slide.description || "No description provided."}"
                   </p>
                   <div className="mt-2.5 pt-2 border-t border-[#30372F]/10 flex items-center justify-between text-[10px] text-[#30372F]/60">
-                    <span className="font-semibold text-[#30372F]">CTA: {slide.ctaText}</span>
-                    <span className="font-mono bg-[#30372F]/5 px-1.5 py-0.5 rounded">{slide.ctaLink}</span>
+                    <span className="font-semibold text-[#30372F]">
+                      CTA: {slide.ctaText}
+                    </span>
+                    <span className="font-mono bg-[#30372F]/5 px-1.5 py-0.5 rounded">
+                      {slide.ctaLink}
+                    </span>
                   </div>
                 </div>
 
@@ -603,7 +636,10 @@ export const HomepageCMSView: React.FC = () => {
                         className="hidden"
                         onChange={(e) => {
                           if (e.target.files && e.target.files[0]) {
-                            handleQuickReplaceImage(e.target.files[0], slide.id);
+                            handleQuickReplaceImage(
+                              e.target.files[0],
+                              slide.id,
+                            );
                           }
                         }}
                       />
@@ -681,7 +717,10 @@ export const HomepageCMSView: React.FC = () => {
                     e.preventDefault();
                     setDragOverModalZone(null);
                     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                      handleModalImageUpload(e.dataTransfer.files[0], "desktop");
+                      handleModalImageUpload(
+                        e.dataTransfer.files[0],
+                        "desktop",
+                      );
                     }
                   }}
                   className={`grid grid-cols-1 sm:grid-cols-12 gap-4 items-center p-3 border-2 border-dashed rounded transition-colors ${
@@ -718,7 +757,10 @@ export const HomepageCMSView: React.FC = () => {
                         className="hidden"
                         onChange={(e) => {
                           if (e.target.files && e.target.files[0]) {
-                            handleModalImageUpload(e.target.files[0], "desktop");
+                            handleModalImageUpload(
+                              e.target.files[0],
+                              "desktop",
+                            );
                           }
                         }}
                       />
@@ -745,7 +787,8 @@ export const HomepageCMSView: React.FC = () => {
               {/* MOBILE IMAGE UPLOAD (OPTIONAL) */}
               <div className="space-y-2 pt-2 border-t border-[#30372F]/10">
                 <label className="block font-bold text-[#30372F] uppercase tracking-wider flex items-center gap-1.5">
-                  <Smartphone className="w-4 h-4 text-[#C5A15A]" /> Mobile Image (Optional 3:4 Portrait Crop)
+                  <Smartphone className="w-4 h-4 text-[#C5A15A]" /> Mobile Image
+                  (Optional 3:4 Portrait Crop)
                 </label>
                 <div
                   onDragOver={(e) => {
@@ -825,9 +868,12 @@ export const HomepageCMSView: React.FC = () => {
                     type="text"
                     value={editingSlide.title}
                     onChange={(e) =>
-                      setEditingSlide({ ...editingSlide, title: e.target.value })
+                      setEditingSlide({
+                        ...editingSlide,
+                        title: e.target.value,
+                      })
                     }
-                    placeholder="e.g. MAHARAJ JEWELLERY"
+                    placeholder="e.g. MAHESHRAJ JEWELLERY"
                     className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2 text-xs text-[#30372F] rounded focus:outline-none focus:border-[#C5A15A]"
                   />
                 </div>
@@ -936,9 +982,13 @@ export const HomepageCMSView: React.FC = () => {
                     }
                     className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2 text-xs text-[#30372F] rounded focus:outline-none focus:border-[#C5A15A]"
                   >
-                    <option value="center center">Center Center (Default)</option>
+                    <option value="center center">
+                      Center Center (Default)
+                    </option>
                     <option value="center left">Center Left</option>
-                    <option value="center right">Center Right (Model on Right)</option>
+                    <option value="center right">
+                      Center Right (Model on Right)
+                    </option>
                     <option value="top center">Top Center</option>
                     <option value="bottom center">Bottom Center</option>
                   </select>
@@ -958,7 +1008,9 @@ export const HomepageCMSView: React.FC = () => {
                     }
                     className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2 text-xs text-[#30372F] rounded focus:outline-none focus:border-[#C5A15A]"
                   >
-                    <option value="Published">Published (Live on customer site)</option>
+                    <option value="Published">
+                      Published (Live on customer site)
+                    </option>
                     <option value="Draft">Draft (Admin only)</option>
                   </select>
                 </div>
@@ -1010,10 +1062,13 @@ export const HomepageCMSView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
           <div className="bg-[#FFFDF8] border border-[#30372F]/20 p-6 max-w-md w-full shadow-2xl space-y-4 rounded">
             <h3 className="font-serif text-lg font-bold text-[#30372F] flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-red-600" /> Remove Hero Banner Slide?
+              <AlertCircle className="w-5 h-5 text-red-600" /> Remove Hero
+              Banner Slide?
             </h3>
             <p className="text-xs text-[#30372F]/80 leading-relaxed">
-              Are you sure you want to remove this banner? The customer-facing homepage carousel will automatically re-index the remaining slides and safely clean associated storage images.
+              Are you sure you want to remove this banner? The customer-facing
+              homepage carousel will automatically re-index the remaining slides
+              and safely clean associated storage images.
             </p>
             <div className="bg-[#F8F5F0] p-3 rounded border border-[#30372F]/10 flex items-center gap-3">
               <img
@@ -1022,8 +1077,12 @@ export const HomepageCMSView: React.FC = () => {
                 className="w-14 h-10 object-cover rounded bg-[#30372F]"
               />
               <div className="truncate text-xs">
-                <p className="font-semibold text-[#30372F] truncate">{slideToDelete.subtitle}</p>
-                <p className="text-[10px] text-[#30372F]/60">Order #{slideToDelete.displayOrder} • {slideToDelete.status}</p>
+                <p className="font-semibold text-[#30372F] truncate">
+                  {slideToDelete.subtitle}
+                </p>
+                <p className="text-[10px] text-[#30372F]/60">
+                  Order #{slideToDelete.displayOrder} • {slideToDelete.status}
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 pt-2">
@@ -1056,7 +1115,9 @@ export const HomepageCMSView: React.FC = () => {
                 <h3 className="font-serif text-base font-bold flex items-center gap-2 text-[#C5A15A]">
                   <Eye className="w-5 h-5" /> Banner Live Simulation
                 </h3>
-                <span className="text-xs text-white/60">• Order #{previewSlide.displayOrder} ({previewSlide.status})</span>
+                <span className="text-xs text-white/60">
+                  • Order #{previewSlide.displayOrder} ({previewSlide.status})
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 {/* Device Switcher */}
@@ -1064,7 +1125,9 @@ export const HomepageCMSView: React.FC = () => {
                   <button
                     onClick={() => setPreviewDevice("desktop")}
                     className={`px-3 py-1 flex items-center gap-1 rounded text-[11px] ${
-                      previewDevice === "desktop" ? "bg-[#C5A15A] text-[#30372F] font-bold" : "text-white/70"
+                      previewDevice === "desktop"
+                        ? "bg-[#C5A15A] text-[#30372F] font-bold"
+                        : "text-white/70"
                     }`}
                   >
                     <Monitor className="w-3.5 h-3.5" /> Desktop
@@ -1072,7 +1135,9 @@ export const HomepageCMSView: React.FC = () => {
                   <button
                     onClick={() => setPreviewDevice("mobile")}
                     className={`px-3 py-1 flex items-center gap-1 rounded text-[11px] ${
-                      previewDevice === "mobile" ? "bg-[#C5A15A] text-[#30372F] font-bold" : "text-white/70"
+                      previewDevice === "mobile"
+                        ? "bg-[#C5A15A] text-[#30372F] font-bold"
+                        : "text-white/70"
                     }`}
                   >
                     <Smartphone className="w-3.5 h-3.5" /> Mobile
@@ -1104,7 +1169,10 @@ export const HomepageCMSView: React.FC = () => {
                   }
                   alt={previewSlide.subtitle}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: previewSlide.imagePosition || "center center" }}
+                  style={{
+                    objectPosition:
+                      previewSlide.imagePosition || "center center",
+                  }}
                 />
                 <div
                   className="absolute inset-0 pointer-events-none"
@@ -1137,7 +1205,6 @@ export const HomepageCMSView: React.FC = () => {
           </div>
         </div>
       )}
-
 
       {/* SECTION 2: NEW ARRIVALS & DISCOVER CATEGORIES */}
       <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs space-y-4">
@@ -1657,63 +1724,6 @@ export const HomepageCMSView: React.FC = () => {
                   "title",
                   e.target.value,
                 )
-              }
-              className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2.5 text-xs text-[#30372F] focus:outline-none focus:border-[#C5A15A]"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 9: INNER CIRCLE NEWSLETTER */}
-      <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#30372F]/10">
-          <div>
-            <h3 className="font-serif text-lg font-semibold text-[#30372F]">
-              9. Inner Circle Newsletter Section
-            </h3>
-            <p className="text-xs text-[#30372F]/60">
-              VIP newsletter signup subscription block on homepage
-            </p>
-          </div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <span className="text-xs font-medium text-[#30372F]/70">
-              Section Active
-            </span>
-            <input
-              type="checkbox"
-              checked={formData.newsletter.active}
-              onChange={(e) =>
-                updateSection("newsletter", "active", e.target.checked)
-              }
-              className="w-4 h-4 accent-[#C5A15A]"
-            />
-          </label>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div>
-            <label className="block font-medium text-[#30372F] mb-1">
-              Newsletter Title
-            </label>
-            <input
-              type="text"
-              value={formData.newsletter.title}
-              onChange={(e) =>
-                updateSection("newsletter", "title", e.target.value)
-              }
-              className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2.5 text-xs text-[#30372F] focus:outline-none focus:border-[#C5A15A]"
-            />
-          </div>
-
-          <div>
-            <label className="block font-medium text-[#30372F] mb-1">
-              Subtitle Invitation
-            </label>
-            <input
-              type="text"
-              value={formData.newsletter.subtitle}
-              onChange={(e) =>
-                updateSection("newsletter", "subtitle", e.target.value)
               }
               className="w-full bg-[#F5F1EB] border border-[#30372F]/15 p-2.5 text-xs text-[#30372F] focus:outline-none focus:border-[#C5A15A]"
             />

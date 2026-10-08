@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldCheck,
   Lock,
@@ -24,10 +24,13 @@ import {
   Navigation,
   CheckCircle,
   HelpCircle,
-} from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
-import { CustomerAddress } from '@/types/customer';
-import { getCustomerAddresses, addCustomerAddress } from '@/services/customerService';
+} from "lucide-react";
+import { useShop } from "@/context/ShopContext";
+import { CustomerAddress } from "@/types/customer";
+import {
+  getCustomerAddresses,
+  addCustomerAddress,
+} from "@/services/customerService";
 import {
   getAvailableShippingOptions,
   calculateShippingFee,
@@ -37,7 +40,7 @@ import {
   createRazorpayServerOrder,
   verifyRazorpayPaymentOnServer,
   createFinalCheckoutOrder,
-} from '@/services/checkoutService';
+} from "@/services/checkoutService";
 
 type CheckoutStep = 1 | 2 | 3 | 4;
 
@@ -61,19 +64,21 @@ export default function CheckoutPage() {
   // 1. CONTACT INFO STATE
   // --------------------------------------------------
   const [contactInfo, setContactInfo] = useState({
-    fullName: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
+    fullName: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
   });
 
-  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>(
+    {},
+  );
 
   useEffect(() => {
     if (user) {
       setContactInfo((prev) => ({
-        fullName: prev.fullName || user.name || '',
-        email: prev.email || user.email || '',
-        phone: prev.phone || user.phone || '',
+        fullName: prev.fullName || user.name || "",
+        email: prev.email || user.email || "",
+        phone: prev.phone || user.phone || "",
       }));
     }
   }, [user]);
@@ -82,23 +87,27 @@ export default function CheckoutPage() {
   // 2. SHIPPING ADDRESS STATE
   // --------------------------------------------------
   const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
-  const [selectedAddressId, setSelectedAddressId] = useState<string | 'new'>('new');
+  const [selectedAddressId, setSelectedAddressId] = useState<string | "new">(
+    "new",
+  );
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [saveAddressToProfile, setSaveAddressToProfile] = useState(true);
 
   const [addressForm, setAddressForm] = useState({
-    fullName: '',
-    phone: '',
-    houseFlat: '',
-    street: '',
-    area: '',
-    city: '',
-    state: '',
-    pincode: '',
-    country: 'India',
+    fullName: "",
+    phone: "",
+    houseFlat: "",
+    street: "",
+    area: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "India",
   });
 
-  const [addressErrors, setAddressErrors] = useState<Record<string, string>>({});
+  const [addressErrors, setAddressErrors] = useState<Record<string, string>>(
+    {},
+  );
 
   useEffect(() => {
     const emailToUse = contactInfo.email || user?.email;
@@ -110,14 +119,14 @@ export default function CheckoutPage() {
         setSelectedAddressId(defaultAddr.id);
         setIsAddingNewAddress(false);
       } else {
-        setSelectedAddressId('new');
+        setSelectedAddressId("new");
         setIsAddingNewAddress(true);
       }
     }
   }, [contactInfo.email, user]);
 
   const activeAddress = useMemo<CustomerAddress | null>(() => {
-    if (selectedAddressId !== 'new' && !isAddingNewAddress) {
+    if (selectedAddressId !== "new" && !isAddingNewAddress) {
       return savedAddresses.find((a) => a.id === selectedAddressId) || null;
     }
     return {
@@ -130,35 +139,45 @@ export default function CheckoutPage() {
       city: addressForm.city,
       state: addressForm.state,
       pincode: addressForm.pincode,
-      country: addressForm.country || 'India',
+      country: addressForm.country || "India",
       isDefault: false,
     };
-  }, [selectedAddressId, isAddingNewAddress, savedAddresses, addressForm, contactInfo]);
+  }, [
+    selectedAddressId,
+    isAddingNewAddress,
+    savedAddresses,
+    addressForm,
+    contactInfo,
+  ]);
 
   // --------------------------------------------------
   // 3. SHIPPING METHOD STATE
   // --------------------------------------------------
   const shippingOptions = useMemo(
     () => getAvailableShippingOptions(cartSubtotal),
-    [cartSubtotal]
+    [cartSubtotal],
   );
 
-  const [selectedShippingOptionId, setSelectedShippingOptionId] = useState<'standard' | 'express'>('standard');
+  const [selectedShippingOptionId, setSelectedShippingOptionId] = useState<
+    "standard" | "express"
+  >("standard");
 
   const activeShippingOption = useMemo(
-    () => shippingOptions.find((o) => o.id === selectedShippingOptionId) || shippingOptions[0],
-    [shippingOptions, selectedShippingOptionId]
+    () =>
+      shippingOptions.find((o) => o.id === selectedShippingOptionId) ||
+      shippingOptions[0],
+    [shippingOptions, selectedShippingOptionId],
   );
 
   const shippingFee = useMemo(
     () => calculateShippingFee(selectedShippingOptionId, cartSubtotal),
-    [selectedShippingOptionId, cartSubtotal]
+    [selectedShippingOptionId, cartSubtotal],
   );
 
   // --------------------------------------------------
   // 4. COUPON & TOTALS
   // --------------------------------------------------
-  const [couponInput, setCouponInput] = useState('');
+  const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponSuccessMsg, setCouponSuccessMsg] = useState<string | null>(null);
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
@@ -170,18 +189,20 @@ export default function CheckoutPage() {
   // --------------------------------------------------
   // 5. PAYMENT & PROCESSING STATE
   // --------------------------------------------------
-  const [paymentMethod, setPaymentMethod] = useState<'Razorpay' | 'Cash on Delivery'>('Razorpay');
+  const [paymentMethod, setPaymentMethod] = useState<
+    "Razorpay" | "Cash on Delivery"
+  >("Razorpay");
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isMobileSummaryOpen, setIsMobileSummaryOpen] = useState(false);
 
   // Helper to extract 10-digit Indian mobile number
   const getCleanIndianPhone = (phoneStr: string): string => {
-    const digitsOnly = phoneStr.replace(/\D/g, '');
-    if (digitsOnly.length === 12 && digitsOnly.startsWith('91')) {
+    const digitsOnly = phoneStr.replace(/\D/g, "");
+    if (digitsOnly.length === 12 && digitsOnly.startsWith("91")) {
       return digitsOnly.substring(2);
     }
-    if (digitsOnly.length === 11 && digitsOnly.startsWith('0')) {
+    if (digitsOnly.length === 11 && digitsOnly.startsWith("0")) {
       return digitsOnly.substring(1);
     }
     return digitsOnly;
@@ -193,22 +214,23 @@ export default function CheckoutPage() {
   const validateContact = (): boolean => {
     const errors: Record<string, string> = {};
     if (!contactInfo.fullName.trim()) {
-      errors.fullName = 'Full name is required.';
+      errors.fullName = "Full name is required.";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!contactInfo.email.trim()) {
-      errors.email = 'Email address is required.';
+      errors.email = "Email address is required.";
     } else if (!emailRegex.test(contactInfo.email.trim())) {
-      errors.email = 'Please enter a valid email address.';
+      errors.email = "Please enter a valid email address.";
     }
 
     const phoneRegex = /^[6-9]\d{9}$/;
     const cleanPhone = getCleanIndianPhone(contactInfo.phone);
     if (!contactInfo.phone.trim()) {
-      errors.phone = 'Mobile number is required.';
+      errors.phone = "Mobile number is required.";
     } else if (!phoneRegex.test(cleanPhone)) {
-      errors.phone = 'Please enter a valid 10-digit Indian mobile number (e.g. 9876543210).';
+      errors.phone =
+        "Please enter a valid 10-digit Indian mobile number (e.g. 9876543210).";
     }
 
     setContactErrors(errors);
@@ -216,32 +238,36 @@ export default function CheckoutPage() {
   };
 
   const validateAddress = (): boolean => {
-    if (selectedAddressId !== 'new' && !isAddingNewAddress) {
+    if (selectedAddressId !== "new" && !isAddingNewAddress) {
       const found = savedAddresses.find((a) => a.id === selectedAddressId);
       if (found) return true;
     }
 
     const errors: Record<string, string> = {};
-    if (!addressForm.fullName.trim()) errors.fullName = 'Recipient name is required.';
+    if (!addressForm.fullName.trim())
+      errors.fullName = "Recipient name is required.";
 
-    const phoneToValidate = addressForm.phone.trim() || contactInfo.phone.trim();
+    const phoneToValidate =
+      addressForm.phone.trim() || contactInfo.phone.trim();
     const cleanPhone = getCleanIndianPhone(phoneToValidate);
     if (!phoneToValidate) {
-      errors.phone = 'Mobile number is required.';
+      errors.phone = "Mobile number is required.";
     } else if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
-      errors.phone = 'Please enter a valid 10-digit mobile number.';
+      errors.phone = "Please enter a valid 10-digit mobile number.";
     }
 
-    if (!addressForm.houseFlat.trim()) errors.houseFlat = 'Flat / House No. / Building is required.';
-    if (!addressForm.street.trim()) errors.street = 'Street name / Area is required.';
-    if (!addressForm.city.trim()) errors.city = 'City is required.';
-    if (!addressForm.state.trim()) errors.state = 'State is required.';
+    if (!addressForm.houseFlat.trim())
+      errors.houseFlat = "Flat / House No. / Building is required.";
+    if (!addressForm.street.trim())
+      errors.street = "Street name / Area is required.";
+    if (!addressForm.city.trim()) errors.city = "City is required.";
+    if (!addressForm.state.trim()) errors.state = "State is required.";
 
     const pincodeRegex = /^\d{6}$/;
     if (!addressForm.pincode.trim()) {
-      errors.pincode = 'Pincode is required.';
+      errors.pincode = "Pincode is required.";
     } else if (!pincodeRegex.test(addressForm.pincode.trim())) {
-      errors.pincode = 'Please enter a valid 6-digit Pincode.';
+      errors.pincode = "Please enter a valid 6-digit Pincode.";
     }
 
     setAddressErrors(errors);
@@ -271,7 +297,7 @@ export default function CheckoutPage() {
           city: addressForm.city,
           state: addressForm.state,
           pincode: addressForm.pincode,
-          country: addressForm.country || 'India',
+          country: addressForm.country || "India",
           isDefault: savedAddresses.length === 0,
         });
         setSavedAddresses(created);
@@ -300,10 +326,12 @@ export default function CheckoutPage() {
     setTimeout(() => {
       const res = applyCouponCode(couponInput);
       if (res.isValid) {
-        setCouponSuccessMsg(`Coupon '${couponInput.trim().toUpperCase()}' applied successfully!`);
-        setCouponInput('');
+        setCouponSuccessMsg(
+          `Coupon '${couponInput.trim().toUpperCase()}' applied successfully!`,
+        );
+        setCouponInput("");
       } else {
-        setCouponError(res.errorMessage || 'Invalid coupon code.');
+        setCouponError(res.errorMessage || "Invalid coupon code.");
       }
       setIsApplyingCoupon(false);
     }, 350);
@@ -330,12 +358,12 @@ export default function CheckoutPage() {
       return;
     }
     if (!activeAddress) {
-      setCheckoutError('Please select or provide a valid shipping address.');
+      setCheckoutError("Please select or provide a valid shipping address.");
       setCurrentStep(2);
       return;
     }
     if (cart.length === 0) {
-      setCheckoutError('Your shopping bag is empty.');
+      setCheckoutError("Your shopping bag is empty.");
       return;
     }
 
@@ -345,7 +373,10 @@ export default function CheckoutPage() {
       // 1. Server-side Stock Check
       const stockRes = await verifyCartStock(cart);
       if (!stockRes.isAvailable) {
-        setCheckoutError(stockRes.errorMessage || 'One or more items in your cart are unavailable.');
+        setCheckoutError(
+          stockRes.errorMessage ||
+            "One or more items in your cart are unavailable.",
+        );
         setIsProcessing(false);
         return;
       }
@@ -362,22 +393,26 @@ export default function CheckoutPage() {
         cart,
         shippingOption: activeShippingOption,
         coupon: appliedCoupon || undefined,
-        paymentMethod: 'Direct Order Confirmation',
+        paymentMethod: "Direct Order Confirmation",
       });
 
       if (finalRes.success && finalRes.order) {
         setActiveOrder(finalRes.order);
         clearCart();
-        setCurrentPage('checkout-success');
-        if (typeof window !== 'undefined') {
-          window.history.pushState({}, '', '/checkout/success');
+        setCurrentPage("checkout-success");
+        if (typeof window !== "undefined") {
+          window.history.pushState({}, "", "/checkout/success");
         }
       } else {
-        setCheckoutError(finalRes.errorMessage || 'Order placement failed. Please try again.');
+        setCheckoutError(
+          finalRes.errorMessage || "Order placement failed. Please try again.",
+        );
         setIsProcessing(false);
       }
     } catch (err: any) {
-      setCheckoutError(err.message || 'An unexpected error occurred during order placement.');
+      setCheckoutError(
+        err.message || "An unexpected error occurred during order placement.",
+      );
       setIsProcessing(false);
     }
   };
@@ -392,18 +427,20 @@ export default function CheckoutPage() {
           <ShoppingBag size={40} strokeWidth={1.2} className="text-[#C5A059]" />
         </div>
         <span className="text-[11px] font-sans tracking-[0.3em] uppercase text-[#C5A059] font-medium mb-2">
-          MAHARAJA JEWELLERY VAULT
+          MAHESHRAJA JEWELLERY VAULT
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl text-[#30372F] font-normal mb-3 text-center tracking-wide">
           Your Shopping Bag is Empty
         </h1>
         <p className="text-sm font-sans text-[#30372F]/70 max-w-md text-center mb-8 font-light leading-relaxed">
-          Discover our royal South Sea, Tahitian, and Akoya pearl masterpieces crafted for timeless heritage elegance.
+          Discover our royal South Sea, Tahitian, and Akoya pearl masterpieces
+          crafted for timeless heritage elegance.
         </p>
         <button
           onClick={() => {
-            setCurrentPage('shop');
-            if (typeof window !== 'undefined') window.history.pushState({}, '', '/shop');
+            setCurrentPage("shop");
+            if (typeof window !== "undefined")
+              window.history.pushState({}, "", "/shop");
           }}
           className="px-9 py-4 bg-[#30372F] text-[#FAF7F2] text-xs font-sans tracking-[0.25em] uppercase font-medium hover:bg-[#C5A059] hover:text-[#30372F] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2"
         >
@@ -425,8 +462,9 @@ export default function CheckoutPage() {
           <div className="flex items-center justify-between gap-4 mb-4">
             <button
               onClick={() => {
-                setCurrentPage('shop');
-                if (typeof window !== 'undefined') window.history.pushState({}, '', '/shop');
+                setCurrentPage("shop");
+                if (typeof window !== "undefined")
+                  window.history.pushState({}, "", "/shop");
               }}
               className="inline-flex items-center gap-2 text-xs font-sans uppercase tracking-[0.15em] text-[#30372F]/70 hover:text-[#C5A059] transition-colors"
             >
@@ -436,7 +474,9 @@ export default function CheckoutPage() {
 
             <div className="flex items-center gap-2 text-xs font-sans text-[#C5A059]">
               <Lock size={13} />
-              <span className="tracking-widest uppercase font-medium">256-BIT SSL ENCRYPTED</span>
+              <span className="tracking-widest uppercase font-medium">
+                256-BIT SSL ENCRYPTED
+              </span>
             </div>
           </div>
 
@@ -454,41 +494,52 @@ export default function CheckoutPage() {
             {/* HIGH-END STEP PROGRESS TRACKER */}
             <div className="flex items-center gap-2 sm:gap-3 text-xs font-sans">
               {[
-                { step: 1, label: 'Contact' },
-                { step: 2, label: 'Address' },
-                { step: 3, label: 'Delivery' },
-                { step: 4, label: 'Payment' },
+                { step: 1, label: "Contact" },
+                { step: 2, label: "Address" },
+                { step: 3, label: "Delivery" },
+                { step: 4, label: "Payment" },
               ].map((s, i, arr) => {
                 const isActive = currentStep === s.step;
                 const isCompleted = currentStep > s.step;
                 return (
                   <React.Fragment key={s.step}>
                     <button
-                      onClick={() => isCompleted && setCurrentStep(s.step as CheckoutStep)}
+                      onClick={() =>
+                        isCompleted && setCurrentStep(s.step as CheckoutStep)
+                      }
                       disabled={!isCompleted && !isActive}
                       className={`flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-300 ${
                         isActive
-                          ? 'bg-[#30372F] text-[#FAF7F2] shadow-md ring-2 ring-[#C5A059]/40 font-medium'
+                          ? "bg-[#30372F] text-[#FAF7F2] shadow-md ring-2 ring-[#C5A059]/40 font-medium"
                           : isCompleted
-                          ? 'bg-[#C5A059]/20 text-[#30372F] hover:bg-[#C5A059]/30 font-medium'
-                          : 'bg-white/60 text-[#30372F]/40 border border-[#30372F]/10'
+                            ? "bg-[#C5A059]/20 text-[#30372F] hover:bg-[#C5A059]/30 font-medium"
+                            : "bg-white/60 text-[#30372F]/40 border border-[#30372F]/10"
                       }`}
                     >
                       <span
                         className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-mono ${
                           isActive
-                            ? 'bg-[#C5A059] text-[#30372F] font-bold'
+                            ? "bg-[#C5A059] text-[#30372F] font-bold"
                             : isCompleted
-                            ? 'bg-[#30372F] text-[#FAF7F2]'
-                            : 'bg-[#30372F]/10 text-[#30372F]/50'
+                              ? "bg-[#30372F] text-[#FAF7F2]"
+                              : "bg-[#30372F]/10 text-[#30372F]/50"
                         }`}
                       >
-                        {isCompleted ? <Check size={12} strokeWidth={2.5} /> : s.step}
+                        {isCompleted ? (
+                          <Check size={12} strokeWidth={2.5} />
+                        ) : (
+                          s.step
+                        )}
                       </span>
-                      <span className="hidden sm:inline tracking-wider uppercase text-[11px]">{s.label}</span>
+                      <span className="hidden sm:inline tracking-wider uppercase text-[11px]">
+                        {s.label}
+                      </span>
                     </button>
                     {i < arr.length - 1 && (
-                      <ChevronRight size={14} className="text-[#30372F]/20 shrink-0" />
+                      <ChevronRight
+                        size={14}
+                        className="text-[#30372F]/20 shrink-0"
+                      />
                     )}
                   </React.Fragment>
                 );
@@ -505,10 +556,13 @@ export default function CheckoutPage() {
           >
             <div className="flex items-center gap-2">
               <ShoppingBag size={16} className="text-[#C5A059]" />
-              <span>{isMobileSummaryOpen ? 'Hide Summary' : 'View Order Summary'} ({cart.length} items)</span>
+              <span>
+                {isMobileSummaryOpen ? "Hide Summary" : "View Order Summary"} (
+                {cart.length} items)
+              </span>
             </div>
             <span className="font-serif text-base text-[#30372F] font-normal">
-              ₹ {grandTotal.toLocaleString('en-IN')}
+              ₹ {grandTotal.toLocaleString("en-IN")}
             </span>
           </button>
 
@@ -516,7 +570,7 @@ export default function CheckoutPage() {
             {isMobileSummaryOpen && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden pt-4 mt-3 border-t border-[#30372F]/10 space-y-3"
               >
@@ -528,13 +582,19 @@ export default function CheckoutPage() {
                       className="w-12 h-14 object-cover rounded-xs border border-[#30372F]/10"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans font-medium text-[#30372F] truncate">{item.product.name}</p>
+                      <p className="font-sans font-medium text-[#30372F] truncate">
+                        {item.product.name}
+                      </p>
                       <p className="text-[11px] text-[#30372F]/60">
-                        Qty: {item.quantity} {item.selectedSize ? `• Size ${item.selectedSize}` : ''}
+                        Qty: {item.quantity}{" "}
+                        {item.selectedSize ? `• Size ${item.selectedSize}` : ""}
                       </p>
                     </div>
                     <span className="font-sans font-medium text-[#30372F]">
-                      ₹ {(item.product.price * item.quantity).toLocaleString('en-IN')}
+                      ₹{" "}
+                      {(item.product.price * item.quantity).toLocaleString(
+                        "en-IN",
+                      )}
                     </span>
                   </div>
                 ))}
@@ -553,9 +613,14 @@ export default function CheckoutPage() {
             <AlertCircle size={18} className="shrink-0 text-red-600 mt-0.5" />
             <div className="flex-1">
               <p className="font-medium text-red-950 mb-0.5">Checkout Notice</p>
-              <p className="text-red-800 font-light leading-relaxed">{checkoutError}</p>
+              <p className="text-red-800 font-light leading-relaxed">
+                {checkoutError}
+              </p>
             </div>
-            <button onClick={() => setCheckoutError(null)} className="text-red-500 hover:text-red-800 p-1">
+            <button
+              onClick={() => setCheckoutError(null)}
+              className="text-red-500 hover:text-red-800 p-1"
+            >
               <X size={16} />
             </button>
           </motion.div>
@@ -569,15 +634,17 @@ export default function CheckoutPage() {
             <div
               className={`bg-white border rounded-sm p-6 sm:p-9 transition-all duration-300 ${
                 currentStep === 1
-                  ? 'border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]'
-                  : 'border-[#30372F]/15 opacity-90'
+                  ? "border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]"
+                  : "border-[#30372F]/15 opacity-90"
               }`}
             >
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#30372F]/10">
                 <div className="flex items-center gap-3.5">
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-sm transition-colors ${
-                      currentStep === 1 ? 'bg-[#30372F] text-[#FAF7F2]' : 'bg-[#C5A059]/20 text-[#30372F]'
+                      currentStep === 1
+                        ? "bg-[#30372F] text-[#FAF7F2]"
+                        : "bg-[#C5A059]/20 text-[#30372F]"
                     }`}
                   >
                     1
@@ -587,7 +654,8 @@ export default function CheckoutPage() {
                       Client Information
                     </h2>
                     <p className="text-xs font-sans text-[#30372F]/60 font-light mt-0.5">
-                      Order confirmations and insured shipping tracking will be sent here
+                      Order confirmations and insured shipping tracking will be
+                      sent here
                     </p>
                   </div>
                 </div>
@@ -611,14 +679,23 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       value={contactInfo.fullName}
-                      onChange={(e) => setContactInfo({ ...contactInfo, fullName: e.target.value })}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          fullName: e.target.value,
+                        })
+                      }
                       placeholder="e.g. Maharani Gayatri Devi"
                       className={`w-full px-4 py-3.5 bg-[#FAF7F2] border ${
-                        contactErrors.fullName ? 'border-red-500' : 'border-[#30372F]/20'
+                        contactErrors.fullName
+                          ? "border-red-500"
+                          : "border-[#30372F]/20"
                       } text-sm font-sans text-[#30372F] focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059]/30 transition-all rounded-xs`}
                     />
                     {contactErrors.fullName && (
-                      <p className="text-[11px] text-red-600 mt-1 font-sans">{contactErrors.fullName}</p>
+                      <p className="text-[11px] text-red-600 mt-1 font-sans">
+                        {contactErrors.fullName}
+                      </p>
                     )}
                   </div>
 
@@ -631,14 +708,23 @@ export default function CheckoutPage() {
                       <input
                         type="email"
                         value={contactInfo.email}
-                        onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
+                        onChange={(e) =>
+                          setContactInfo({
+                            ...contactInfo,
+                            email: e.target.value,
+                          })
+                        }
                         placeholder="client@domain.com"
                         className={`w-full px-4 py-3.5 bg-[#FAF7F2] border ${
-                          contactErrors.email ? 'border-red-500' : 'border-[#30372F]/20'
+                          contactErrors.email
+                            ? "border-red-500"
+                            : "border-[#30372F]/20"
                         } text-sm font-sans text-[#30372F] focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059]/30 transition-all rounded-xs`}
                       />
                       {contactErrors.email && (
-                        <p className="text-[11px] text-red-600 mt-1 font-sans">{contactErrors.email}</p>
+                        <p className="text-[11px] text-red-600 mt-1 font-sans">
+                          {contactErrors.email}
+                        </p>
                       )}
                     </div>
 
@@ -648,27 +734,44 @@ export default function CheckoutPage() {
                         <span>Mobile Number *</span>
                       </label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-3.5 text-xs font-sans text-[#30372F]/60 font-medium">+91</span>
+                        <span className="absolute left-3.5 text-xs font-sans text-[#30372F]/60 font-medium">
+                          +91
+                        </span>
                         <input
                           type="tel"
                           value={contactInfo.phone}
-                          onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
+                          onChange={(e) =>
+                            setContactInfo({
+                              ...contactInfo,
+                              phone: e.target.value,
+                            })
+                          }
                           placeholder="9876543210"
                           className={`w-full pl-12 pr-4 py-3.5 bg-[#FAF7F2] border ${
-                            contactErrors.phone ? 'border-red-500' : 'border-[#30372F]/20'
+                            contactErrors.phone
+                              ? "border-red-500"
+                              : "border-[#30372F]/20"
                           } text-sm font-sans text-[#30372F] focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059]/30 transition-all rounded-xs`}
                         />
                       </div>
                       {contactErrors.phone && (
-                        <p className="text-[11px] text-red-600 mt-1 font-sans">{contactErrors.phone}</p>
+                        <p className="text-[11px] text-red-600 mt-1 font-sans">
+                          {contactErrors.phone}
+                        </p>
                       )}
                     </div>
                   </div>
 
                   {user && (
                     <div className="flex items-center gap-2.5 text-xs font-sans text-[#C5A059] bg-[#C5A059]/10 p-3 rounded-xs border border-[#C5A059]/20 mt-2">
-                      <ShieldCheck size={16} className="shrink-0 text-[#C5A059]" />
-                      <span>Authenticated Account: Information populated from your signed-in profile.</span>
+                      <ShieldCheck
+                        size={16}
+                        className="shrink-0 text-[#C5A059]"
+                      />
+                      <span>
+                        Authenticated Account: Information populated from your
+                        signed-in profile.
+                      </span>
                     </div>
                   )}
 
@@ -682,8 +785,12 @@ export default function CheckoutPage() {
                 </form>
               ) : (
                 <div className="text-xs font-sans text-[#30372F]/80 space-y-1 bg-[#FAF7F2] p-4 rounded-xs border border-[#30372F]/10">
-                  <p className="font-semibold text-[#30372F] text-sm">{contactInfo.fullName}</p>
-                  <p>{contactInfo.email} • +91 {contactInfo.phone}</p>
+                  <p className="font-semibold text-[#30372F] text-sm">
+                    {contactInfo.fullName}
+                  </p>
+                  <p>
+                    {contactInfo.email} • +91 {contactInfo.phone}
+                  </p>
                 </div>
               )}
             </div>
@@ -692,15 +799,17 @@ export default function CheckoutPage() {
             <div
               className={`bg-white border rounded-sm p-6 sm:p-9 transition-all duration-300 ${
                 currentStep === 2
-                  ? 'border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]'
-                  : 'border-[#30372F]/15 opacity-90'
+                  ? "border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]"
+                  : "border-[#30372F]/15 opacity-90"
               }`}
             >
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#30372F]/10">
                 <div className="flex items-center gap-3.5">
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-sm transition-colors ${
-                      currentStep === 2 ? 'bg-[#30372F] text-[#FAF7F2]' : 'bg-[#C5A059]/20 text-[#30372F]'
+                      currentStep === 2
+                        ? "bg-[#30372F] text-[#FAF7F2]"
+                        : "bg-[#C5A059]/20 text-[#30372F]"
                     }`}
                   >
                     2
@@ -742,16 +851,20 @@ export default function CheckoutPage() {
                               setIsAddingNewAddress(false);
                             }}
                             className={`p-4 sm:p-5 border rounded-xs cursor-pointer transition-all flex items-start justify-between ${
-                              selectedAddressId === addr.id && !isAddingNewAddress
-                                ? 'border-[#C5A059] bg-[#C5A059]/10 shadow-sm ring-1 ring-[#C5A059]/30'
-                                : 'border-[#30372F]/15 bg-[#FAF7F2] hover:border-[#30372F]/30'
+                              selectedAddressId === addr.id &&
+                              !isAddingNewAddress
+                                ? "border-[#C5A059] bg-[#C5A059]/10 shadow-sm ring-1 ring-[#C5A059]/30"
+                                : "border-[#30372F]/15 bg-[#FAF7F2] hover:border-[#30372F]/30"
                             }`}
                           >
                             <div className="flex items-start gap-3.5">
                               <input
                                 type="radio"
                                 name="shipping_address_choice"
-                                checked={selectedAddressId === addr.id && !isAddingNewAddress}
+                                checked={
+                                  selectedAddressId === addr.id &&
+                                  !isAddingNewAddress
+                                }
                                 onChange={() => {
                                   setSelectedAddressId(addr.id);
                                   setIsAddingNewAddress(false);
@@ -760,7 +873,9 @@ export default function CheckoutPage() {
                               />
                               <div className="text-xs font-sans text-[#30372F]">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-semibold text-sm">{addr.fullName}</span>
+                                  <span className="font-semibold text-sm">
+                                    {addr.fullName}
+                                  </span>
                                   {addr.isDefault && (
                                     <span className="px-2 py-0.5 text-[10px] bg-[#30372F] text-[#FAF7F2] font-medium tracking-wider rounded-xs uppercase">
                                       DEFAULT
@@ -768,28 +883,40 @@ export default function CheckoutPage() {
                                   )}
                                 </div>
                                 <p className="text-[#30372F]/80">
-                                  {addr.houseFlat}, {addr.street}{addr.area ? `, ${addr.area}` : ''}
+                                  {addr.houseFlat}, {addr.street}
+                                  {addr.area ? `, ${addr.area}` : ""}
                                 </p>
                                 <p className="text-[#30372F]/80">
-                                  {addr.city}, {addr.state} - <span className="font-semibold">{addr.pincode}</span>
+                                  {addr.city}, {addr.state} -{" "}
+                                  <span className="font-semibold">
+                                    {addr.pincode}
+                                  </span>
                                 </p>
-                                <p className="text-[#30372F]/60 mt-1">Phone: {addr.phone}</p>
+                                <p className="text-[#30372F]/60 mt-1">
+                                  Phone: {addr.phone}
+                                </p>
                               </div>
                             </div>
-                            {selectedAddressId === addr.id && !isAddingNewAddress && (
-                              <CheckCircle className="text-[#C5A059] shrink-0" size={18} />
-                            )}
+                            {selectedAddressId === addr.id &&
+                              !isAddingNewAddress && (
+                                <CheckCircle
+                                  className="text-[#C5A059] shrink-0"
+                                  size={18}
+                                />
+                              )}
                           </div>
                         ))}
 
                         <button
                           type="button"
                           onClick={() => {
-                            setSelectedAddressId('new');
+                            setSelectedAddressId("new");
                             setIsAddingNewAddress(true);
                           }}
                           className={`p-4 border border-dashed border-[#C5A059]/40 bg-[#FAF7F2] hover:bg-[#C5A059]/10 text-xs font-sans font-medium text-[#30372F] flex items-center justify-center gap-2 transition-all rounded-xs ${
-                            isAddingNewAddress ? 'border-[#C5A059] bg-[#C5A059]/15 text-[#C5A059]' : ''
+                            isAddingNewAddress
+                              ? "border-[#C5A059] bg-[#C5A059]/15 text-[#C5A059]"
+                              : ""
                           }`}
                         >
                           <Plus size={16} className="text-[#C5A059]" />
@@ -815,14 +942,23 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.fullName}
-                            onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                fullName: e.target.value,
+                              })
+                            }
                             placeholder="Full name"
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.fullName ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.fullName
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.fullName && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.fullName}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.fullName}
+                            </p>
                           )}
                         </div>
 
@@ -833,14 +969,23 @@ export default function CheckoutPage() {
                           <input
                             type="tel"
                             value={addressForm.phone}
-                            onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                phone: e.target.value,
+                              })
+                            }
                             placeholder="10-digit mobile number"
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.phone ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.phone
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.phone && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.phone}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.phone}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -852,14 +997,23 @@ export default function CheckoutPage() {
                         <input
                           type="text"
                           value={addressForm.houseFlat}
-                          onChange={(e) => setAddressForm({ ...addressForm, houseFlat: e.target.value })}
+                          onChange={(e) =>
+                            setAddressForm({
+                              ...addressForm,
+                              houseFlat: e.target.value,
+                            })
+                          }
                           placeholder="e.g. Villa 14, Royal Palm Residency"
                           className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                            addressErrors.houseFlat ? 'border-red-500' : 'border-[#30372F]/20'
+                            addressErrors.houseFlat
+                              ? "border-red-500"
+                              : "border-[#30372F]/20"
                           } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                         />
                         {addressErrors.houseFlat && (
-                          <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.houseFlat}</p>
+                          <p className="text-[10px] text-red-600 mt-1 font-sans">
+                            {addressErrors.houseFlat}
+                          </p>
                         )}
                       </div>
 
@@ -871,14 +1025,23 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.street}
-                            onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                street: e.target.value,
+                              })
+                            }
                             placeholder="e.g. Jubilee Hills, Road No. 36"
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.street ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.street
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.street && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.street}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.street}
+                            </p>
                           )}
                         </div>
 
@@ -889,7 +1052,12 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.area}
-                            onChange={(e) => setAddressForm({ ...addressForm, area: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                area: e.target.value,
+                              })
+                            }
                             placeholder="e.g. Near Heritage Palace Hotel"
                             className="w-full px-3.5 py-3 bg-[#FAF7F2] border border-[#30372F]/20 text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs"
                           />
@@ -904,14 +1072,23 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.city}
-                            onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                city: e.target.value,
+                              })
+                            }
                             placeholder="Hyderabad"
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.city ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.city
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.city && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.city}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.city}
+                            </p>
                           )}
                         </div>
 
@@ -922,14 +1099,23 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.state}
-                            onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                state: e.target.value,
+                              })
+                            }
                             placeholder="Telangana"
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.state ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.state
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.state && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.state}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.state}
+                            </p>
                           )}
                         </div>
 
@@ -940,15 +1126,24 @@ export default function CheckoutPage() {
                           <input
                             type="text"
                             value={addressForm.pincode}
-                            onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
+                            onChange={(e) =>
+                              setAddressForm({
+                                ...addressForm,
+                                pincode: e.target.value,
+                              })
+                            }
                             placeholder="500033"
                             maxLength={6}
                             className={`w-full px-3.5 py-3 bg-[#FAF7F2] border ${
-                              addressErrors.pincode ? 'border-red-500' : 'border-[#30372F]/20'
+                              addressErrors.pincode
+                                ? "border-red-500"
+                                : "border-[#30372F]/20"
                             } text-sm font-sans focus:outline-none focus:border-[#C5A059] rounded-xs`}
                           />
                           {addressErrors.pincode && (
-                            <p className="text-[10px] text-red-600 mt-1 font-sans">{addressErrors.pincode}</p>
+                            <p className="text-[10px] text-red-600 mt-1 font-sans">
+                              {addressErrors.pincode}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -958,11 +1153,17 @@ export default function CheckoutPage() {
                           type="checkbox"
                           id="save_addr_check"
                           checked={saveAddressToProfile}
-                          onChange={(e) => setSaveAddressToProfile(e.target.checked)}
+                          onChange={(e) =>
+                            setSaveAddressToProfile(e.target.checked)
+                          }
                           className="accent-[#30372F]"
                         />
-                        <label htmlFor="save_addr_check" className="text-xs font-sans text-[#30372F] cursor-pointer">
-                          Save address to my account profile for future purchases
+                        <label
+                          htmlFor="save_addr_check"
+                          className="text-xs font-sans text-[#30372F] cursor-pointer"
+                        >
+                          Save address to my account profile for future
+                          purchases
                         </label>
                       </div>
                     </div>
@@ -980,9 +1181,16 @@ export default function CheckoutPage() {
                 <div className="text-xs font-sans text-[#30372F]/80 space-y-1 bg-[#FAF7F2] p-4 rounded-xs border border-[#30372F]/10">
                   {activeAddress ? (
                     <>
-                      <p className="font-semibold text-[#30372F] text-sm">{activeAddress.fullName}</p>
-                      <p>{activeAddress.houseFlat}, {activeAddress.street}</p>
-                      <p>{activeAddress.city}, {activeAddress.state} - {activeAddress.pincode}</p>
+                      <p className="font-semibold text-[#30372F] text-sm">
+                        {activeAddress.fullName}
+                      </p>
+                      <p>
+                        {activeAddress.houseFlat}, {activeAddress.street}
+                      </p>
+                      <p>
+                        {activeAddress.city}, {activeAddress.state} -{" "}
+                        {activeAddress.pincode}
+                      </p>
                     </>
                   ) : (
                     <p>No address selected</p>
@@ -995,15 +1203,17 @@ export default function CheckoutPage() {
             <div
               className={`bg-white border rounded-sm p-6 sm:p-9 transition-all duration-300 ${
                 currentStep === 3
-                  ? 'border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]'
-                  : 'border-[#30372F]/15 opacity-90'
+                  ? "border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]"
+                  : "border-[#30372F]/15 opacity-90"
               }`}
             >
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#30372F]/10">
                 <div className="flex items-center gap-3.5">
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-sm transition-colors ${
-                      currentStep === 3 ? 'bg-[#30372F] text-[#FAF7F2]' : 'bg-[#C5A059]/20 text-[#30372F]'
+                      currentStep === 3
+                        ? "bg-[#30372F] text-[#FAF7F2]"
+                        : "bg-[#C5A059]/20 text-[#30372F]"
                     }`}
                   >
                     3
@@ -1036,8 +1246,8 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedShippingOptionId(option.id)}
                         className={`p-5 border rounded-xs cursor-pointer transition-all flex items-start justify-between ${
                           selectedShippingOptionId === option.id
-                            ? 'border-[#C5A059] bg-[#C5A059]/10 shadow-sm ring-1 ring-[#C5A059]/30'
-                            : 'border-[#30372F]/15 bg-[#FAF7F2] hover:border-[#30372F]/30'
+                            ? "border-[#C5A059] bg-[#C5A059]/10 shadow-sm ring-1 ring-[#C5A059]/30"
+                            : "border-[#30372F]/15 bg-[#FAF7F2] hover:border-[#30372F]/30"
                         }`}
                       >
                         <div className="flex items-start gap-3.5">
@@ -1045,7 +1255,9 @@ export default function CheckoutPage() {
                             type="radio"
                             name="shipping_method"
                             checked={selectedShippingOptionId === option.id}
-                            onChange={() => setSelectedShippingOptionId(option.id)}
+                            onChange={() =>
+                              setSelectedShippingOptionId(option.id)
+                            }
                             className="mt-1 accent-[#30372F]"
                           />
                           <div>
@@ -1063,13 +1275,16 @@ export default function CheckoutPage() {
                               {option.description}
                             </p>
                             <p className="text-xs font-sans text-[#C5A059] font-medium mt-1 flex items-center gap-1">
-                              <Truck size={13} /> Transit Estimate: {option.estimatedDays}
+                              <Truck size={13} /> Transit Estimate:{" "}
+                              {option.estimatedDays}
                             </p>
                           </div>
                         </div>
 
                         <span className="font-sans text-sm font-semibold text-[#30372F]">
-                          {option.cost === 0 ? 'FREE' : `₹ ${option.cost.toLocaleString('en-IN')}`}
+                          {option.cost === 0
+                            ? "FREE"
+                            : `₹ ${option.cost.toLocaleString("en-IN")}`}
                         </span>
                       </div>
                     ))}
@@ -1078,7 +1293,9 @@ export default function CheckoutPage() {
                   <div className="bg-[#C5A059]/10 border border-[#C5A059]/30 p-4 rounded-xs text-xs font-sans text-[#30372F] flex items-center gap-3">
                     <Sparkles size={18} className="text-[#C5A059] shrink-0" />
                     <span>
-                      Every order includes <strong>Signature Velvet Jewelry Box</strong>, BIS Hallmarked Authenticity Card, and Insured Sealed Courier.
+                      Every order includes{" "}
+                      <strong>Signature Velvet Jewelry Box</strong>, BIS
+                      Hallmarked Authenticity Card, and Insured Sealed Courier.
                     </span>
                   </div>
 
@@ -1092,9 +1309,14 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <div className="text-xs font-sans text-[#30372F]/80 bg-[#FAF7F2] p-4 rounded-xs border border-[#30372F]/10">
-                  <p className="font-semibold text-[#30372F]">{activeShippingOption.name}</p>
+                  <p className="font-semibold text-[#30372F]">
+                    {activeShippingOption.name}
+                  </p>
                   <p className="text-[#30372F]/60">
-                    {activeShippingOption.cost === 0 ? 'Complimentary Transit' : `₹ ${activeShippingOption.cost}`} • {activeShippingOption.estimatedDays}
+                    {activeShippingOption.cost === 0
+                      ? "Complimentary Transit"
+                      : `₹ ${activeShippingOption.cost}`}{" "}
+                    • {activeShippingOption.estimatedDays}
                   </p>
                 </div>
               )}
@@ -1104,8 +1326,8 @@ export default function CheckoutPage() {
             <div
               className={`bg-white border rounded-sm p-6 sm:p-9 transition-all duration-300 ${
                 currentStep === 4
-                  ? 'border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]'
-                  : 'border-[#30372F]/15 opacity-80'
+                  ? "border-[#C5A059] shadow-[0_10px_35px_rgba(41,35,31,0.06)]"
+                  : "border-[#30372F]/15 opacity-80"
               }`}
             >
               <div className="flex items-center gap-3.5 mb-6 pb-4 border-b border-[#30372F]/10">
@@ -1117,7 +1339,8 @@ export default function CheckoutPage() {
                     Direct Order Confirmation
                   </h2>
                   <p className="text-xs font-sans text-[#30372F]/60 font-light mt-0.5">
-                    Review order details and place order directly (No payment gateway required)
+                    Review order details and place order directly (No payment
+                    gateway required)
                   </p>
                 </div>
               </div>
@@ -1132,12 +1355,27 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-1.5 text-[#30372F]/80 border-t border-[#30372F]/10 pt-3">
-                      <p><strong>Deliver To:</strong> {contactInfo.fullName} ({contactInfo.email})</p>
+                      <p>
+                        <strong>Deliver To:</strong> {contactInfo.fullName} (
+                        {contactInfo.email})
+                      </p>
                       {activeAddress && (
-                        <p><strong>Address:</strong> {activeAddress.houseFlat}, {activeAddress.street}, {activeAddress.city}, {activeAddress.state} - {activeAddress.pincode}</p>
+                        <p>
+                          <strong>Address:</strong> {activeAddress.houseFlat},{" "}
+                          {activeAddress.street}, {activeAddress.city},{" "}
+                          {activeAddress.state} - {activeAddress.pincode}
+                        </p>
                       )}
-                      <p><strong>Shipping:</strong> {activeShippingOption.name} ({activeShippingOption.estimatedDays})</p>
-                      <p><strong>Total Amount:</strong> <span className="font-semibold text-base text-[#30372F]">₹ {grandTotal.toLocaleString('en-IN')}</span></p>
+                      <p>
+                        <strong>Shipping:</strong> {activeShippingOption.name} (
+                        {activeShippingOption.estimatedDays})
+                      </p>
+                      <p>
+                        <strong>Total Amount:</strong>{" "}
+                        <span className="font-semibold text-base text-[#30372F]">
+                          ₹ {grandTotal.toLocaleString("en-IN")}
+                        </span>
+                      </p>
                     </div>
                   </div>
 
@@ -1158,13 +1396,15 @@ export default function CheckoutPage() {
                         <>
                           <CheckCircle2 size={16} className="text-[#C5A059]" />
                           <span>
-                            CONFIRM & PLACE ORDER (₹ {grandTotal.toLocaleString('en-IN')})
+                            CONFIRM & PLACE ORDER (₹{" "}
+                            {grandTotal.toLocaleString("en-IN")})
                           </span>
                         </>
                       )}
                     </button>
                     <p className="text-[11px] font-sans text-center text-[#30372F]/60 mt-3 font-light">
-                      By clicking Confirm & Place Order, your order will be directly placed into our luxury vault ledger.
+                      By clicking Confirm & Place Order, your order will be
+                      directly placed into our luxury vault ledger.
                     </p>
                   </div>
                 </div>
@@ -1185,7 +1425,7 @@ export default function CheckoutPage() {
                   </h2>
                 </div>
                 <span className="text-xs font-sans font-medium px-2.5 py-1 bg-[#30372F]/5 rounded-full text-[#30372F]">
-                  {cart.length} {cart.length === 1 ? 'item' : 'items'}
+                  {cart.length} {cart.length === 1 ? "item" : "items"}
                 </span>
               </div>
 
@@ -1212,15 +1452,22 @@ export default function CheckoutPage() {
                       </p>
                       {item.selectedSize && (
                         <p className="text-[11px] font-sans text-[#30372F]/60 mt-0.5">
-                          Size: <span className="font-medium text-[#30372F]">{item.selectedSize}</span>
+                          Size:{" "}
+                          <span className="font-medium text-[#30372F]">
+                            {item.selectedSize}
+                          </span>
                         </p>
                       )}
                       <p className="text-[11px] font-sans text-[#30372F]/70 mt-1">
-                        Qty: {item.quantity} × ₹ {item.product.price.toLocaleString('en-IN')}
+                        Qty: {item.quantity} × ₹{" "}
+                        {item.product.price.toLocaleString("en-IN")}
                       </p>
                     </div>
                     <span className="font-sans text-xs font-semibold text-[#30372F] shrink-0">
-                      ₹ {(item.product.price * item.quantity).toLocaleString('en-IN')}
+                      ₹{" "}
+                      {(item.product.price * item.quantity).toLocaleString(
+                        "en-IN",
+                      )}
                     </span>
                   </div>
                 ))}
@@ -1240,9 +1487,13 @@ export default function CheckoutPage() {
                     <div>
                       <div className="flex items-center gap-1.5">
                         <Sparkles size={13} className="text-[#C5A059]" />
-                        <span className="font-bold text-[#30372F]">{appliedCoupon.code}</span>
+                        <span className="font-bold text-[#30372F]">
+                          {appliedCoupon.code}
+                        </span>
                       </div>
-                      <p className="text-[11px] text-[#30372F]/70 mt-0.5">{appliedCoupon.description}</p>
+                      <p className="text-[11px] text-[#30372F]/70 mt-0.5">
+                        {appliedCoupon.description}
+                      </p>
                     </div>
                     <button
                       onClick={handleRemoveCoupon}
@@ -1257,7 +1508,9 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         value={couponInput}
-                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                          setCouponInput(e.target.value.toUpperCase())
+                        }
                         placeholder="ENTER CODE (e.g. WELCOME10)"
                         className="flex-1 px-3.5 py-3 bg-[#FAF7F2] border border-[#30372F]/20 text-xs font-sans uppercase tracking-wider text-[#30372F] focus:outline-none focus:border-[#C5A059] rounded-xs"
                       />
@@ -1267,7 +1520,7 @@ export default function CheckoutPage() {
                         onClick={handleApplyCoupon}
                         className="px-5 py-3 bg-[#30372F] text-[#FAF7F2] hover:bg-[#C5A059] hover:text-[#30372F] text-xs font-sans uppercase tracking-wider font-semibold transition-colors disabled:opacity-50 rounded-xs"
                       >
-                        {isApplyingCoupon ? '...' : 'APPLY'}
+                        {isApplyingCoupon ? "..." : "APPLY"}
                       </button>
                     </div>
                     {couponError && (
@@ -1281,7 +1534,10 @@ export default function CheckoutPage() {
                       </p>
                     )}
                     <p className="text-[10px] text-[#30372F]/50 font-sans mt-1.5">
-                      Available: <strong className="text-[#30372F]">WELCOME10</strong> (10% off) • <strong className="text-[#30372F]">ROYAL15</strong> (15% off over ₹50k)
+                      Available:{" "}
+                      <strong className="text-[#30372F]">WELCOME10</strong> (10%
+                      off) • <strong className="text-[#30372F]">ROYAL15</strong>{" "}
+                      (15% off over ₹50k)
                     </p>
                   </div>
                 )}
@@ -1292,40 +1548,48 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-[#30372F]/80">
                   <span>Bag Subtotal</span>
                   <span className="font-semibold text-[#30372F]">
-                    ₹ {cartSubtotal.toLocaleString('en-IN')}
+                    ₹ {cartSubtotal.toLocaleString("en-IN")}
                   </span>
                 </div>
 
                 {couponDiscount > 0 && (
                   <div className="flex justify-between text-[#C5A059] font-semibold">
                     <span>Coupon Savings</span>
-                    <span>- ₹ {couponDiscount.toLocaleString('en-IN')}</span>
+                    <span>- ₹ {couponDiscount.toLocaleString("en-IN")}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between text-[#30372F]/80">
-                  <span>Insured Transit ({activeShippingOption.name.split(' ')[0]})</span>
+                  <span>
+                    Insured Transit ({activeShippingOption.name.split(" ")[0]})
+                  </span>
                   <span className="font-semibold text-[#30372F]">
                     {shippingFee === 0 ? (
-                      <span className="text-[#C5A059] font-bold">COMPLIMENTARY</span>
+                      <span className="text-[#C5A059] font-bold">
+                        COMPLIMENTARY
+                      </span>
                     ) : (
-                      `₹ ${shippingFee.toLocaleString('en-IN')}`
+                      `₹ ${shippingFee.toLocaleString("en-IN")}`
                     )}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-[#30372F]/60 text-[11px]">
                   <span>GST / Jewellery Tax (3% Included)</span>
-                  <span>₹ {gstTaxAmount.toLocaleString('en-IN')}</span>
+                  <span>₹ {gstTaxAmount.toLocaleString("en-IN")}</span>
                 </div>
 
                 <div className="pt-4 border-t border-[#30372F]/15 flex items-baseline justify-between">
                   <div>
-                    <span className="font-serif text-xl text-[#30372F] font-normal">Grand Total</span>
-                    <p className="text-[10px] text-[#30372F]/50 font-light">Includes all taxes, transit insurance & certificate</p>
+                    <span className="font-serif text-xl text-[#30372F] font-normal">
+                      Grand Total
+                    </span>
+                    <p className="text-[10px] text-[#30372F]/50 font-light">
+                      Includes all taxes, transit insurance & certificate
+                    </p>
                   </div>
                   <span className="font-sans text-2xl font-semibold text-[#30372F]">
-                    ₹ {grandTotal.toLocaleString('en-IN')}
+                    ₹ {grandTotal.toLocaleString("en-IN")}
                   </span>
                 </div>
               </div>
@@ -1334,7 +1598,9 @@ export default function CheckoutPage() {
               <div className="mt-6 pt-6 border-t border-[#30372F]/15 space-y-3 text-[11px] font-sans text-[#30372F]/80 bg-[#FAF7F2] p-4 rounded-xs">
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck size={16} className="text-[#C5A059] shrink-0" />
-                  <span>100% Certified Authentic Pearls & BIS Hallmarked Gold</span>
+                  <span>
+                    100% Certified Authentic Pearls & BIS Hallmarked Gold
+                  </span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Lock size={16} className="text-[#C5A059] shrink-0" />

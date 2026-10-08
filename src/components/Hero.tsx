@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useState, useEffect, useRef, useMemo } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 interface HeroSlide {
   id: string;
@@ -20,43 +20,46 @@ interface HeroSlide {
 
 const defaultHeroSlides: HeroSlide[] = [
   {
-    id: 'slide-01',
-    number: '01',
-    title: 'MAHARAJ JEWELLERY',
-    subtitle: 'The Purest Pearl Elegance',
-    description: 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.',
-    imageDesktop: '/images/pearl-banner.png',
-    imageMobile: '/images/pearl-banner-mobile.png',
-    ctaText: 'EXPLORE THE COLLECTION',
-    ctaLink: '/shop',
-    imagePosition: 'center center',
-    alt: 'Maharaj Jewellery Pearl Collection - Elegant South Asian woman in layered pearls',
+    id: "slide-01",
+    number: "01",
+    title: "MAHESHRAJ JEWELLERY",
+    subtitle: "The Purest Pearl Elegance",
+    description:
+      "Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms by master artisans.",
+    imageDesktop: "/images/pearl-banner.png",
+    imageMobile: "/images/pearl-banner-mobile.png",
+    ctaText: "EXPLORE THE COLLECTION",
+    ctaLink: "/shop",
+    imagePosition: "center center",
+    alt: "MAHESHRAJ Jewellery Pearl Collection - Elegant South Asian woman in layered pearls",
   },
   {
-    id: 'slide-02',
-    number: '02',
-    title: 'ROYAL HERITAGE',
-    subtitle: 'South Sea Pearl Strands',
-    description: 'Hand-selected golden and white South Sea pearls set in 18K gold fittings.',
-    imageDesktop: '/images/pearl-banner.png',
-    imageMobile: '/images/pearl-banner-mobile.png',
-    ctaText: 'DISCOVER SOUTH SEA',
-    ctaLink: '/shop?category=saltwater',
-    imagePosition: 'center center',
-    alt: 'South Sea Pearl Jewellery Banner',
+    id: "slide-02",
+    number: "02",
+    title: "ROYAL HERITAGE",
+    subtitle: "South Sea Pearl Strands",
+    description:
+      "Hand-selected golden and white South Sea pearls set in 18K gold fittings.",
+    imageDesktop: "/images/pearl-banner.png",
+    imageMobile: "/images/pearl-banner-mobile.png",
+    ctaText: "DISCOVER SOUTH SEA",
+    ctaLink: "/shop?category=saltwater",
+    imagePosition: "center center",
+    alt: "South Sea Pearl Jewellery Banner",
   },
   {
-    id: 'slide-03',
-    number: '03',
-    title: 'THE BRIDAL EDIT',
-    subtitle: 'Sacred Bridal Heirloom Collection',
-    description: 'Ornate pearl chokers, layered necklaces, and matching earrings crafted for unforgettable moments.',
-    imageDesktop: '/images/pearl-banner.png',
-    imageMobile: '/images/pearl-banner-mobile.png',
-    ctaText: 'EXPLORE BRIDAL',
-    ctaLink: '/shop?category=bridal',
-    imagePosition: 'center center',
-    alt: 'Royal Pearl Heritage Collection',
+    id: "slide-03",
+    number: "03",
+    title: "THE BRIDAL EDIT",
+    subtitle: "Sacred Bridal Heirloom Collection",
+    description:
+      "Ornate pearl chokers, layered necklaces, and matching earrings crafted for unforgettable moments.",
+    imageDesktop: "/images/pearl-banner.png",
+    imageMobile: "/images/pearl-banner-mobile.png",
+    ctaText: "EXPLORE BRIDAL",
+    ctaLink: "/shop?category=bridal",
+    imagePosition: "center center",
+    alt: "Royal Pearl Heritage Collection",
   },
 ];
 
@@ -64,7 +67,7 @@ const SLIDE_DURATION = 4500; // 4.5 seconds
 
 export default function Hero() {
   const { setCurrentPage, setCategory, cmsData } = useShop();
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const prefersReduced = useReducedMotion();
 
   const heroCMS = cmsData?.homepage?.hero;
@@ -74,21 +77,26 @@ export default function Hero() {
   const activeSlides: HeroSlide[] = useMemo(() => {
     if (cmsSlides && cmsSlides.length > 0) {
       const filtered = cmsSlides
-        .filter((s) => s.isActive && s.status === 'Published')
+        .filter((s) => s.isActive && s.status === "Published")
         .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
       if (filtered.length > 0) {
         return filtered.map((slide, index) => ({
           id: slide.id,
-          number: String(index + 1).padStart(2, '0'),
-          title: slide.title || 'MAHARAJ JEWELLERY',
-          subtitle: slide.subtitle || 'The Purest Pearl Elegance',
-          description: slide.description || 'Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms.',
-          imageDesktop: slide.imageUrl || '/images/pearl-banner.png',
-          imageMobile: slide.mobileImageUrl || slide.imageUrl || '/images/pearl-banner-mobile.png',
-          ctaText: slide.ctaText || 'EXPLORE THE COLLECTION',
-          ctaLink: slide.ctaLink || '/shop',
-          imagePosition: slide.imagePosition || 'center center',
+          number: String(index + 1).padStart(2, "0"),
+          title: slide.title || "MAHESHRAJ JEWELLERY",
+          subtitle: slide.subtitle || "The Purest Pearl Elegance",
+          description:
+            slide.description ||
+            "Rare South Sea, Akoya, and Tahitian pearls crafted into timeless heirlooms.",
+          imageDesktop: slide.imageUrl || "/images/pearl-banner.png",
+          imageMobile:
+            slide.mobileImageUrl ||
+            slide.imageUrl ||
+            "/images/pearl-banner-mobile.png",
+          ctaText: slide.ctaText || "EXPLORE THE COLLECTION",
+          ctaLink: slide.ctaLink || "/shop",
+          imagePosition: slide.imagePosition || "center center",
           alt: `${slide.title} - ${slide.subtitle}`,
         }));
       }
@@ -126,29 +134,31 @@ export default function Hero() {
   };
 
   const handleExploreClick = (linkPath: string) => {
-    if (linkPath.includes('category=')) {
-      const cat = linkPath.split('category=')[1] as any;
-      setCurrentPage('shop');
+    if (linkPath.includes("category=")) {
+      const cat = linkPath.split("category=")[1] as any;
+      setCurrentPage("shop");
       setCategory(cat);
-    } else if (linkPath.startsWith('/about')) {
-      setCurrentPage('about');
+    } else if (linkPath.startsWith("/about")) {
+      setCurrentPage("about");
     } else {
-      setCurrentPage('shop');
-      setCategory('all');
+      setCurrentPage("shop");
+      setCategory("all");
     }
-    window.history.pushState({}, '', linkPath || '/shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.history.pushState({}, "", linkPath || "/shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (heroCMS && heroCMS.active === false) return null;
 
   const currentSlide = activeSlides[currentIndex] || activeSlides[0];
-  const heroImage = isMobile ? currentSlide.imageMobile : currentSlide.imageDesktop;
+  const heroImage = isMobile
+    ? currentSlide.imageMobile
+    : currentSlide.imageDesktop;
 
   return (
     <section
       className="relative w-full h-[80vh] sm:h-[84vh] lg:h-[88vh] min-h-[580px] max-h-[900px] bg-[#30372F] overflow-hidden select-none flex flex-col justify-between"
-      aria-label="Maharaj Jewellery Cinematic Hero Campaign"
+      aria-label="MAHESHRAJ Jewellery Cinematic Hero Campaign"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -165,7 +175,7 @@ export default function Hero() {
             exit={{ opacity: 0, scale: 1.03 }}
             transition={{
               opacity: { duration: 1.2, ease: [0.25, 1, 0.5, 1] },
-              scale: { duration: SLIDE_DURATION / 1000 + 0.5, ease: 'linear' },
+              scale: { duration: SLIDE_DURATION / 1000 + 0.5, ease: "linear" },
             }}
             className="absolute inset-0 w-full h-full"
           >
@@ -173,12 +183,16 @@ export default function Hero() {
               src={heroImage}
               alt={currentSlide.alt}
               className="w-full h-full object-cover"
-              style={{ objectPosition: isMobile ? '80% center' : currentSlide.imagePosition }}
-              fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
+              style={{
+                objectPosition: isMobile
+                  ? "80% center"
+                  : currentSlide.imagePosition,
+              }}
+              fetchPriority={currentIndex === 0 ? "high" : "auto"}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                if (!target.src.includes('/images/pearl-banner.png')) {
-                  target.src = '/images/pearl-banner.png';
+                if (!target.src.includes("/images/pearl-banner.png")) {
+                  target.src = "/images/pearl-banner.png";
                 }
               }}
             />
@@ -190,7 +204,7 @@ export default function Hero() {
           className="absolute inset-0 pointer-events-none z-10"
           style={{
             background:
-              'linear-gradient(90deg, rgba(12, 9, 7, 0.45) 0%, rgba(12, 9, 7, 0.15) 50%, rgba(12, 9, 7, 0) 85%)',
+              "linear-gradient(90deg, rgba(12, 9, 7, 0.45) 0%, rgba(12, 9, 7, 0.15) 50%, rgba(12, 9, 7, 0) 85%)",
           }}
         />
       </div>
@@ -198,7 +212,7 @@ export default function Hero() {
       {/* 2. OPTIONAL VERTICAL EDITORIAL SIDE STAMP (Desktop) */}
       <div className="hidden xl:block absolute right-10 top-1/2 -translate-y-1/2 z-20 pointer-events-none">
         <p className="font-sans text-[10px] tracking-[0.35em] uppercase text-white/40 font-light [writing-mode:vertical-rl] rotate-180">
-          MAHARAJ / PEARL COLLECTION 2026
+          MAHESHRAJ / PEARL COLLECTION 2026
         </p>
       </div>
 
@@ -276,7 +290,9 @@ export default function Hero() {
               >
                 <span
                   className={`font-sans text-[11px] tracking-wider transition-colors duration-300 ${
-                    isActive ? 'text-[#C5A15A] font-semibold' : 'text-white/40 group-hover:text-white/80'
+                    isActive
+                      ? "text-[#C5A15A] font-semibold"
+                      : "text-white/40 group-hover:text-white/80"
                   }`}
                 >
                   {slide.number}
@@ -287,11 +303,11 @@ export default function Hero() {
                   {isActive ? (
                     <motion.div
                       key={`progress-${idx}-${currentIndex}`}
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
                       transition={{
                         duration: SLIDE_DURATION / 1000,
-                        ease: 'linear',
+                        ease: "linear",
                       }}
                       className="absolute left-0 top-0 bottom-0 bg-[#C5A15A]"
                     />
@@ -309,7 +325,7 @@ export default function Hero() {
           </span>
           <motion.div
             animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="w-px h-5 bg-gradient-to-b from-[#C5A15A] to-transparent"
           />
         </div>

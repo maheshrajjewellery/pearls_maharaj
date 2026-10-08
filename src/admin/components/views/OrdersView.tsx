@@ -1,11 +1,11 @@
-﻿import React, { useState, useMemo, useEffect } from 'react';
-import { useAdmin } from '../../context/AdminContext';
-import { AdminOrder, OrderStatus, PaymentStatus } from '@/types/admin';
+﻿import React, { useState, useMemo, useEffect } from "react";
+import { useAdmin } from "../../context/AdminContext";
+import { AdminOrder, OrderStatus, PaymentStatus } from "@/types/admin";
 import {
   fetchOrdersFromDb,
   isValidStatusTransition,
-} from '@/services/orderService';
-import { OrderDetailsModal } from './OrderDetailsModal';
+} from "@/services/orderService";
+import { OrderDetailsModal } from "./OrderDetailsModal";
 import {
   Search,
   Filter,
@@ -29,7 +29,7 @@ import {
   DollarSign,
   Calendar,
   Layers,
-} from 'lucide-react';
+} from "lucide-react";
 
 export const OrdersView: React.FC = () => {
   const {
@@ -47,18 +47,23 @@ export const OrdersView: React.FC = () => {
   const [dbError, setDbError] = useState<string | null>(null);
 
   // Search & Filters State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
-  const [paymentStatusFilter, setPaymentStatusFilter] = useState<string>('All');
-  const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>('All');
-  const [dateFilter, setDateFilter] = useState<string>('All');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState<string>("All");
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>("All");
+  const [dateFilter, setDateFilter] = useState<string>("All");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   // Sorting & Pagination State
   const [sortBy, setSortBy] = useState<
-    'newest' | 'oldest' | 'highest_amount' | 'lowest_amount' | 'customer_name' | 'status'
-  >('newest');
+    | "newest"
+    | "oldest"
+    | "highest_amount"
+    | "lowest_amount"
+    | "customer_name"
+    | "status"
+  >("newest");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
 
@@ -66,17 +71,17 @@ export const OrdersView: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
 
   // Status Update Controls in Modal
-  const [newStatus, setNewStatus] = useState<OrderStatus>('Processing');
-  const [statusNote, setStatusNote] = useState('');
+  const [newStatus, setNewStatus] = useState<OrderStatus>("Processing");
+  const [statusNote, setStatusNote] = useState("");
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
   // Modals for Confirmation
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [cancelReason, setCancelReason] = useState('');
+  const [cancelReason, setCancelReason] = useState("");
   const [isCancelling, setIsCancelling] = useState(false);
 
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [refundReason, setRefundReason] = useState('');
+  const [refundReason, setRefundReason] = useState("");
   const [isRefunding, setIsRefunding] = useState(false);
 
   // Local state for fetched DB query result
@@ -103,8 +108,8 @@ export const OrdersView: React.FC = () => {
         paymentStatus: paymentStatusFilter,
         paymentMethod: paymentMethodFilter,
         dateFilter,
-        startDate: dateFilter === 'Custom' ? startDate : undefined,
-        endDate: dateFilter === 'Custom' ? endDate : undefined,
+        startDate: dateFilter === "Custom" ? startDate : undefined,
+        endDate: dateFilter === "Custom" ? endDate : undefined,
         searchTerm,
         sortBy,
         page: currentPage,
@@ -116,8 +121,10 @@ export const OrdersView: React.FC = () => {
       setTotalPages(res.totalPages);
       setDashboardStats(res.dashboardStats);
     } catch (err: any) {
-      console.error('Error in loadDatabaseOrders:', err);
-      setDbError(err.message || 'Unable to load orders from database. Please try again.');
+      console.error("Error in loadDatabaseOrders:", err);
+      setDbError(
+        err.message || "Unable to load orders from database. Please try again.",
+      );
     } finally {
       setIsLoadingOrders(false);
     }
@@ -152,39 +159,39 @@ export const OrdersView: React.FC = () => {
   };
 
   const handleClearSearchAndFilters = () => {
-    setSearchTerm('');
-    setStatusFilter('All');
-    setPaymentStatusFilter('All');
-    setPaymentMethodFilter('All');
-    setDateFilter('All');
-    setStartDate('');
-    setEndDate('');
-    setSortBy('newest');
+    setSearchTerm("");
+    setStatusFilter("All");
+    setPaymentStatusFilter("All");
+    setPaymentMethodFilter("All");
+    setDateFilter("All");
+    setStartDate("");
+    setEndDate("");
+    setSortBy("newest");
     setCurrentPage(1);
   };
 
   // Export filtered orders as CSV
   const handleExportCSV = () => {
     if (dbOrders.length === 0) {
-      addToast('No order records available to export.', 'warning');
+      addToast("No order records available to export.", "warning");
       return;
     }
 
     const headers = [
-      'Order ID',
-      'Order Number',
-      'Customer Name',
-      'Customer Email',
-      'Customer Phone',
-      'Order Date',
-      'Items Count',
-      'Subtotal (INR)',
-      'Shipping Fee (INR)',
-      'Discount (INR)',
-      'Total Amount (INR)',
-      'Payment Method',
-      'Payment Status',
-      'Order Status',
+      "Order ID",
+      "Order Number",
+      "Customer Name",
+      "Customer Email",
+      "Customer Phone",
+      "Order Date",
+      "Items Count",
+      "Subtotal (INR)",
+      "Shipping Fee (INR)",
+      "Discount (INR)",
+      "Total Amount (INR)",
+      "Payment Method",
+      "Payment Status",
+      "Order Status",
     ];
 
     const rows = dbOrders.map((o) => [
@@ -193,7 +200,7 @@ export const OrdersView: React.FC = () => {
       `"${o.customerName.replace(/"/g, '""')}"`,
       `"${o.customerEmail}"`,
       `"${o.customerPhone}"`,
-      `"${new Date(o.createdAt).toLocaleString('en-IN')}"`,
+      `"${new Date(o.createdAt).toLocaleString("en-IN")}"`,
       o.items ? o.items.length : 0,
       o.subtotal,
       o.shippingFee,
@@ -204,91 +211,105 @@ export const OrdersView: React.FC = () => {
       `"${o.orderStatus}"`,
     ]);
 
-    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((r) => r.join(",")),
+    ].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', `Maharaj_Orders_Export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `MAHESHRAJ_Orders_Export_${new Date().toISOString().split("T")[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    addToast(`Exported ${dbOrders.length} order records to CSV.`, 'success');
+    addToast(`Exported ${dbOrders.length} order records to CSV.`, "success");
   };
 
   // Status Badge Component
   const getStatusBadge = (status: OrderStatus) => {
     switch (status) {
-      case 'Pending':
+      case "Pending":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-amber-100 text-amber-900 font-bold border border-amber-300 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <Clock className="w-3 h-3 text-amber-700" /> Pending
           </span>
         );
-      case 'Confirmed':
+      case "Confirmed":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-blue-100 text-blue-900 font-bold border border-blue-300 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <CheckCircle2 className="w-3 h-3 text-blue-700" /> Confirmed
           </span>
         );
-      case 'Processing':
+      case "Processing":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-purple-100 text-purple-900 font-bold border border-purple-300 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <PackageCheck className="w-3 h-3 text-purple-700" /> Processing
           </span>
         );
-      case 'Shipped':
+      case "Shipped":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-emerald-100 text-emerald-900 font-bold border border-emerald-300 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <Truck className="w-3 h-3 text-emerald-700" /> Shipped
           </span>
         );
-      case 'Delivered':
+      case "Delivered":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-emerald-200 text-emerald-950 font-bold border border-emerald-400 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <CheckCircle2 className="w-3 h-3 text-emerald-800" /> Delivered
           </span>
         );
-      case 'Cancelled':
+      case "Cancelled":
         return (
           <span className="px-2.5 py-1 text-[10px] bg-red-100 text-red-900 font-bold border border-red-300 rounded-xs uppercase tracking-wider inline-flex items-center gap-1">
             <XCircle className="w-3 h-3 text-red-700" /> Cancelled
           </span>
         );
       default:
-        return <span className="px-2.5 py-1 text-[10px] bg-gray-100 text-gray-800 font-bold rounded-xs">{status}</span>;
+        return (
+          <span className="px-2.5 py-1 text-[10px] bg-gray-100 text-gray-800 font-bold rounded-xs">
+            {status}
+          </span>
+        );
     }
   };
 
   // Payment Status Badge Component
   const getPaymentStatusBadge = (pStatus: PaymentStatus) => {
     switch (pStatus) {
-      case 'Paid':
+      case "Paid":
         return (
           <span className="px-2 py-0.5 text-[10px] bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200 rounded-xs">
             Paid
           </span>
         );
-      case 'Pending':
+      case "Pending":
         return (
           <span className="px-2 py-0.5 text-[10px] bg-amber-50 text-amber-800 font-semibold border border-amber-200 rounded-xs">
             Payment Pending
           </span>
         );
-      case 'Refunded':
+      case "Refunded":
         return (
           <span className="px-2 py-0.5 text-[10px] bg-purple-50 text-purple-800 font-semibold border border-purple-200 rounded-xs">
             Refunded
           </span>
         );
-      case 'Failed':
+      case "Failed":
         return (
           <span className="px-2 py-0.5 text-[10px] bg-red-50 text-red-800 font-semibold border border-red-200 rounded-xs">
             Failed
           </span>
         );
       default:
-        return <span className="px-2 py-0.5 text-[10px] bg-gray-100 text-gray-800 font-semibold">{pStatus}</span>;
+        return (
+          <span className="px-2 py-0.5 text-[10px] bg-gray-100 text-gray-800 font-semibold">
+            {pStatus}
+          </span>
+        );
     }
   };
 
@@ -299,12 +320,16 @@ export const OrdersView: React.FC = () => {
     // Check transition rules
     const check = isValidStatusTransition(selectedOrder.orderStatus, newStatus);
     if (!check.allowed) {
-      addToast(check.reason || 'Invalid status transition.', 'error');
+      addToast(check.reason || "Invalid status transition.", "error");
       return;
     }
 
     setIsUpdatingStatus(true);
-    const success = await updateOrderStatus(selectedOrder.id, newStatus, statusNote);
+    const success = await updateOrderStatus(
+      selectedOrder.id,
+      newStatus,
+      statusNote,
+    );
     setIsUpdatingStatus(false);
 
     if (success) {
@@ -322,9 +347,9 @@ export const OrdersView: React.FC = () => {
                 },
               ],
             }
-          : null
+          : null,
       );
-      setStatusNote('');
+      setStatusNote("");
       loadDatabaseOrders();
     }
   };
@@ -338,8 +363,10 @@ export const OrdersView: React.FC = () => {
 
     if (success) {
       setShowCancelModal(false);
-      setCancelReason('');
-      setSelectedOrder((prev) => (prev ? { ...prev, orderStatus: 'Cancelled' } : null));
+      setCancelReason("");
+      setSelectedOrder((prev) =>
+        prev ? { ...prev, orderStatus: "Cancelled" } : null,
+      );
       loadDatabaseOrders();
     }
   };
@@ -353,22 +380,33 @@ export const OrdersView: React.FC = () => {
 
     if (success) {
       setShowRefundModal(false);
-      setRefundReason('');
-      setSelectedOrder((prev) => (prev ? { ...prev, paymentStatus: 'Refunded' } : null));
+      setRefundReason("");
+      setSelectedOrder((prev) =>
+        prev ? { ...prev, paymentStatus: "Refunded" } : null,
+      );
       loadDatabaseOrders();
     }
   };
 
-  const timelineSteps: OrderStatus[] = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
+  const timelineSteps: OrderStatus[] = [
+    "Pending",
+    "Confirmed",
+    "Processing",
+    "Shipped",
+    "Delivered",
+  ];
 
   // Admin Access Guard
   if (!isAuthenticated) {
     return (
       <div className="bg-[#FFFDF8] p-8 border border-red-200 text-center max-w-lg mx-auto my-12 shadow-md">
         <ShieldAlert className="w-12 h-12 text-red-600 mx-auto mb-3" />
-        <h3 className="font-serif text-xl font-bold text-[#30372F] mb-1">Access Restricted</h3>
+        <h3 className="font-serif text-xl font-bold text-[#30372F] mb-1">
+          Access Restricted
+        </h3>
         <p className="text-xs text-[#30372F]/70 mb-4">
-          You must be an authorized admin user to view or manage backend customer orders.
+          You must be an authorized admin user to view or manage backend
+          customer orders.
         </p>
       </div>
     );
@@ -382,9 +420,12 @@ export const OrdersView: React.FC = () => {
           <span className="text-[10px] uppercase tracking-widest text-[#C5A15A] font-bold">
             ADMINISTRATION PANEL
           </span>
-          <h2 className="font-serif text-2xl font-semibold text-[#30372F]">Orders</h2>
+          <h2 className="font-serif text-2xl font-semibold text-[#30372F]">
+            Orders
+          </h2>
           <p className="text-xs text-[#30372F]/60 mt-0.5">
-            Production Database Order Management • Live Order Tracking • Status Fulfillment & Refunds
+            Production Database Order Management • Live Order Tracking • Status
+            Fulfillment & Refunds
           </p>
         </div>
 
@@ -394,7 +435,9 @@ export const OrdersView: React.FC = () => {
             disabled={isLoadingOrders}
             className="px-3.5 py-2 bg-[#F5F1EB] text-[#30372F] hover:bg-[#30372F] hover:text-[#F7F3EC] border border-[#30372F]/15 font-semibold uppercase tracking-wider text-[11px] transition-colors flex items-center gap-2"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoadingOrders ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isLoadingOrders ? "animate-spin" : ""}`}
+            />
             Sync DB Data
           </button>
 
@@ -411,39 +454,65 @@ export const OrdersView: React.FC = () => {
       {/* 2. DASHBOARD STATS CARDS (DYNAMIC DB COMPUTED) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-[#30372F]/60 font-medium">Total Orders</p>
-          <p className="font-serif text-xl font-bold text-[#30372F] mt-1">{dashboardStats.totalOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-[#30372F]/60 font-medium">
+            Total Orders
+          </p>
+          <p className="font-serif text-xl font-bold text-[#30372F] mt-1">
+            {dashboardStats.totalOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-amber-200 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-amber-800 font-medium">Pending</p>
-          <p className="font-serif text-xl font-bold text-amber-900 mt-1">{dashboardStats.pendingOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-amber-800 font-medium">
+            Pending
+          </p>
+          <p className="font-serif text-xl font-bold text-amber-900 mt-1">
+            {dashboardStats.pendingOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-purple-200 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-purple-800 font-medium">Processing</p>
-          <p className="font-serif text-xl font-bold text-purple-900 mt-1">{dashboardStats.processingOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-purple-800 font-medium">
+            Processing
+          </p>
+          <p className="font-serif text-xl font-bold text-purple-900 mt-1">
+            {dashboardStats.processingOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-blue-200 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-blue-800 font-medium">Shipped</p>
-          <p className="font-serif text-xl font-bold text-blue-900 mt-1">{dashboardStats.shippedOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-blue-800 font-medium">
+            Shipped
+          </p>
+          <p className="font-serif text-xl font-bold text-blue-900 mt-1">
+            {dashboardStats.shippedOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-emerald-200 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-emerald-800 font-medium">Delivered</p>
-          <p className="font-serif text-xl font-bold text-emerald-950 mt-1">{dashboardStats.deliveredOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-emerald-800 font-medium">
+            Delivered
+          </p>
+          <p className="font-serif text-xl font-bold text-emerald-950 mt-1">
+            {dashboardStats.deliveredOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-red-200 p-3.5 shadow-2xs">
-          <p className="text-[10px] uppercase tracking-wider text-red-800 font-medium">Cancelled</p>
-          <p className="font-serif text-xl font-bold text-red-900 mt-1">{dashboardStats.cancelledOrders}</p>
+          <p className="text-[10px] uppercase tracking-wider text-red-800 font-medium">
+            Cancelled
+          </p>
+          <p className="font-serif text-xl font-bold text-red-900 mt-1">
+            {dashboardStats.cancelledOrders}
+          </p>
         </div>
 
         <div className="bg-[#FFFDF8] border border-[#C5A15A]/40 p-3.5 shadow-2xs col-span-2 sm:col-span-1">
-          <p className="text-[10px] uppercase tracking-wider text-[#C5A15A] font-bold">Total Revenue</p>
+          <p className="text-[10px] uppercase tracking-wider text-[#C5A15A] font-bold">
+            Total Revenue
+          </p>
           <p className="font-serif text-lg font-bold text-[#30372F] mt-1">
-            ₹ {dashboardStats.totalRevenue.toLocaleString('en-IN')}
+            ₹ {dashboardStats.totalRevenue.toLocaleString("en-IN")}
           </p>
         </div>
       </div>
@@ -452,15 +521,25 @@ export const OrdersView: React.FC = () => {
       <div className="bg-[#F5F1EB] p-4 border border-[#30372F]/10 space-y-4">
         {/* ORDER STATUS TABS */}
         <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium uppercase tracking-wider">
-          <span className="text-[11px] text-[#30372F]/50 mr-1 font-serif font-bold">Status:</span>
-          {['All', 'Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map((tab) => (
+          <span className="text-[11px] text-[#30372F]/50 mr-1 font-serif font-bold">
+            Status:
+          </span>
+          {[
+            "All",
+            "Pending",
+            "Confirmed",
+            "Processing",
+            "Shipped",
+            "Delivered",
+            "Cancelled",
+          ].map((tab) => (
             <button
               key={tab}
               onClick={() => handleStatusFilterChange(tab)}
               className={`px-3 py-1.5 transition-colors border text-[11px] ${
                 statusFilter === tab
-                  ? 'bg-[#30372F] text-[#F7F3EC] border-[#30372F] font-semibold shadow-2xs'
-                  : 'bg-[#FFFDF8] text-[#30372F]/70 border-[#30372F]/15 hover:text-[#30372F]'
+                  ? "bg-[#30372F] text-[#F7F3EC] border-[#30372F] font-semibold shadow-2xs"
+                  : "bg-[#FFFDF8] text-[#30372F]/70 border-[#30372F]/15 hover:text-[#30372F]"
               }`}
             >
               {tab}
@@ -482,7 +561,7 @@ export const OrdersView: React.FC = () => {
             />
             {searchTerm && (
               <button
-                onClick={() => handleSearchChange('')}
+                onClick={() => handleSearchChange("")}
                 className="absolute right-2.5 top-2.5 text-[#30372F]/40 hover:text-[#30372F]"
                 title="Clear search"
               >
@@ -522,7 +601,9 @@ export const OrdersView: React.FC = () => {
               <option value="All">Payment Method: All</option>
               <option value="Razorpay">Razorpay</option>
               <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-              <option value="Direct Order Confirmation">Direct Order Confirmation</option>
+              <option value="Direct Order Confirmation">
+                Direct Order Confirmation
+              </option>
               <option value="Bank Transfer (NEFT)">Bank Transfer</option>
               <option value="UPI">UPI</option>
             </select>
@@ -549,7 +630,7 @@ export const OrdersView: React.FC = () => {
         </div>
 
         {/* CUSTOM DATE RANGE PICKER (WHEN CUSTOM IS SELECTED) */}
-        {dateFilter === 'Custom' && (
+        {dateFilter === "Custom" && (
           <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-[#30372F]/10 text-xs">
             <span className="font-semibold text-[#30372F]">Custom Range:</span>
             <div className="flex items-center gap-2">
@@ -598,7 +679,11 @@ export const OrdersView: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3 text-xs">
-            {(searchTerm || statusFilter !== 'All' || paymentStatusFilter !== 'All' || paymentMethodFilter !== 'All' || dateFilter !== 'All') && (
+            {(searchTerm ||
+              statusFilter !== "All" ||
+              paymentStatusFilter !== "All" ||
+              paymentMethodFilter !== "All" ||
+              dateFilter !== "All") && (
               <button
                 onClick={handleClearSearchAndFilters}
                 className="text-xs text-red-700 hover:text-red-900 font-semibold underline underline-offset-2 flex items-center gap-1"
@@ -632,14 +717,20 @@ export const OrdersView: React.FC = () => {
         {isLoadingOrders ? (
           <div className="p-12 text-center space-y-3">
             <RefreshCw className="w-8 h-8 text-[#C5A15A] animate-spin mx-auto" />
-            <p className="font-serif text-base font-semibold text-[#30372F]">Loading orders...</p>
-            <p className="text-xs text-[#30372F]/60">Retrieving real-time order records from backend database...</p>
+            <p className="font-serif text-base font-semibold text-[#30372F]">
+              Loading orders...
+            </p>
+            <p className="text-xs text-[#30372F]/60">
+              Retrieving real-time order records from backend database...
+            </p>
           </div>
         ) : dbError ? (
           /* ERROR STATE */
           <div className="p-12 text-center space-y-3 bg-red-50/50">
             <AlertTriangle className="w-10 h-10 text-red-600 mx-auto" />
-            <h3 className="font-serif text-lg font-bold text-red-900">Unable to load orders. Please try again.</h3>
+            <h3 className="font-serif text-lg font-bold text-red-900">
+              Unable to load orders. Please try again.
+            </h3>
             <p className="text-xs text-red-700 max-w-md mx-auto">{dbError}</p>
             <button
               onClick={loadDatabaseOrders}
@@ -652,9 +743,12 @@ export const OrdersView: React.FC = () => {
           /* EMPTY STATE */
           <div className="p-12 text-center space-y-3">
             <ShoppingBag className="w-10 h-10 text-[#30372F]/30 mx-auto" />
-            <h3 className="font-serif text-lg font-bold text-[#30372F]">No orders found</h3>
+            <h3 className="font-serif text-lg font-bold text-[#30372F]">
+              No orders found
+            </h3>
             <p className="text-xs text-[#30372F]/60 max-w-md mx-auto">
-              No order records matched your selected search query or active filters.
+              No order records matched your selected search query or active
+              filters.
             </p>
             <button
               onClick={handleClearSearchAndFilters}
@@ -682,48 +776,61 @@ export const OrdersView: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-[#30372F]/5">
                 {dbOrders.map((ord) => (
-                  <tr key={ord.id} className="hover:bg-[#F5F1EB]/40 transition-colors">
+                  <tr
+                    key={ord.id}
+                    className="hover:bg-[#F5F1EB]/40 transition-colors"
+                  >
                     <td className="p-3.5 font-semibold text-[#30372F] font-mono text-xs">
                       #{ord.orderNumber}
                     </td>
 
                     <td className="p-3.5 font-medium text-[#30372F]">
-                      <p className="font-semibold text-[#30372F]">{ord.customerName}</p>
+                      <p className="font-semibold text-[#30372F]">
+                        {ord.customerName}
+                      </p>
                       <p className="text-[10px] text-[#30372F]/60 font-normal">
-                        {ord.shippingAddress ? `${ord.shippingAddress.city}, ${ord.shippingAddress.state}` : ''}
+                        {ord.shippingAddress
+                          ? `${ord.shippingAddress.city}, ${ord.shippingAddress.state}`
+                          : ""}
                       </p>
                     </td>
 
                     <td className="p-3.5 text-[#30372F]/80">
                       <p>{ord.customerEmail}</p>
-                      <p className="text-[10px] text-[#30372F]/60">{ord.customerPhone}</p>
+                      <p className="text-[10px] text-[#30372F]/60">
+                        {ord.customerPhone}
+                      </p>
                     </td>
 
                     <td className="p-3.5 text-[#30372F]/70 whitespace-nowrap">
-                      {new Date(ord.createdAt).toLocaleDateString('en-IN', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
+                      {new Date(ord.createdAt).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
                       })}
                       <p className="text-[10px] text-[#30372F]/50">
-                        {new Date(ord.createdAt).toLocaleTimeString('en-IN', {
-                          hour: '2-digit',
-                          minute: '2-digit',
+                        {new Date(ord.createdAt).toLocaleTimeString("en-IN", {
+                          hour: "2-digit",
+                          minute: "2-digit",
                         })}
                       </p>
                     </td>
 
                     <td className="p-3.5 text-center font-semibold text-[#30372F]">
-                      {ord.items && ord.items.length > 0 ? `${ord.items.length} Item(s)` : '1 Item'}
+                      {ord.items && ord.items.length > 0
+                        ? `${ord.items.length} Item(s)`
+                        : "1 Item"}
                     </td>
 
                     <td className="p-3.5 text-right font-semibold text-[#30372F] font-serif text-sm">
-                      ₹ {ord.totalAmount.toLocaleString('en-IN')}
+                      ₹ {ord.totalAmount.toLocaleString("en-IN")}
                     </td>
 
                     <td className="p-3.5">
                       {getPaymentStatusBadge(ord.paymentStatus)}
-                      <p className="text-[9px] text-[#30372F]/50 mt-0.5">{ord.paymentMethod}</p>
+                      <p className="text-[9px] text-[#30372F]/50 mt-0.5">
+                        {ord.paymentMethod}
+                      </p>
                     </td>
 
                     <td className="p-3.5">{getStatusBadge(ord.orderStatus)}</td>
@@ -750,9 +857,17 @@ export const OrdersView: React.FC = () => {
         {!isLoadingOrders && !dbError && totalCount > 0 && (
           <div className="bg-[#F5F1EB] p-4 border-t border-[#30372F]/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <p className="text-[#30372F]/70">
-              Showing <span className="font-semibold text-[#30372F]">{(currentPage - 1) * pageSize + 1}</span> to{' '}
-              <span className="font-semibold text-[#30372F]">{Math.min(currentPage * pageSize, totalCount)}</span> of{' '}
-              <span className="font-semibold text-[#30372F]">{totalCount}</span> orders
+              Showing{" "}
+              <span className="font-semibold text-[#30372F]">
+                {(currentPage - 1) * pageSize + 1}
+              </span>{" "}
+              to{" "}
+              <span className="font-semibold text-[#30372F]">
+                {Math.min(currentPage * pageSize, totalCount)}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-[#30372F]">{totalCount}</span>{" "}
+              orders
             </p>
 
             <div className="flex items-center gap-1.5">
@@ -769,7 +884,9 @@ export const OrdersView: React.FC = () => {
               </span>
 
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 bg-[#FFFDF8] border border-[#30372F]/15 text-[#30372F] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#30372F] hover:text-white transition-colors flex items-center gap-1 text-xs font-medium"
               >

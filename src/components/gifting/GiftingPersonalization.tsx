@@ -1,7 +1,7 @@
-﻿import { motion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { customizationSteps, giftingHeroData } from '@/data/giftingData';
-import { CheckCircle2 } from 'lucide-react';
+﻿import { motion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { customizationSteps, giftingHeroData } from "@/data/giftingData";
+import { CheckCircle2 } from "lucide-react";
 
 export default function GiftingPersonalization() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
@@ -42,7 +42,8 @@ export default function GiftingPersonalization() {
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-[#30372F]/70 text-base font-light"
           >
-            Every detail is tailored to embody your brand identity and reflect the significance of your occasion.
+            Every detail is tailored to embody your brand identity and reflect
+            the significance of your occasion.
           </motion.p>
         </div>
 
@@ -55,18 +56,19 @@ export default function GiftingPersonalization() {
         >
           <img
             src={giftingHeroData.boxImage}
-            alt="Maharaj Personalized Packaging Box Composition"
+            alt="MAHESHRAJ Personalized Packaging Box Composition"
             className="w-full h-[350px] sm:h-[450px] lg:h-[500px] object-cover object-center opacity-90"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#30372F] via-[#30372F]/30 to-transparent" />
-          
+
           {/* Overlay Box Quote */}
           <div className="absolute bottom-8 left-8 right-8 sm:bottom-12 sm:left-12 sm:right-12 max-w-xl">
             <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-[#C5A15A] mb-2 block">
               Packaging & Presentation
             </span>
             <h3 className="font-serif text-2xl sm:text-3xl text-[#FFFDF8] font-normal leading-snug">
-              Custom velvet boxes, gold leaf accents, and calligraphed cards designed to impress.
+              Custom velvet boxes, gold leaf accents, and calligraphed cards
+              designed to impress.
             </h3>
           </div>
         </motion.div>
@@ -76,9 +78,13 @@ export default function GiftingPersonalization() {
           {/* Progressive Connecting Champagne Gold Line (Desktop) */}
           <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-[rgba(41,35,31,0.15)] z-0">
             <motion.div
-              initial={{ width: '0%' }}
-              animate={inView ? { width: '100%' } : {}}
-              transition={{ duration: 1.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ width: "0%" }}
+              animate={inView ? { width: "100%" } : {}}
+              transition={{
+                duration: 1.6,
+                delay: 0.4,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="h-full bg-[#C5A15A]"
             />
           </div>
@@ -89,7 +95,11 @@ export default function GiftingPersonalization() {
                 key={step.number}
                 initial={{ opacity: 0, y: 25 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.3 + i * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="flex flex-col items-start bg-[#FFFDF8] lg:bg-transparent p-6 lg:p-0 rounded-xs border lg:border-none border-[rgba(41,35,31,0.08)] shadow-xs lg:shadow-none"
               >
                 {/* Number Circle Node */}
@@ -111,7 +121,10 @@ export default function GiftingPersonalization() {
 
                 {/* Detail Bullet */}
                 <div className="mt-auto pt-3 border-t border-[rgba(41,35,31,0.1)] w-full flex items-start gap-2 text-[11px] text-[#B8A99A] font-light leading-normal">
-                  <CheckCircle2 size={13} className="text-[#C5A15A] shrink-0 mt-0.5" />
+                  <CheckCircle2
+                    size={13}
+                    className="text-[#C5A15A] shrink-0 mt-0.5"
+                  />
                   <span>{step.detail}</span>
                 </div>
               </motion.div>

@@ -1,8 +1,8 @@
-import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { ArrowRight, Sparkles, MessageCircle, ShoppingBag } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { ArrowRight, Sparkles, MessageCircle, ShoppingBag } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -12,35 +12,34 @@ export default function PearlEducationCTA() {
   const prefersReduced = useReducedMotion();
 
   const handleShopClick = () => {
-    setCurrentPage('shop');
-    setCategory('all');
-    window.history.pushState({}, '', '/shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("shop");
+    setCategory("all");
+    window.history.pushState({}, "", "/shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleContactClick = () => {
-    setCurrentPage('contact');
-    window.history.pushState({}, '', '/contact');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("contact");
+    window.history.pushState({}, "", "/contact");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <section
       ref={ref}
       className="relative w-full py-20 lg:py-24 bg-[#F7F3EC] text-cocoa-300 overflow-hidden border-t border-[rgba(41,35,31,0.08)]"
-      aria-label="Explore Maharaj Jewellery collection"
+      aria-label="Explore MAHESHRAJ Jewellery collection"
     >
       {/* Background soft ambient radial light */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)',
+            "radial-gradient(ellipse at 50% 50%, rgba(200, 169, 107, 0.12) 0%, rgba(247, 243, 236, 0) 70%)",
         }}
       />
 
       <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 text-center relative z-10">
-        
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -50,7 +49,7 @@ export default function PearlEducationCTA() {
         >
           <Sparkles size={12} className="text-champagne-500" />
           <p className="text-champagne-500 text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.3em] uppercase">
-            MAHARAJ JEWELLERY
+            MAHESHRAJ JEWELLERY
           </p>
         </motion.div>
 
@@ -62,7 +61,9 @@ export default function PearlEducationCTA() {
           className="font-serif text-[clamp(34px,5vw,60px)] font-normal leading-[1.02] tracking-[-0.015em] text-cocoa-300 mb-5"
         >
           NOW THAT YOU <br />
-          <span className="italic font-serif font-light text-cocoa-200">KNOW YOUR PEARLS.</span>
+          <span className="italic font-serif font-light text-cocoa-200">
+            KNOW YOUR PEARLS.
+          </span>
         </motion.h2>
 
         {/* Supporting text */}
@@ -72,7 +73,8 @@ export default function PearlEducationCTA() {
           transition={{ duration: 0.8, delay: 0.2, ease: luxuryEase }}
           className="text-cocoa-200/90 text-[15px] sm:text-[17px] font-sans font-light max-w-lg mx-auto leading-relaxed mb-9"
         >
-          Explore the Maharaj Jewellery collection and find a piece that speaks to you.
+          Explore the MAHESHRAJ Jewellery collection and find a piece that
+          speaks to you.
         </motion.p>
 
         {/* Dual Action Buttons */}
@@ -101,7 +103,11 @@ export default function PearlEducationCTA() {
             onClick={handleContactClick}
             className="group w-full sm:w-auto inline-flex items-center justify-center gap-4 px-8 py-4 bg-pearlIvory-50 hover:bg-pearlIvory-200 text-cocoa-300 border border-champagne-300/60 text-[12px] font-sans font-medium tracking-[0.2em] uppercase rounded-[1px] transition-all duration-300 shadow-[0_2px_10px_rgba(200,169,107,0.1)]"
           >
-            <MessageCircle size={15} strokeWidth={1.7} className="text-champagne-500" />
+            <MessageCircle
+              size={15}
+              strokeWidth={1.7}
+              className="text-champagne-500"
+            />
             <span>CONTACT A SPECIALIST</span>
             <ArrowRight
               size={15}
@@ -110,7 +116,6 @@ export default function PearlEducationCTA() {
             />
           </button>
         </motion.div>
-
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useAdmin } from "../../context/AdminContext";
 import {
   Search,
@@ -93,17 +93,9 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
       title: "Contact Enquiries",
       subtext: "Private consultation and concierge messages",
     },
-    banners: {
-      title: "Banners & Marketing",
-      subtext: "Manage promotional banners and campaign links",
-    },
     reviews: {
       title: "Customer Reviews",
       subtext: "Moderate product reviews and testimonials",
-    },
-    newsletter: {
-      title: "Newsletter Subscribers",
-      subtext: "Export email list and view inner circle members",
     },
     analytics: {
       title: "Sales & Performance Analytics",
@@ -117,7 +109,7 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
 
   const currentInfo = tabTitles[activeTab] || {
     title: "Admin Panel",
-    subtext: "Maharaj Jewellery Management",
+    subtext: "MAHESHRAJ Jewellery Management",
   };
 
   return (
@@ -154,23 +146,21 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
             Search products, orders, customers...
           </span>
           <span className="lg:hidden">Search</span>
-          <kbd
-            className="hidden lg:inline-block bg-[#F5EBDD]/50 text-[9px] px-1.5 py-0.5 border border-[#30372F]/10 font-mono text-[#30372F]/80"
-          >
+          <kbd className="hidden lg:inline-block bg-[#F5EBDD]/50 text-[9px] px-1.5 py-0.5 border border-[#30372F]/10 font-mono text-[#30372F]/80">
             ⌘K
           </kbd>
         </button>
 
         {/* VIEW PUBLIC WEBSITE */}
         <a
-          href={getPublicStoreUrl()}
+          href={getPublicStoreUrl("/")}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:flex items-center gap-1.5 text-xs text-[#30372F]/70 hover:text-[#C5A15A] px-2 py-1 transition-colors"
-          title="Open Live Store in New Tab"
+          title="Open Customer Storefront in New Tab"
         >
           <span className="text-[11px] uppercase tracking-wider font-medium">
-            Store Front
+            Storefront
           </span>
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
@@ -273,14 +263,14 @@ export const AdminHeader: React.FC<HeaderProps> = ({ onOpenMobileSidebar }) => {
 
               <div className="py-1">
                 <a
-                  href={getPublicStoreUrl()}
+                  href={getPublicStoreUrl("/")}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsProfileOpen(false)}
                   className="w-full text-left px-4 py-2 text-xs text-[#30372F]/80 hover:bg-[#F5F1EB] hover:text-[#30372F] flex items-center gap-2"
                 >
                   <ExternalLink className="w-3.5 h-3.5 text-[#C5A15A]" />
-                  <span>Go to Customer Store</span>
+                  <span>Go to Customer Storefront</span>
                 </a>
                 <button
                   onClick={() => {

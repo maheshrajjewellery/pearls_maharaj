@@ -1,94 +1,138 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
-import { Eye, EyeOff, ShieldCheck, AlertCircle, Loader2, LogOut, CheckCircle2, ArrowRight } from 'lucide-react';
-import { useShop, UserProfile } from '@/context/ShopContext';
-import { useAdmin } from '@/admin/context/AdminContext';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Eye,
+  EyeOff,
+  AlertCircle,
+  Loader2,
+  LogOut,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
+import { useShop, UserProfile } from "@/context/ShopContext";
+import { useAdmin } from "@/admin/context/AdminContext";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export default function LoginPage() {
   const { setCurrentPage, user, setUserProfile, logoutUser } = useShop();
-  const { login } = useAdmin();
+  const { login: loginAdmin } = useAdmin();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState('');
-  const [errMsg, setErrMsg] = useState('');
+  const [msg, setMsg] = useState("");
+  const [errMsg, setErrMsg] = useState("");
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Auto-redirect authenticated customers visiting /login directly to /dashboard
+  // Auto-redirect authenticated users visiting /login directly to appropriate dashboard
   useEffect(() => {
-    if (user && !user.email.toLowerCase().includes('admin')) {
-      console.log('[AUTH] User is already authenticated. Redirecting from /login to /dashboard...');
-      setCurrentPage('dashboard');
-      if (typeof window !== 'undefined') {
-        window.history.replaceState({}, '', '/dashboard');
+    const isAdminActive =
+      typeof window !== "undefined" &&
+      (localStorage.getItem("MAHESHRAJ_admin_session") === "active" ||
+        (localStorage.getItem("MAHESHRAJ_admin_token") &&
+          localStorage.getItem("MAHESHRAJ_admin_token")!.length > 10));
+
+    if (isAdminActive) {
+      console.log(
+        "[AUTH] Admin is authenticated. Redirecting from /login to /admin/dashboard...",
+      );
+      setCurrentPage("admin");
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", "/admin/dashboard");
+      }
+    } else if (user) {
+      const userEmail = user.email.toLowerCase().trim();
+      const isEmailAdmin = userEmail === "maheshtadakalle@gmail.com";
+
+      if (isEmailAdmin) {
+        console.log(
+          "[AUTH] Admin is authenticated. Redirecting from /login to /admin/dashboard...",
+        );
+        setCurrentPage("admin");
+        if (typeof window !== "undefined") {
+          window.history.replaceState({}, "", "/admin/dashboard");
+        }
+      } else {
+        console.log(
+          "[AUTH] Customer is already authenticated. Redirecting from /login to /customer/dashboard...",
+        );
+        setCurrentPage("dashboard");
+        if (typeof window !== "undefined") {
+          window.history.replaceState({}, "", "/customer/dashboard");
+        }
       }
     }
   }, [user, setCurrentPage]);
 
-  // Helper to handle successful user session (Google OAuth or Email/Password)
+  // Helper to handle successful customer session (Google OAuth or Email/Password)
   const handleAuthSuccess = useCallback(
     (profile: UserProfile) => {
-      console.log('[AUTH] Authentication succeeded for user:', profile.email);
-      let finalProfile: UserProfile = profile;
+      console.log(
+        "[AUTH] Customer authentication succeeded for user:",
+        profile.email,
+      );
+      let finalProfile: UserProfile = {
+        ...profile,
+        role: profile.role || "customer",
+      };
 
       // Customer retrieval & profile persistence logic
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         try {
-          const registeredUsersStr = localStorage.getItem('maharaj_registered_users');
-          let registeredUsers: UserProfile[] = registeredUsersStr ? JSON.parse(registeredUsersStr) : [];
+          const registeredUsersStr = localStorage.getItem(
+            "MAHESHRAJ_registered_users",
+          );
+          let registeredUsers: UserProfile[] = registeredUsersStr
+            ? JSON.parse(registeredUsersStr)
+            : [];
 
           const existingIndex = registeredUsers.findIndex(
-            (u) => u.email.toLowerCase() === profile.email.toLowerCase()
+            (u) => u.email.toLowerCase() === profile.email.toLowerCase(),
           );
 
           if (existingIndex >= 0) {
-            console.log('[AUTH] Existing customer profile found in records:', registeredUsers[existingIndex]);
+            console.log(
+              "[AUTH] Existing customer profile found in records:",
+              registeredUsers[existingIndex],
+            );
             const existingUser = registeredUsers[existingIndex];
             finalProfile = {
               ...existingUser,
               ...profile,
+              role: "customer",
               name: profile.name || existingUser.name,
               avatarUrl: profile.avatarUrl || existingUser.avatarUrl,
             };
             registeredUsers[existingIndex] = finalProfile;
           } else {
-            console.log('[AUTH] Creating new customer profile for:', profile.email);
+            console.log(
+              "[AUTH] Creating new customer profile for:",
+              profile.email,
+            );
             registeredUsers.push(finalProfile);
           }
-          localStorage.setItem('maharaj_registered_users', JSON.stringify(registeredUsers));
+          localStorage.setItem(
+            "MAHESHRAJ_registered_users",
+            JSON.stringify(registeredUsers),
+          );
         } catch (err) {
-          console.error('[AUTH] Error reading/saving customer profile:', err);
+          console.error("[AUTH] Error reading/saving customer profile:", err);
         }
       }
 
       setUserProfile(finalProfile);
       setMsg(`Signing you in as ${finalProfile.name}...`);
-      setErrMsg('');
-
-      const isEmailAdmin =
-        finalProfile.email.toLowerCase().includes('admin') ||
-        finalProfile.email.toLowerCase() === 'admin@maharajjewellery.com';
+      setErrMsg("");
 
       setTimeout(() => {
-        if (isEmailAdmin) {
-          console.log('[AUTH] Admin account detected. Redirecting to Executive Admin Portal...');
-          login(finalProfile.email, 'session');
-          setCurrentPage('admin');
-          if (typeof window !== 'undefined') {
-            window.history.pushState({}, '', '/admin');
-          }
-        } else {
-          console.log('[AUTH] Redirecting customer to /dashboard...');
-          setCurrentPage('dashboard');
-          if (typeof window !== 'undefined') {
-            window.history.pushState({}, '', '/dashboard');
-          }
+        console.log("[AUTH] Redirecting customer to /customer/dashboard...");
+        setCurrentPage("dashboard");
+        if (typeof window !== "undefined") {
+          window.history.pushState({}, "", "/customer/dashboard");
         }
       }, 500);
     },
-    [login, setCurrentPage, setUserProfile]
+    [setCurrentPage, setUserProfile],
   );
 
   // Check for OAuth errors in URL hash/query on page load
@@ -99,19 +143,25 @@ export default function LoginPage() {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const queryParams = new URLSearchParams(window.location.search);
       const errorDesc =
-        hashParams.get('error_description') ||
-        queryParams.get('error_description') ||
-        hashParams.get('error') ||
-        queryParams.get('error');
+        hashParams.get("error_description") ||
+        queryParams.get("error_description") ||
+        hashParams.get("error") ||
+        queryParams.get("error");
 
       if (errorDesc) {
-        console.warn('[AUTH] OAuth Callback Error:', errorDesc);
+        console.warn("[AUTH] OAuth Callback Error:", errorDesc);
         if (isMounted) {
-          setErrMsg(`Unable to sign in with Google. ${decodeURIComponent(errorDesc.replace(/\+/g, ' '))}`);
+          setErrMsg(
+            `Unable to sign in with Google. ${decodeURIComponent(errorDesc.replace(/\+/g, " "))}`,
+          );
           setIsGoogleLoading(false);
         }
-        if (typeof window !== 'undefined') {
-          window.history.replaceState({}, document.title, window.location.pathname);
+        if (typeof window !== "undefined") {
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname,
+          );
         }
       }
     };
@@ -125,22 +175,22 @@ export default function LoginPage() {
 
   // Initiate real Google OAuth authentication
   const handleGoogleLogin = async () => {
-    console.log('[AUTH DEBUG] Google login started');
+    console.log("[AUTH DEBUG] Google login started");
     const redirectUrl = `${window.location.origin}/auth/callback`;
-    console.log('[AUTH DEBUG] redirectTo =', redirectUrl);
-    setMsg('');
-    setErrMsg('');
+    console.log("[AUTH DEBUG] redirectTo =", redirectUrl);
+    setMsg("");
+    setErrMsg("");
     setIsGoogleLoading(true);
 
     try {
       if (isSupabaseConfigured()) {
         const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
+          provider: "google",
           options: {
             redirectTo: redirectUrl,
             queryParams: {
-              access_type: 'offline',
-              prompt: 'consent',
+              access_type: "offline",
+              prompt: "consent",
             },
           },
         });
@@ -149,25 +199,55 @@ export default function LoginPage() {
           throw error;
         }
       } else {
-        setErrMsg('Google OAuth service is missing configuration variables.');
+        setErrMsg("Google OAuth service is missing configuration variables.");
         setIsGoogleLoading(false);
       }
     } catch (err: any) {
-      console.error('[AUTH DEBUG] Google OAuth error:', err);
-      setErrMsg(err?.message || 'Unable to sign in with Google. Please try again.');
+      console.error("[AUTH DEBUG] Google OAuth error:", err);
+      setErrMsg(
+        err?.message || "Unable to sign in with Google. Please try again.",
+      );
       setIsGoogleLoading(false);
     }
   };
 
-  // Handle Email & Password Sign In
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle Email & Password Sign In (Admin & Customer)
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('[AUTH] Email/Password Sign-In form submitted:', email);
-    setMsg('');
-    setErrMsg('');
+    console.log("[AUTH] Email/Password Sign-In form submitted:", email);
+    setMsg("");
+    setErrMsg("");
 
     if (!email || !password) {
-      setErrMsg('Please enter both email address and password.');
+      setErrMsg("Please enter both email address and password.");
+      return;
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const isEmailAdmin = cleanEmail === "maheshtadakalle@gmail.com";
+
+    if (isEmailAdmin) {
+      setIsSubmitting(true);
+      try {
+        const res = await loginAdmin(cleanEmail, password);
+        setIsSubmitting(false);
+
+        if (res.success) {
+          console.log(
+            "[AUTH] Admin credentials verified. Redirecting to /admin/dashboard...",
+          );
+          setCurrentPage("admin");
+          if (typeof window !== "undefined") {
+            window.history.pushState({}, "", "/admin/dashboard");
+          }
+        } else {
+          setErrMsg("Invalid credentials.");
+        }
+      } catch (err) {
+        setIsSubmitting(false);
+        console.error("[AUTH] Admin login exception:", err);
+        setErrMsg("Invalid credentials.");
+      }
       return;
     }
 
@@ -175,56 +255,37 @@ export default function LoginPage() {
 
     setTimeout(() => {
       try {
-        const isEmailAdmin =
-          email.toLowerCase().includes('admin') || email.toLowerCase() === 'admin@maharajjewellery.com';
-
-        if (isEmailAdmin) {
-          console.log('[AUTH] Admin credentials submitted');
-          login(email, password);
-          setIsSubmitting(false);
-          setCurrentPage('admin');
-          if (typeof window !== 'undefined') {
-            window.history.pushState({}, '', '/admin');
-          }
-        } else {
-          let existingProfile: UserProfile | undefined;
-          if (typeof window !== 'undefined') {
-            try {
-              const registeredUsersStr = localStorage.getItem('maharaj_registered_users');
-              if (registeredUsersStr) {
-                const registeredUsers: UserProfile[] = JSON.parse(registeredUsersStr);
-                existingProfile = registeredUsers.find(
-                  (u) => u.email.toLowerCase() === email.toLowerCase()
-                );
-              }
-            } catch {}
-          }
-
-          const customerProfile: UserProfile = existingProfile || {
-            id: `user_${Date.now()}`,
-            name: email.split('@')[0],
-            email: email,
-            provider: 'email',
-          };
-
-          handleAuthSuccess(customerProfile);
-          setIsSubmitting(false);
+        let existingProfile: UserProfile | undefined;
+        if (typeof window !== "undefined") {
+          try {
+            const registeredUsersStr = localStorage.getItem(
+              "MAHESHRAJ_registered_users",
+            );
+            if (registeredUsersStr) {
+              const registeredUsers: UserProfile[] =
+                JSON.parse(registeredUsersStr);
+              existingProfile = registeredUsers.find(
+                (u) => u.email.toLowerCase() === email.toLowerCase(),
+              );
+            }
+          } catch {}
         }
+
+        const customerProfile: UserProfile = existingProfile || {
+          id: `user_${Date.now()}`,
+          name: email.split("@")[0],
+          email: email,
+          provider: "email",
+        };
+
+        handleAuthSuccess(customerProfile);
+        setIsSubmitting(false);
       } catch (err: any) {
         setIsSubmitting(false);
-        console.error('[AUTH] Sign-in exception:', err);
-        setErrMsg('Unable to sign in. Please try again.');
+        console.error("[AUTH] Sign-in exception:", err);
+        setErrMsg("Unable to sign in. Please try again.");
       }
     }, 400);
-  };
-
-  const handleAdminDirectLogin = () => {
-    console.log('[AUTH] Accessing Executive Admin Portal directly');
-    login('admin@maharajjewellery.com', 'maharaj123');
-    setCurrentPage('admin');
-    if (typeof window !== 'undefined') {
-      window.history.pushState({}, '', '/admin');
-    }
   };
 
   return (
@@ -236,7 +297,7 @@ export default function LoginPage() {
             Welcome Back
           </h1>
           <p className="font-sans text-sm tracking-wide text-[#171310]/70 font-light">
-            Sign in to your Maharaj Jewellery account or Admin Portal.
+            Sign in to your MAHESHRAJ Jewellery account.
           </p>
         </div>
 
@@ -259,7 +320,9 @@ export default function LoginPage() {
                 <p className="font-sans text-xs font-semibold text-[#171310] truncate">
                   {user.name}
                 </p>
-                <p className="font-sans text-[11px] text-[#171310]/60 truncate">{user.email}</p>
+                <p className="font-sans text-[11px] text-[#171310]/60 truncate">
+                  {user.email}
+                </p>
               </div>
               <button
                 type="button"
@@ -273,13 +336,15 @@ export default function LoginPage() {
 
             <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#171310]/10">
               <p className="font-sans text-[11px] text-emerald-700 flex items-center gap-1 font-medium">
-                <CheckCircle2 size={13} /> Active Session ({user.provider === 'google' ? 'Google' : 'Email'})
+                <CheckCircle2 size={13} /> Active Session (
+                {user.provider === "google" ? "Google" : "Email"})
               </p>
               <button
                 type="button"
                 onClick={() => {
-                  setCurrentPage('dashboard');
-                  if (typeof window !== 'undefined') window.history.pushState({}, '', '/dashboard');
+                  setCurrentPage("dashboard");
+                  if (typeof window !== "undefined")
+                    window.history.pushState({}, "", "/customer/dashboard");
                 }}
                 className="font-sans text-xs font-semibold text-[#C5A15A] hover:underline flex items-center gap-1"
               >
@@ -355,7 +420,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Existing Email/Password Login Form */}
+        {/* Existing Email/Password Customer Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5 text-left">
           {/* Email Address Field */}
           <div className="space-y-1.5">
@@ -387,7 +452,7 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -398,7 +463,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#171310]/50 hover:text-[#C5A15A] focus:outline-none transition-colors duration-200"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeOff size={18} strokeWidth={1.5} />
@@ -425,18 +490,6 @@ export default function LoginPage() {
             )}
           </button>
         </form>
-
-        {/* ADMIN DIRECT BUTTON */}
-        <div className="pt-4 border-t border-[#171310]/10">
-          <button
-            type="button"
-            onClick={handleAdminDirectLogin}
-            className="w-full py-3 px-4 bg-[#F5F1EB] border border-[#C5A15A]/50 text-[#171310] font-sans text-xs font-semibold tracking-[0.15em] uppercase hover:bg-[#C5A15A] hover:text-[#171310] transition-colors duration-300 flex items-center justify-center gap-2"
-          >
-            <ShieldCheck className="w-4 h-4 text-[#C5A15A]" />
-            <span>Access Executive Admin Portal</span>
-          </button>
-        </div>
       </div>
     </div>
   );

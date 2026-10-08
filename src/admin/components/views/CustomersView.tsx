@@ -1,8 +1,11 @@
-﻿import React, { useState, useMemo, useEffect } from 'react';
-import { useAdmin } from '../../context/AdminContext';
-import { AdminCustomer, AdminOrder } from '@/types/admin';
-import { fetchCustomersFromDb, CustomerFilterParams } from '@/services/customerService';
-import { OrderDetailsModal } from './OrderDetailsModal';
+﻿import React, { useState, useMemo, useEffect } from "react";
+import { useAdmin } from "../../context/AdminContext";
+import { AdminCustomer, AdminOrder } from "@/types/admin";
+import {
+  fetchCustomersFromDb,
+  CustomerFilterParams,
+} from "@/services/customerService";
+import { OrderDetailsModal } from "./OrderDetailsModal";
 import {
   Search,
   Users,
@@ -27,7 +30,7 @@ import {
   MoreVertical,
   Ban,
   CheckCircle,
-} from 'lucide-react';
+} from "lucide-react";
 
 export const CustomersView: React.FC = () => {
   const {
@@ -43,35 +46,51 @@ export const CustomersView: React.FC = () => {
   const [dbError, setDbError] = useState<string | null>(null);
 
   // Search & Filter State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Inactive'>('All');
-  const [customerTypeFilter, setCustomerTypeFilter] = useState<'All' | 'New' | 'Returning'>('All');
-  const [orderActivityFilter, setOrderActivityFilter] = useState<'All' | 'Never Ordered' | 'Has Orders'>('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    "All" | "Active" | "Inactive"
+  >("All");
+  const [customerTypeFilter, setCustomerTypeFilter] = useState<
+    "All" | "New" | "Returning"
+  >("All");
+  const [orderActivityFilter, setOrderActivityFilter] = useState<
+    "All" | "Never Ordered" | "Has Orders"
+  >("All");
   const [dateJoinedFilter, setDateJoinedFilter] = useState<
-    'All' | 'Today' | 'Last 7 Days' | 'Last 30 Days' | 'Custom Range'
-  >('All');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+    "All" | "Today" | "Last 7 Days" | "Last 30 Days" | "Custom Range"
+  >("All");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   // Sorting & Pagination State
   const [sortBy, setSortBy] = useState<
-    'newest' | 'oldest' | 'name' | 'most_orders' | 'highest_spending' | 'most_recent_order'
-  >('newest');
+    | "newest"
+    | "oldest"
+    | "name"
+    | "most_orders"
+    | "highest_spending"
+    | "most_recent_order"
+  >("newest");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
 
   // Selected Customer & Modals State
-  const [selectedCustomer, setSelectedCustomer] = useState<AdminCustomer | null>(null);
-  const [selectedCustomerTab, setSelectedCustomerTab] = useState<'info' | 'addresses' | 'orders'>('info');
+  const [selectedCustomer, setSelectedCustomer] =
+    useState<AdminCustomer | null>(null);
+  const [selectedCustomerTab, setSelectedCustomerTab] = useState<
+    "info" | "addresses" | "orders"
+  >("info");
 
   // Selected Order for Order Details Modal (reusing OrderDetailsModal)
   const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
 
   // Deactivation / Reactivation Confirmation Modals
-  const [deactivateTarget, setDeactivateTarget] = useState<AdminCustomer | null>(null);
+  const [deactivateTarget, setDeactivateTarget] =
+    useState<AdminCustomer | null>(null);
   const [isDeactivating, setIsDeactivating] = useState(false);
 
-  const [reactivateTarget, setReactivateTarget] = useState<AdminCustomer | null>(null);
+  const [reactivateTarget, setReactivateTarget] =
+    useState<AdminCustomer | null>(null);
   const [isReactivating, setIsReactivating] = useState(false);
 
   // Query Result State
@@ -109,8 +128,8 @@ export const CustomersView: React.FC = () => {
       setTotalPages(res.totalPages);
       setDashboardStats(res.dashboardStats);
     } catch (err: any) {
-      console.error('Error loading database customers:', err);
-      setDbError(err.message || 'Unable to load customer directory.');
+      console.error("Error loading database customers:", err);
+      setDbError(err.message || "Unable to load customer directory.");
     } finally {
       setIsLoading(false);
     }
@@ -137,7 +156,8 @@ export const CustomersView: React.FC = () => {
   const customerOrders = useMemo(() => {
     if (!selectedCustomer) return [];
     return globalOrders.filter(
-      (o) => o.customerEmail.toLowerCase() === selectedCustomer.email.toLowerCase()
+      (o) =>
+        o.customerEmail.toLowerCase() === selectedCustomer.email.toLowerCase(),
     );
   }, [selectedCustomer, globalOrders]);
 
@@ -158,43 +178,49 @@ export const CustomersView: React.FC = () => {
       });
 
       const headers = [
-        'Customer ID',
-        'Full Name',
-        'Email',
-        'Phone',
-        'Auth Provider',
-        'Joined Date',
-        'Total Orders',
-        'Total Spent (INR)',
-        'Average Order Value',
-        'Account Status',
+        "Customer ID",
+        "Full Name",
+        "Email",
+        "Phone",
+        "Auth Provider",
+        "Joined Date",
+        "Total Orders",
+        "Total Spent (INR)",
+        "Average Order Value",
+        "Account Status",
       ];
 
       const rows = fullRes.customers.map((c) => [
         `"${c.id}"`,
         `"${c.name.replace(/"/g, '""')}"`,
         `"${c.email}"`,
-        `"${c.phone || ''}"`,
-        `"${c.provider || 'email'}"`,
-        `"${c.joinedDate ? c.joinedDate.split('T')[0] : ''}"`,
+        `"${c.phone || ""}"`,
+        `"${c.provider || "email"}"`,
+        `"${c.joinedDate ? c.joinedDate.split("T")[0] : ""}"`,
         c.totalOrders,
         c.totalSpent,
         c.avgOrderValue,
         `"${c.status}"`,
       ]);
 
-      const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const csvContent = [
+        headers.join(","),
+        ...rows.map((r) => r.join(",")),
+      ].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `maharaj_customers_${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute(
+        "download",
+        `MAHESHRAJ_customers_${new Date().toISOString().split("T")[0]}.csv`,
+      );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      addToast('Customer list exported as CSV.', 'success');
+      addToast("Customer list exported as CSV.", "success");
     } catch (err: any) {
-      addToast('Failed to export customers CSV.', 'error');
+      addToast("Failed to export customers CSV.", "error");
     }
   };
 
@@ -203,11 +229,19 @@ export const CustomersView: React.FC = () => {
     if (!deactivateTarget) return;
     setIsDeactivating(true);
     try {
-      const success = await updateCustomerStatus(deactivateTarget.email, 'Inactive');
+      const success = await updateCustomerStatus(
+        deactivateTarget.email,
+        "Inactive",
+      );
       if (success) {
         setDeactivateTarget(null);
-        if (selectedCustomer && selectedCustomer.email === deactivateTarget.email) {
-          setSelectedCustomer((prev) => (prev ? { ...prev, status: 'Inactive' } : null));
+        if (
+          selectedCustomer &&
+          selectedCustomer.email === deactivateTarget.email
+        ) {
+          setSelectedCustomer((prev) =>
+            prev ? { ...prev, status: "Inactive" } : null,
+          );
         }
         await loadCustomers();
       }
@@ -221,11 +255,19 @@ export const CustomersView: React.FC = () => {
     if (!reactivateTarget) return;
     setIsReactivating(true);
     try {
-      const success = await updateCustomerStatus(reactivateTarget.email, 'Active');
+      const success = await updateCustomerStatus(
+        reactivateTarget.email,
+        "Active",
+      );
       if (success) {
         setReactivateTarget(null);
-        if (selectedCustomer && selectedCustomer.email === reactivateTarget.email) {
-          setSelectedCustomer((prev) => (prev ? { ...prev, status: 'Active' } : null));
+        if (
+          selectedCustomer &&
+          selectedCustomer.email === reactivateTarget.email
+        ) {
+          setSelectedCustomer((prev) =>
+            prev ? { ...prev, status: "Active" } : null,
+          );
         }
         await loadCustomers();
       }
@@ -235,22 +277,22 @@ export const CustomersView: React.FC = () => {
   };
 
   const hasActiveFilters =
-    searchTerm !== '' ||
-    statusFilter !== 'All' ||
-    customerTypeFilter !== 'All' ||
-    orderActivityFilter !== 'All' ||
-    dateJoinedFilter !== 'All' ||
-    startDate !== '' ||
-    endDate !== '';
+    searchTerm !== "" ||
+    statusFilter !== "All" ||
+    customerTypeFilter !== "All" ||
+    orderActivityFilter !== "All" ||
+    dateJoinedFilter !== "All" ||
+    startDate !== "" ||
+    endDate !== "";
 
   const clearAllFilters = () => {
-    setSearchTerm('');
-    setStatusFilter('All');
-    setCustomerTypeFilter('All');
-    setOrderActivityFilter('All');
-    setDateJoinedFilter('All');
-    setStartDate('');
-    setEndDate('');
+    setSearchTerm("");
+    setStatusFilter("All");
+    setCustomerTypeFilter("All");
+    setOrderActivityFilter("All");
+    setDateJoinedFilter("All");
+    setStartDate("");
+    setEndDate("");
     setCurrentPage(1);
   };
 
@@ -268,7 +310,8 @@ export const CustomersView: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-[#30372F]/60 mt-0.5">
-            Database-driven client profiles, order statistics, addresses, and authentication controls
+            Database-driven client profiles, order statistics, addresses, and
+            authentication controls
           </p>
         </div>
 
@@ -282,7 +325,9 @@ export const CustomersView: React.FC = () => {
             className="px-3 py-2 bg-[#F5F1EB] border border-[#30372F]/15 text-[#30372F] hover:bg-[#30372F] hover:text-[#F7F3EC] text-xs font-medium transition-colors flex items-center gap-1.5"
             title="Refresh database customer records"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`}
+            />
             <span className="hidden sm:inline">Refresh</span>
           </button>
 
@@ -301,7 +346,9 @@ export const CustomersView: React.FC = () => {
         {/* TOTAL CUSTOMERS */}
         <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-4 shadow-2xs">
           <div className="flex items-center justify-between text-[#30372F]/60">
-            <span className="text-[10px] uppercase tracking-wider font-medium">Total Customers</span>
+            <span className="text-[10px] uppercase tracking-wider font-medium">
+              Total Customers
+            </span>
             <Users className="w-4 h-4 text-[#30372F]/40" />
           </div>
           <p className="font-serif text-2xl font-bold text-[#30372F] mt-1">
@@ -312,7 +359,9 @@ export const CustomersView: React.FC = () => {
         {/* NEW CUSTOMERS */}
         <div className="bg-[#FFFDF8] border border-blue-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between text-blue-800">
-            <span className="text-[10px] uppercase tracking-wider font-medium">New (Last 30 Days)</span>
+            <span className="text-[10px] uppercase tracking-wider font-medium">
+              New (Last 30 Days)
+            </span>
             <UserPlus className="w-4 h-4 text-blue-600" />
           </div>
           <p className="font-serif text-2xl font-bold text-blue-950 mt-1">
@@ -323,7 +372,9 @@ export const CustomersView: React.FC = () => {
         {/* ACTIVE CUSTOMERS */}
         <div className="bg-[#FFFDF8] border border-emerald-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between text-emerald-800">
-            <span className="text-[10px] uppercase tracking-wider font-medium">Active Accounts</span>
+            <span className="text-[10px] uppercase tracking-wider font-medium">
+              Active Accounts
+            </span>
             <UserCheck className="w-4 h-4 text-emerald-600" />
           </div>
           <p className="font-serif text-2xl font-bold text-emerald-950 mt-1">
@@ -334,7 +385,9 @@ export const CustomersView: React.FC = () => {
         {/* CUSTOMERS WITH ORDERS */}
         <div className="bg-[#FFFDF8] border border-purple-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between text-purple-800">
-            <span className="text-[10px] uppercase tracking-wider font-medium">With Orders</span>
+            <span className="text-[10px] uppercase tracking-wider font-medium">
+              With Orders
+            </span>
             <ShoppingBag className="w-4 h-4 text-purple-600" />
           </div>
           <p className="font-serif text-2xl font-bold text-purple-950 mt-1">
@@ -345,11 +398,13 @@ export const CustomersView: React.FC = () => {
         {/* TOTAL CUSTOMER REVENUE */}
         <div className="bg-[#FFFDF8] border border-[#C5A15A]/40 p-4 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between text-[#C5A15A]">
-            <span className="text-[10px] uppercase tracking-wider font-bold">Total Customer Revenue</span>
+            <span className="text-[10px] uppercase tracking-wider font-bold">
+              Total Customer Revenue
+            </span>
             <DollarSign className="w-4 h-4 text-[#C5A15A]" />
           </div>
           <p className="font-serif text-xl font-bold text-[#30372F] mt-1">
-            ₹ {dashboardStats.totalCustomerRevenue.toLocaleString('en-IN')}
+            ₹ {dashboardStats.totalCustomerRevenue.toLocaleString("en-IN")}
           </p>
         </div>
       </div>
@@ -374,7 +429,7 @@ export const CustomersView: React.FC = () => {
             {searchTerm && (
               <button
                 onClick={() => {
-                  setSearchTerm('');
+                  setSearchTerm("");
                   setCurrentPage(1);
                 }}
                 className="absolute right-2.5 top-2.5 text-[#30372F]/40 hover:text-[#30372F]"
@@ -413,7 +468,9 @@ export const CustomersView: React.FC = () => {
             >
               <option value="All">Customer Type: All</option>
               <option value="New">Customer Type: New (Last 30 days)</option>
-              <option value="Returning">Customer Type: Returning (&gt; 1 order)</option>
+              <option value="Returning">
+                Customer Type: Returning (&gt; 1 order)
+              </option>
             </select>
           </div>
 
@@ -428,7 +485,9 @@ export const CustomersView: React.FC = () => {
               className="w-full bg-[#FFFDF8] border border-[#30372F]/15 p-2 text-xs text-[#30372F] focus:outline-none focus:border-[#C5A15A]"
             >
               <option value="All">Order Activity: All</option>
-              <option value="Never Ordered">Order Activity: Never Ordered</option>
+              <option value="Never Ordered">
+                Order Activity: Never Ordered
+              </option>
               <option value="Has Orders">Order Activity: Has Orders</option>
             </select>
           </div>
@@ -453,9 +512,11 @@ export const CustomersView: React.FC = () => {
         </div>
 
         {/* CUSTOM DATE RANGE PICKER */}
-        {dateJoinedFilter === 'Custom Range' && (
+        {dateJoinedFilter === "Custom Range" && (
           <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-[#30372F]/10 text-xs">
-            <span className="font-semibold text-[#30372F]">Custom Date Joined Range:</span>
+            <span className="font-semibold text-[#30372F]">
+              Custom Date Joined Range:
+            </span>
             <div className="flex items-center gap-2">
               <label className="text-[#30372F]/70">From:</label>
               <input
@@ -554,7 +615,9 @@ export const CustomersView: React.FC = () => {
         {isLoading ? (
           <div className="p-8 text-center space-y-4">
             <RefreshCw className="w-8 h-8 animate-spin text-[#C5A15A] mx-auto" />
-            <p className="text-xs text-[#30372F]/60 font-serif">Loading customers...</p>
+            <p className="text-xs text-[#30372F]/60 font-serif">
+              Loading customers...
+            </p>
             {/* Skeleton loader */}
             <div className="space-y-2 max-w-xl mx-auto pt-2">
               <div className="h-8 bg-[#F5F1EB] animate-pulse" />
@@ -565,9 +628,12 @@ export const CustomersView: React.FC = () => {
         ) : customers.length === 0 ? (
           <div className="p-12 text-center space-y-3">
             <Users className="w-10 h-10 text-[#30372F]/30 mx-auto" />
-            <h3 className="font-serif text-lg font-semibold text-[#30372F]">No customers found</h3>
+            <h3 className="font-serif text-lg font-semibold text-[#30372F]">
+              No customers found
+            </h3>
             <p className="text-xs text-[#30372F]/60 max-w-sm mx-auto">
-              Try changing your search terms or resetting active status and date filters.
+              Try changing your search terms or resetting active status and date
+              filters.
             </p>
             {hasActiveFilters && (
               <button
@@ -596,7 +662,10 @@ export const CustomersView: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-[#30372F]/5">
                 {customers.map((cust) => (
-                  <tr key={cust.email} className="hover:bg-[#F5F1EB]/40 transition-colors">
+                  <tr
+                    key={cust.email}
+                    className="hover:bg-[#F5F1EB]/40 transition-colors"
+                  >
                     {/* CUSTOMER NAME + AVATAR + ID */}
                     <td className="p-3">
                       <div className="flex items-center gap-2.5">
@@ -614,7 +683,7 @@ export const CustomersView: React.FC = () => {
                         <div>
                           <p className="font-semibold text-[#30372F] flex items-center gap-1.5">
                             <span>{cust.name}</span>
-                            {cust.provider === 'google' && (
+                            {cust.provider === "google" && (
                               <span
                                 className="px-1.5 py-0.2 text-[9px] bg-blue-50 text-blue-700 font-bold border border-blue-200 rounded-2xs"
                                 title="Signed up via Google OAuth"
@@ -631,36 +700,41 @@ export const CustomersView: React.FC = () => {
                     </td>
 
                     {/* EMAIL */}
-                    <td className="p-3 text-[#30372F]/90 font-medium">{cust.email}</td>
+                    <td className="p-3 text-[#30372F]/90 font-medium">
+                      {cust.email}
+                    </td>
 
                     {/* PHONE */}
                     <td className="p-3 text-[#30372F]/80 font-mono text-[11px]">
-                      {cust.phone || '—'}
+                      {cust.phone || "—"}
                     </td>
 
                     {/* JOINED DATE */}
                     <td className="p-3 text-[#30372F]/70 font-mono text-[11px]">
-                      {cust.joinedDate ? cust.joinedDate.split('T')[0] : '—'}
+                      {cust.joinedDate ? cust.joinedDate.split("T")[0] : "—"}
                     </td>
 
                     {/* TOTAL ORDERS */}
                     <td className="p-3 font-semibold text-[#30372F]">
-                      {cust.totalOrders} {cust.totalOrders === 1 ? 'Order' : 'Orders'}
+                      {cust.totalOrders}{" "}
+                      {cust.totalOrders === 1 ? "Order" : "Orders"}
                     </td>
 
                     {/* TOTAL SPENT */}
                     <td className="p-3 font-semibold text-[#C5A15A]">
-                      ₹ {cust.totalSpent.toLocaleString('en-IN')}
+                      ₹ {cust.totalSpent.toLocaleString("en-IN")}
                     </td>
 
                     {/* LAST ORDER */}
                     <td className="p-3 text-[#30372F]/70 font-mono text-[11px]">
-                      {cust.lastOrderDate ? cust.lastOrderDate.split('T')[0] : 'Never'}
+                      {cust.lastOrderDate
+                        ? cust.lastOrderDate.split("T")[0]
+                        : "Never"}
                     </td>
 
                     {/* ACCOUNT STATUS */}
                     <td className="p-3">
-                      {cust.status === 'Active' ? (
+                      {cust.status === "Active" ? (
                         <span className="px-2 py-0.5 text-[10px] bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200">
                           Active
                         </span>
@@ -677,7 +751,7 @@ export const CustomersView: React.FC = () => {
                         <button
                           onClick={() => {
                             setSelectedCustomer(cust);
-                            setSelectedCustomerTab('info');
+                            setSelectedCustomerTab("info");
                           }}
                           className="px-2.5 py-1 bg-[#30372F] text-[#F7F3EC] hover:bg-[#C5A15A] hover:text-[#30372F] font-semibold uppercase tracking-widest text-[10px] transition-colors"
                           title="View customer dossier"
@@ -685,7 +759,7 @@ export const CustomersView: React.FC = () => {
                           View Customer
                         </button>
 
-                        {cust.status === 'Active' ? (
+                        {cust.status === "Active" ? (
                           <button
                             onClick={() => setDeactivateTarget(cust)}
                             className="p-1 text-rose-700 hover:text-rose-900 border border-rose-200 hover:bg-rose-50 transition-colors"
@@ -715,9 +789,17 @@ export const CustomersView: React.FC = () => {
         {!isLoading && customers.length > 0 && (
           <div className="bg-[#F5F1EB] p-4 border-t border-[#30372F]/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <p className="text-[#30372F]/70">
-              Showing <span className="font-semibold text-[#30372F]">{(currentPage - 1) * pageSize + 1}</span> to{' '}
-              <span className="font-semibold text-[#30372F]">{Math.min(currentPage * pageSize, totalCount)}</span> of{' '}
-              <span className="font-semibold text-[#30372F]">{totalCount}</span> customers
+              Showing{" "}
+              <span className="font-semibold text-[#30372F]">
+                {(currentPage - 1) * pageSize + 1}
+              </span>{" "}
+              to{" "}
+              <span className="font-semibold text-[#30372F]">
+                {Math.min(currentPage * pageSize, totalCount)}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-[#30372F]">{totalCount}</span>{" "}
+              customers
             </p>
 
             <div className="flex items-center gap-1.5">
@@ -734,7 +816,9 @@ export const CustomersView: React.FC = () => {
               </span>
 
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 bg-[#FFFDF8] border border-[#30372F]/15 text-[#30372F] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#30372F] hover:text-white transition-colors flex items-center gap-1 text-xs font-medium"
               >
@@ -775,7 +859,7 @@ export const CustomersView: React.FC = () => {
                     <span className="text-[10px] uppercase tracking-widest text-[#C5A15A] font-bold">
                       CLIENT DOSSIER &amp; PROFILE
                     </span>
-                    {selectedCustomer.status === 'Active' ? (
+                    {selectedCustomer.status === "Active" ? (
                       <span className="px-2 py-0.5 text-[9px] bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200">
                         Active
                       </span>
@@ -793,7 +877,7 @@ export const CustomersView: React.FC = () => {
 
               {/* ACTION CONTROL BUTTONS */}
               <div className="flex items-center gap-2">
-                {selectedCustomer.status === 'Active' ? (
+                {selectedCustomer.status === "Active" ? (
                   <button
                     onClick={() => setDeactivateTarget(selectedCustomer)}
                     className="px-3 py-1.5 bg-rose-50 text-rose-800 hover:bg-rose-800 hover:text-white border border-rose-300 font-semibold text-xs uppercase tracking-wider transition-colors"
@@ -814,31 +898,31 @@ export const CustomersView: React.FC = () => {
             {/* TAB NAVIGATION IN DRAWER */}
             <div className="flex border-b border-[#30372F]/10 text-xs font-semibold uppercase tracking-wider mt-3">
               <button
-                onClick={() => setSelectedCustomerTab('info')}
+                onClick={() => setSelectedCustomerTab("info")}
                 className={`px-4 py-2 border-b-2 transition-colors ${
-                  selectedCustomerTab === 'info'
-                    ? 'border-[#C5A15A] text-[#30372F]'
-                    : 'border-transparent text-[#30372F]/50 hover:text-[#30372F]'
+                  selectedCustomerTab === "info"
+                    ? "border-[#C5A15A] text-[#30372F]"
+                    : "border-transparent text-[#30372F]/50 hover:text-[#30372F]"
                 }`}
               >
                 Customer Info &amp; Stats
               </button>
               <button
-                onClick={() => setSelectedCustomerTab('addresses')}
+                onClick={() => setSelectedCustomerTab("addresses")}
                 className={`px-4 py-2 border-b-2 transition-colors ${
-                  selectedCustomerTab === 'addresses'
-                    ? 'border-[#C5A15A] text-[#30372F]'
-                    : 'border-transparent text-[#30372F]/50 hover:text-[#30372F]'
+                  selectedCustomerTab === "addresses"
+                    ? "border-[#C5A15A] text-[#30372F]"
+                    : "border-transparent text-[#30372F]/50 hover:text-[#30372F]"
                 }`}
               >
                 Saved Addresses ({selectedCustomer.addresses.length})
               </button>
               <button
-                onClick={() => setSelectedCustomerTab('orders')}
+                onClick={() => setSelectedCustomerTab("orders")}
                 className={`px-4 py-2 border-b-2 transition-colors ${
-                  selectedCustomerTab === 'orders'
-                    ? 'border-[#C5A15A] text-[#30372F]'
-                    : 'border-transparent text-[#30372F]/50 hover:text-[#30372F]'
+                  selectedCustomerTab === "orders"
+                    ? "border-[#C5A15A] text-[#30372F]"
+                    : "border-transparent text-[#30372F]/50 hover:text-[#30372F]"
                 }`}
               >
                 Order History ({customerOrders.length})
@@ -847,7 +931,7 @@ export const CustomersView: React.FC = () => {
 
             {/* DRAWER CONTENT */}
             <div className="flex-1 overflow-y-auto space-y-6 py-4 text-xs pr-1">
-              {selectedCustomerTab === 'info' && (
+              {selectedCustomerTab === "info" && (
                 <div className="space-y-6">
                   {/* REQUIREMENT 8: CALCULATED CUSTOMER STATISTICS */}
                   <div>
@@ -856,28 +940,45 @@ export const CustomersView: React.FC = () => {
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F5F1EB] p-4 border border-[#30372F]/10">
                       <div>
-                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">Total Orders</p>
+                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
+                          Total Orders
+                        </p>
                         <p className="font-serif text-xl font-bold text-[#30372F] mt-0.5">
                           {selectedCustomer.totalOrders}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">Total Spent</p>
+                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
+                          Total Spent
+                        </p>
                         <p className="font-serif text-xl font-bold text-[#C5A15A] mt-0.5">
-                          ₹ {selectedCustomer.totalSpent.toLocaleString('en-IN')}
+                          ₹{" "}
+                          {selectedCustomer.totalSpent.toLocaleString("en-IN")}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">Average Order</p>
+                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
+                          Average Order
+                        </p>
                         <p className="font-serif text-xl font-bold text-[#30372F] mt-0.5">
-                          ₹ {selectedCustomer.avgOrderValue.toLocaleString('en-IN')}
+                          ₹{" "}
+                          {selectedCustomer.avgOrderValue.toLocaleString(
+                            "en-IN",
+                          )}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">Delivered / Cancelled</p>
+                        <p className="text-[10px] text-[#30372F]/60 uppercase font-medium">
+                          Delivered / Cancelled
+                        </p>
                         <p className="font-serif text-base font-bold text-[#30372F] mt-0.5">
-                          <span className="text-emerald-800">{selectedCustomer.deliveredOrdersCount}</span> /{' '}
-                          <span className="text-red-700">{selectedCustomer.cancelledOrdersCount}</span>
+                          <span className="text-emerald-800">
+                            {selectedCustomer.deliveredOrdersCount}
+                          </span>{" "}
+                          /{" "}
+                          <span className="text-red-700">
+                            {selectedCustomer.cancelledOrdersCount}
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -891,50 +992,80 @@ export const CustomersView: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Full Name</span>
-                        <span className="font-semibold text-[#30372F]">{selectedCustomer.name}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Email Address</span>
-                        <span className="font-semibold text-[#30372F]">{selectedCustomer.email}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Phone Number</span>
-                        <span className="font-semibold text-[#30372F]">{selectedCustomer.phone || 'Not provided'}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Customer ID</span>
-                        <span className="font-mono text-[#30372F]">{selectedCustomer.id}</span>
-                      </div>
-
-                      <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Account Joined Date</span>
-                        <span className="font-mono text-[#30372F]">
-                          {selectedCustomer.joinedDate ? selectedCustomer.joinedDate.split('T')[0] : '—'}
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Full Name
+                        </span>
+                        <span className="font-semibold text-[#30372F]">
+                          {selectedCustomer.name}
                         </span>
                       </div>
 
                       <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Auth Provider</span>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Email Address
+                        </span>
+                        <span className="font-semibold text-[#30372F]">
+                          {selectedCustomer.email}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Phone Number
+                        </span>
+                        <span className="font-semibold text-[#30372F]">
+                          {selectedCustomer.phone || "Not provided"}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Customer ID
+                        </span>
+                        <span className="font-mono text-[#30372F]">
+                          {selectedCustomer.id}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Account Joined Date
+                        </span>
+                        <span className="font-mono text-[#30372F]">
+                          {selectedCustomer.joinedDate
+                            ? selectedCustomer.joinedDate.split("T")[0]
+                            : "—"}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Auth Provider
+                        </span>
                         <span className="font-semibold capitalize text-[#30372F]">
-                          {selectedCustomer.provider || 'email'}
+                          {selectedCustomer.provider || "email"}
                         </span>
                       </div>
 
                       <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">First Order Date</span>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          First Order Date
+                        </span>
                         <span className="font-mono text-[#30372F]">
-                          {selectedCustomer.firstOrderDate ? selectedCustomer.firstOrderDate.split('T')[0] : 'Never'}
+                          {selectedCustomer.firstOrderDate
+                            ? selectedCustomer.firstOrderDate.split("T")[0]
+                            : "Never"}
                         </span>
                       </div>
 
                       <div>
-                        <span className="text-[#30372F]/60 block text-[10px] uppercase">Most Recent Order</span>
+                        <span className="text-[#30372F]/60 block text-[10px] uppercase">
+                          Most Recent Order
+                        </span>
                         <span className="font-mono text-[#30372F]">
-                          {selectedCustomer.lastOrderDate ? selectedCustomer.lastOrderDate.split('T')[0] : 'Never'}
+                          {selectedCustomer.lastOrderDate
+                            ? selectedCustomer.lastOrderDate.split("T")[0]
+                            : "Never"}
                         </span>
                       </div>
                     </div>
@@ -943,9 +1074,11 @@ export const CustomersView: React.FC = () => {
               )}
 
               {/* REQUIREMENT 6: SAVED ADDRESSES TAB */}
-              {selectedCustomerTab === 'addresses' && (
+              {selectedCustomerTab === "addresses" && (
                 <div className="space-y-4">
-                  <p className="font-serif text-base font-semibold text-[#30372F]">Saved Delivery Addresses</p>
+                  <p className="font-serif text-base font-semibold text-[#30372F]">
+                    Saved Delivery Addresses
+                  </p>
 
                   {selectedCustomer.addresses.length === 0 ? (
                     <div className="p-8 text-center bg-[#F5F1EB] border border-[#30372F]/10 text-[#30372F]/60 italic">
@@ -954,7 +1087,10 @@ export const CustomersView: React.FC = () => {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {selectedCustomer.addresses.map((addr, idx) => (
-                        <div key={idx} className="bg-[#FFFDF8] border border-[#30372F]/15 p-4 space-y-1.5 relative">
+                        <div
+                          key={idx}
+                          className="bg-[#FFFDF8] border border-[#30372F]/15 p-4 space-y-1.5 relative"
+                        >
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-[#30372F] flex items-center gap-1">
                               <MapPin className="w-3.5 h-3.5 text-[#C5A15A]" />
@@ -970,7 +1106,9 @@ export const CustomersView: React.FC = () => {
                             {addr.address}
                           </p>
                           {addr.phone && (
-                            <p className="text-[11px] text-[#30372F]/60">Phone: {addr.phone}</p>
+                            <p className="text-[11px] text-[#30372F]/60">
+                              Phone: {addr.phone}
+                            </p>
                           )}
                         </div>
                       ))}
@@ -980,9 +1118,11 @@ export const CustomersView: React.FC = () => {
               )}
 
               {/* REQUIREMENT 7: ORDER HISTORY TAB */}
-              {selectedCustomerTab === 'orders' && (
+              {selectedCustomerTab === "orders" && (
                 <div className="space-y-4">
-                  <p className="font-serif text-base font-semibold text-[#30372F]">Customer Order History</p>
+                  <p className="font-serif text-base font-semibold text-[#30372F]">
+                    Customer Order History
+                  </p>
 
                   {customerOrders.length === 0 ? (
                     <div className="p-8 text-center bg-[#F5F1EB] border border-[#30372F]/10 text-[#30372F]/60 italic">
@@ -1009,20 +1149,21 @@ export const CustomersView: React.FC = () => {
                                 #{ord.orderNumber}
                               </td>
                               <td className="p-2.5 text-[#30372F]/70 font-mono text-[11px]">
-                                {ord.createdAt.split('T')[0]}
+                                {ord.createdAt.split("T")[0]}
                               </td>
                               <td className="p-2.5 text-[#30372F]/80">
-                                {ord.items ? ord.items.length : 1} {ord.items?.length === 1 ? 'Item' : 'Items'}
+                                {ord.items ? ord.items.length : 1}{" "}
+                                {ord.items?.length === 1 ? "Item" : "Items"}
                               </td>
                               <td className="p-2.5 font-bold text-[#C5A15A]">
-                                ₹ {ord.totalAmount.toLocaleString('en-IN')}
+                                ₹ {ord.totalAmount.toLocaleString("en-IN")}
                               </td>
                               <td className="p-2.5">
                                 <span
                                   className={`px-1.5 py-0.5 text-[9px] font-semibold border ${
-                                    ord.paymentStatus === 'Paid'
-                                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                      : 'bg-amber-50 text-amber-800 border-amber-200'
+                                    ord.paymentStatus === "Paid"
+                                      ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                      : "bg-amber-50 text-amber-800 border-amber-200"
                                   }`}
                                 >
                                   {ord.paymentStatus}
@@ -1058,15 +1199,19 @@ export const CustomersView: React.FC = () => {
           <div className="bg-[#FFFDF8] border border-rose-300 max-w-md w-full p-6 shadow-2xl space-y-4">
             <div className="flex items-center gap-2 text-rose-800">
               <AlertTriangle className="w-6 h-6 text-rose-600" />
-              <h3 className="font-serif text-lg font-bold text-[#30372F]">Deactivate Customer?</h3>
+              <h3 className="font-serif text-lg font-bold text-[#30372F]">
+                Deactivate Customer?
+              </h3>
             </div>
 
             <div className="bg-rose-50 border border-rose-200 p-3 text-xs text-rose-950 space-y-1 font-mono">
               <p>
-                <span className="font-bold">Customer:</span> {deactivateTarget.name}
+                <span className="font-bold">Customer:</span>{" "}
+                {deactivateTarget.name}
               </p>
               <p>
-                <span className="font-bold">Email:</span> {deactivateTarget.email}
+                <span className="font-bold">Email:</span>{" "}
+                {deactivateTarget.email}
               </p>
             </div>
 
@@ -1086,7 +1231,9 @@ export const CustomersView: React.FC = () => {
                 disabled={isDeactivating}
                 className="px-5 py-2 bg-rose-800 text-white font-semibold text-xs uppercase tracking-wider hover:bg-rose-900 transition-colors disabled:opacity-50 flex items-center gap-1.5"
               >
-                {isDeactivating ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : null}
+                {isDeactivating ? (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                ) : null}
                 Deactivate
               </button>
             </div>
@@ -1100,20 +1247,25 @@ export const CustomersView: React.FC = () => {
           <div className="bg-[#FFFDF8] border border-emerald-300 max-w-md w-full p-6 shadow-2xl space-y-4">
             <div className="flex items-center gap-2 text-emerald-800">
               <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-              <h3 className="font-serif text-lg font-bold text-[#30372F]">Reactivate Customer Account?</h3>
+              <h3 className="font-serif text-lg font-bold text-[#30372F]">
+                Reactivate Customer Account?
+              </h3>
             </div>
 
             <div className="bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-950 space-y-1 font-mono">
               <p>
-                <span className="font-bold">Customer:</span> {reactivateTarget.name}
+                <span className="font-bold">Customer:</span>{" "}
+                {reactivateTarget.name}
               </p>
               <p>
-                <span className="font-bold">Email:</span> {reactivateTarget.email}
+                <span className="font-bold">Email:</span>{" "}
+                {reactivateTarget.email}
               </p>
             </div>
 
             <p className="text-xs text-[#30372F]/80 leading-relaxed font-medium">
-              This will restore full access for the customer to log in and place orders.
+              This will restore full access for the customer to log in and place
+              orders.
             </p>
 
             <div className="flex items-center justify-end gap-3 pt-2">
@@ -1128,7 +1280,9 @@ export const CustomersView: React.FC = () => {
                 disabled={isReactivating}
                 className="px-5 py-2 bg-emerald-800 text-white font-semibold text-xs uppercase tracking-wider hover:bg-emerald-900 transition-colors disabled:opacity-50 flex items-center gap-1.5"
               >
-                {isReactivating ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : null}
+                {isReactivating ? (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                ) : null}
                 Reactivate
               </button>
             </div>

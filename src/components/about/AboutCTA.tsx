@@ -1,6 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { useShop } from '@/context/ShopContext';
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -10,14 +10,15 @@ export default function AboutCTA() {
   const { setCurrentPage, setCategory } = useShop();
 
   const handleShopCollection = () => {
-    setCurrentPage('shop');
-    setCategory('all');
-    window.history.pushState({}, '', '/shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("shop");
+    setCategory("all");
+    window.history.pushState({}, "", "/shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleContactUs = () => {
-    window.location.href = 'mailto:concierge@maharajjewellery.com?subject=Inquiry%20-%20Maharaj%20Jewellery';
+    window.location.href =
+      "mailto:concierge@MAHESHRAJjewellery.com?subject=Inquiry%20-%20MAHESHRAJ%20Jewellery";
   };
 
   return (
@@ -31,12 +32,11 @@ export default function AboutCTA() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(circle at 50% 50%, rgba(200, 169, 107, 0.08) 0%, rgba(247, 243, 236, 0) 65%)',
+            "radial-gradient(circle at 50% 50%, rgba(200, 169, 107, 0.08) 0%, rgba(247, 243, 236, 0) 65%)",
         }}
       />
 
       <div className="relative z-10 max-w-[800px] mx-auto text-center flex flex-col items-center">
-        
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: prefersReduced ? 0 : 16 }}
@@ -82,7 +82,7 @@ export default function AboutCTA() {
           transition={{ duration: 0.85, delay: 0.45, ease: luxuryEase }}
           className="text-cocoa-200/80 text-[15px] sm:text-[16px] font-sans font-normal leading-relaxed mb-8 sm:mb-10 max-w-[420px]"
         >
-          Explore the Maharaj Jewellery collection.
+          Explore the MAHESHRAJ Jewellery collection.
         </motion.p>
 
         {/* Buttons */}
@@ -98,7 +98,7 @@ export default function AboutCTA() {
           >
             SHOP COLLECTION
           </button>
-          
+
           <button
             onClick={handleContactUs}
             className="w-full sm:w-auto px-9 py-3.5 bg-transparent hover:bg-cocoa-300/5 text-cocoa-300 text-[12px] font-sans font-medium tracking-[0.1em] uppercase transition-all duration-300 border border-cocoa-300/30 hover:border-cocoa-300"
@@ -106,7 +106,6 @@ export default function AboutCTA() {
             CONTACT US
           </button>
         </motion.div>
-
       </div>
     </section>
   );

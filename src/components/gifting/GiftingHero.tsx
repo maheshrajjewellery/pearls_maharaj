@@ -1,22 +1,29 @@
-﻿import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { giftingHeroData } from '@/data/giftingData';
-import { useShop } from '@/context/ShopContext';
+﻿import { motion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { giftingHeroData } from "@/data/giftingData";
+import { useShop } from "@/context/ShopContext";
 
 interface GiftingHeroProps {
   onEnquireClick: () => void;
   onExploreClick: () => void;
 }
 
-export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingHeroProps) {
+export default function GiftingHero({
+  onEnquireClick,
+  onExploreClick,
+}: GiftingHeroProps) {
   const { cmsData } = useShop();
   const corpCMS = cmsData?.corporate;
 
-  const eyebrow = 'ROYAL CORPORATE GIFTING';
+  const eyebrow = "ROYAL CORPORATE GIFTING";
   const heading1 = corpCMS?.heroHeading || giftingHeroData.headingLine1;
   const heading2 = giftingHeroData.headingLine2;
-  const supportingCopy = corpCMS?.heroSubheading || giftingHeroData.supportingCopy;
-  const heroImg = corpCMS?.heroImage && corpCMS.heroImage.trim() !== '' ? corpCMS.heroImage : giftingHeroData.heroImage;
+  const supportingCopy =
+    corpCMS?.heroSubheading || giftingHeroData.supportingCopy;
+  const heroImg =
+    corpCMS?.heroImage && corpCMS.heroImage.trim() !== ""
+      ? corpCMS.heroImage
+      : giftingHeroData.heroImage;
 
   return (
     <section className="relative w-full bg-[#F7F3EC] py-12 lg:py-20 flex items-center overflow-hidden border-b border-[rgba(41,35,31,0.08)]">
@@ -25,7 +32,6 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
 
       <div className="relative max-w-[1700px] mx-auto px-6 sm:px-10 lg:px-16 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          
           {/* LEFT COLUMN: Editorial Text */}
           <div className="lg:col-span-7 flex flex-col items-start z-10">
             {/* Eyebrow */}
@@ -46,7 +52,11 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal text-[#30372F] leading-[1.08] tracking-[-0.01em]"
               >
                 <span>{heading1}</span>
@@ -57,7 +67,11 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="text-[#30372F]/80 text-base sm:text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-9"
             >
               {supportingCopy}
@@ -67,7 +81,11 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.8,
+                delay: 0.45,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
             >
               {/* Primary CTA */}
@@ -76,7 +94,10 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
                 className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#30372F] text-[#FFFDF8] text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300 hover:bg-[#C5A15A] hover:text-[#30372F] shadow-sm"
               >
                 <span>{giftingHeroData.primaryCta}</span>
-                <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
               </button>
 
               {/* Secondary CTA */}
@@ -92,14 +113,18 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
           {/* RIGHT COLUMN: Premium Composition with subtle clip-path reveal */}
           <div className="lg:col-span-5 relative flex justify-center items-center">
             <motion.div
-              initial={{ clipPath: 'inset(10% 0% 10% 0%)', opacity: 0, y: 12 }}
-              animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ clipPath: "inset(10% 0% 10% 0%)", opacity: 0, y: 12 }}
+              animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1, y: 0 }}
+              transition={{
+                duration: 1.1,
+                delay: 0.2,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="relative w-full max-w-[500px] lg:max-w-none aspect-[4/5] sm:aspect-[1/1] lg:aspect-[4/5] rounded-xs overflow-hidden shadow-[0_20px_50px_rgba(41,35,31,0.08)] border border-[rgba(41,35,31,0.1)]"
             >
               <img
                 src={giftingHeroData.heroImage}
-                alt="Maharaj Corporate Pearl Jewellery Gift Box Composition"
+                alt="MAHESHRAJ Corporate Pearl Jewellery Gift Box Composition"
                 className="w-full h-full object-cover object-center transform transition-transform duration-1000"
               />
 
@@ -108,9 +133,9 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
 
               {/* Light sweep effect across pearls on entrance */}
               <motion.div
-                initial={{ x: '-100%', opacity: 0 }}
-                animate={{ x: '100%', opacity: [0, 0.4, 0] }}
-                transition={{ duration: 1.8, delay: 0.8, ease: 'easeInOut' }}
+                initial={{ x: "-100%", opacity: 0 }}
+                animate={{ x: "100%", opacity: [0, 0.4, 0] }}
+                transition={{ duration: 1.8, delay: 0.8, ease: "easeInOut" }}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FFFDF8]/40 to-transparent transform -skew-x-12 pointer-events-none"
               />
 
@@ -123,12 +148,11 @@ export default function GiftingHero({ onEnquireClick, onExploreClick }: GiftingH
                   </span>
                 </div>
                 <span className="text-[10px] uppercase tracking-[0.25em] text-[#B8A99A]">
-                  Maharaj Seal
+                  MAHESHRAJ Seal
                 </span>
               </div>
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>

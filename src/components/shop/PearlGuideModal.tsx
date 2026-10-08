@@ -1,72 +1,81 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Shield, Compass, Droplet } from 'lucide-react';
-import { useShop } from '@/context/ShopContext';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Sparkles, Shield, Compass, Droplet } from "lucide-react";
+import { useShop } from "@/context/ShopContext";
 
 const guideSections = [
   {
-    id: 'types',
-    title: 'PEARL VARIETIES',
+    id: "types",
+    title: "PEARL VARIETIES",
     icon: Compass,
     content: [
       {
-        name: 'South Sea Pearls',
-        origin: 'Australia, Indonesia & Philippines',
-        description: 'The queen of pearls. Cultivated in the silver-lipped and gold-lipped Pinctada maxima oysters, known for exceptional size (9-20mm) and luxurious satin luster in white and warm champagne gold.',
+        name: "South Sea Pearls",
+        origin: "Australia, Indonesia & Philippines",
+        description:
+          "The queen of pearls. Cultivated in the silver-lipped and gold-lipped Pinctada maxima oysters, known for exceptional size (9-20mm) and luxurious satin luster in white and warm champagne gold.",
       },
       {
-        name: 'Japanese Akoya Pearls',
-        origin: 'Japan (Mie & Ehime Prefectures)',
-        description: 'Renowned for intense mirror-like luster and near-perfect spherical geometry. The quintessential classic pearl with rose overtones, measuring 6-9.5mm.',
+        name: "Japanese Akoya Pearls",
+        origin: "Japan (Mie & Ehime Prefectures)",
+        description:
+          "Renowned for intense mirror-like luster and near-perfect spherical geometry. The quintessential classic pearl with rose overtones, measuring 6-9.5mm.",
       },
       {
-        name: 'Tahitian Black Pearls',
-        origin: 'French Polynesia Lagoons',
-        description: 'Exotic dark pearls naturally produced by the black-lipped Pinctada margaritifera. They display mesmerizing undertones of peacock green, eggplant, pistachio, and gunmetal.',
+        name: "Tahitian Black Pearls",
+        origin: "French Polynesia Lagoons",
+        description:
+          "Exotic dark pearls naturally produced by the black-lipped Pinctada margaritifera. They display mesmerizing undertones of peacock green, eggplant, pistachio, and gunmetal.",
       },
       {
-        name: 'Freshwater Pearls',
-        origin: 'Cultivated in Pristine Lakes & Rivers',
-        description: 'Composed entirely of solid crystalline nacre without a bead nucleus, offering remarkable durability, rich organic shapes, and soft luminous beauty.',
+        name: "Freshwater Pearls",
+        origin: "Cultivated in Pristine Lakes & Rivers",
+        description:
+          "Composed entirely of solid crystalline nacre without a bead nucleus, offering remarkable durability, rich organic shapes, and soft luminous beauty.",
       },
       {
-        name: 'Baroque Pearls',
-        origin: 'Natural Freeform Formations',
-        description: 'Uniquely sculpted by nature with asymmetrical contours and high fire iridescent overtones. Every baroque jewel is completely one-of-a-kind.',
+        name: "Baroque Pearls",
+        origin: "Natural Freeform Formations",
+        description:
+          "Uniquely sculpted by nature with asymmetrical contours and high fire iridescent overtones. Every baroque jewel is completely one-of-a-kind.",
       },
     ],
   },
   {
-    id: 'luster',
-    title: 'LUSTER & GRADING',
+    id: "luster",
+    title: "LUSTER & GRADING",
     icon: Sparkles,
     content: [
       {
-        name: 'The Science of Pearl Glow',
-        origin: 'Nacre Thickness & Crystal Alignment',
-        description: 'Luster is the most vital characteristic of a pearl. It is created when light penetrates micro-thin concentric layers of aragonite crystals and bounces back, creating deep internal radiance (orient).',
+        name: "The Science of Pearl Glow",
+        origin: "Nacre Thickness & Crystal Alignment",
+        description:
+          "Luster is the most vital characteristic of a pearl. It is created when light penetrates micro-thin concentric layers of aragonite crystals and bounces back, creating deep internal radiance (orient).",
       },
       {
-        name: 'Maharaj AAA Standard',
-        origin: 'Exacting Selection Criteria',
-        description: 'Every Maharaj pearl undergoes strict grading for surface purity, sphericity, nacre thickness, and sharp edge reflection before being set into precious gold.',
+        name: "MAHESHRAJ AAA Standard",
+        origin: "Exacting Selection Criteria",
+        description:
+          "Every MAHESHRAJ pearl undergoes strict grading for surface purity, sphericity, nacre thickness, and sharp edge reflection before being set into precious gold.",
       },
     ],
   },
   {
-    id: 'care',
-    title: 'CARE & PRESERVATION',
+    id: "care",
+    title: "CARE & PRESERVATION",
     icon: Shield,
     content: [
       {
-        name: 'Last On, First Off',
-        origin: 'Gold Standard of Jewellery Care',
-        description: 'Always put your pearls on after applying perfume, hairspray, lotions, and cosmetics. Take them off first when undressing to protect the delicate nacre.',
+        name: "Last On, First Off",
+        origin: "Gold Standard of Jewellery Care",
+        description:
+          "Always put your pearls on after applying perfume, hairspray, lotions, and cosmetics. Take them off first when undressing to protect the delicate nacre.",
       },
       {
-        name: 'Storage & Cleaning',
-        origin: 'Generational Longevity',
-        description: 'Store pearls flat in their silk-lined Maharaj pouch, away from dry heat and hard gemstones that could scratch the surface. Clean gently with a soft damp chamois cloth after wearing.',
+        name: "Storage & Cleaning",
+        origin: "Generational Longevity",
+        description:
+          "Store pearls flat in their silk-lined MAHESHRAJ pouch, away from dry heat and hard gemstones that could scratch the surface. Clean gently with a soft damp chamois cloth after wearing.",
       },
     ],
   },
@@ -74,11 +83,12 @@ const guideSections = [
 
 export default function PearlGuideModal() {
   const { isPearlGuideOpen, closePearlGuide } = useShop();
-  const [activeTab, setActiveTab] = useState('types');
+  const [activeTab, setActiveTab] = useState("types");
 
   if (!isPearlGuideOpen) return null;
 
-  const currentSection = guideSections.find((s) => s.id === activeTab) || guideSections[0];
+  const currentSection =
+    guideSections.find((s) => s.id === activeTab) || guideSections[0];
 
   return (
     <AnimatePresence>
@@ -105,7 +115,7 @@ export default function PearlGuideModal() {
           <div className="flex items-center justify-between px-6 sm:px-10 h-20 border-b border-[rgba(41,35,31,0.12)] bg-[#F7F3EC]">
             <div>
               <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-champagne-500 font-medium">
-                MAHARAJ KNOWLEDGE ATELIER
+                MAHESHRAJ KNOWLEDGE ATELIER
               </p>
               <h2 className="font-serif text-2xl sm:text-3xl text-cocoa-300 font-normal">
                 THE PEARL GUIDE
@@ -130,7 +140,9 @@ export default function PearlGuideModal() {
                   key={sec.id}
                   onClick={() => setActiveTab(sec.id)}
                   className={`flex items-center gap-2 py-4 text-xs font-sans tracking-[0.2em] uppercase transition-colors relative whitespace-nowrap ${
-                    isActive ? 'text-cocoa-300 font-medium' : 'text-cocoa-100 font-light hover:text-champagne-500'
+                    isActive
+                      ? "text-cocoa-300 font-medium"
+                      : "text-cocoa-100 font-light hover:text-champagne-500"
                   }`}
                 >
                   <Icon size={14} strokeWidth={1.5} />
@@ -176,7 +188,8 @@ export default function PearlGuideModal() {
           {/* Footer */}
           <div className="p-6 border-t border-[rgba(41,35,31,0.1)] bg-[#F7F3EC] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-cocoa-100 font-light text-center sm:text-left">
-              Have specific questions regarding a particular pearl piece? Our gemologists are at your service.
+              Have specific questions regarding a particular pearl piece? Our
+              gemologists are at your service.
             </p>
             <button
               onClick={closePearlGuide}

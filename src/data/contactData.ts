@@ -30,15 +30,15 @@ export interface ContactConfig {
 }
 
 export const contactConfig: ContactConfig = {
-  email: 'hello@maharajjewellery.com',
-  conciergeEmail: 'concierge@maharajjewellery.com',
+  email: 'hello@MAHESHRAJjewellery.com',
+  conciergeEmail: 'concierge@MAHESHRAJjewellery.com',
   phone: '+91 XXXXX XXXXX',
   formattedPhone: '+91 (0) XX-XXXX-XXXX',
   whatsappNumber: '+91 XXXXX XXXXX',
-  whatsappMessage: 'Hello Maharaj Jewellery, I would like to enquire about a private consultation.',
-  instagramHandle: '@maharajjewellery',
-  instagramUrl: 'https://instagram.com/maharajjewellery',
-  facebookUrl: 'https://facebook.com/maharajjewellery',
+  whatsappMessage: 'Hello MAHESHRAJ Jewellery, I would like to enquire about a private consultation.',
+  instagramHandle: '@MAHESHRAJjewellery',
+  instagramUrl: 'https://instagram.com/MAHESHRAJjewellery',
+  facebookUrl: 'https://facebook.com/MAHESHRAJjewellery',
   storeStatus: 'Store location details coming soon.',
   storeNote: 'Private atelier viewings and one-on-one appointments will be hosted at our upcoming flagship studio.',
   hoursWeekday: 'Monday – Saturday: 10:30 AM – 7:30 PM IST',
@@ -94,13 +94,13 @@ export const faqItems: FAQItem[] = [
     id: 'faq-1',
     question: 'How can I enquire about a product?',
     answer:
-      'You can enquire directly using our consultation form above, reach our concierge team via WhatsApp, or email us at hello@maharajjewellery.com. If you have a specific piece in mind, please include its name or reference code. Our pearl specialists typically respond within 2 to 4 business hours.',
+      'You can enquire directly using our consultation form above, reach our concierge team via WhatsApp, or email us at hello@MAHESHRAJjewellery.com. If you have a specific piece in mind, please include its name or reference code. Our pearl specialists typically respond within 2 to 4 business hours.',
   },
   {
     id: 'faq-2',
     question: 'Can I request a custom jewellery piece?',
     answer:
-      'Yes, bespoke creations are the hallmark of Maharaj Jewellery. From selecting individual rare South Sea and Tahitian pearls to collaborating on hand-drawn sketches and choosing precious metals (18K/22K gold, platinum, or sterling silver), our master artisans will bring your vision to life.',
+      'Yes, bespoke creations are the hallmark of MAHESHRAJ Jewellery. From selecting individual rare South Sea and Tahitian pearls to collaborating on hand-drawn sketches and choosing precious metals (18K/22K gold, platinum, or sterling silver), our master artisans will bring your vision to life.',
   },
   {
     id: 'faq-3',
@@ -118,12 +118,12 @@ export const faqItems: FAQItem[] = [
     id: 'faq-5',
     question: 'How can I track my order?',
     answer:
-      'Upon dispatch from our atelier, you will receive a secure tracking link via email and SMS. Every Maharaj Jewellery order is fully insured and delivered via high-security courier services with signature confirmation required upon delivery.',
+      'Upon dispatch from our atelier, you will receive a secure tracking link via email and SMS. Every MAHESHRAJ Jewellery order is fully insured and delivered via high-security courier services with signature confirmation required upon delivery.',
   },
   {
     id: 'faq-6',
     question: 'How can I contact customer support?',
     answer:
-      'Our dedicated Client Care team is available Monday through Saturday from 10:30 AM to 7:30 PM IST. You can reach us via our online consultation form, email at concierge@maharajjewellery.com, or directly through our WhatsApp concierge service for immediate assistance.',
+      'Our dedicated Client Care team is available Monday through Saturday from 10:30 AM to 7:30 PM IST. You can reach us via our online consultation form, email at concierge@MAHESHRAJjewellery.com, or directly through our WhatsApp concierge service for immediate assistance.',
   },
 ];

@@ -1,22 +1,23 @@
-import { useEffect } from 'react';
-import AboutHero from '@/components/about/AboutHero';
-import AboutPhilosophy from '@/components/about/AboutPhilosophy';
-import AboutPearlStory from '@/components/about/AboutPearlStory';
-import AboutHeritageCraft from '@/components/about/AboutHeritageCraft';
-import AboutTransformation from '@/components/about/AboutTransformation';
-import AboutSignature from '@/components/about/AboutSignature';
-import AboutValues from '@/components/about/AboutValues';
-import AboutBrandStatement from '@/components/about/AboutBrandStatement';
-import AboutCTA from '@/components/about/AboutCTA';
-import CartDrawer from '@/components/shop/CartDrawer';
-import SearchModal from '@/components/shop/SearchModal';
-import QuickViewModal from '@/components/shop/QuickViewModal';
-import PearlGuideModal from '@/components/shop/PearlGuideModal';
+import { useEffect } from "react";
+import AboutHero from "@/components/about/AboutHero";
+import AboutPhilosophy from "@/components/about/AboutPhilosophy";
+import AboutPearlStory from "@/components/about/AboutPearlStory";
+import AboutHeritageCraft from "@/components/about/AboutHeritageCraft";
+import AboutTransformation from "@/components/about/AboutTransformation";
+import AboutSignature from "@/components/about/AboutSignature";
+import AboutValues from "@/components/about/AboutValues";
+import AboutBrandStatement from "@/components/about/AboutBrandStatement";
+import AboutCTA from "@/components/about/AboutCTA";
+import CartDrawer from "@/components/shop/CartDrawer";
+import SearchModal from "@/components/shop/SearchModal";
+import QuickViewModal from "@/components/shop/QuickViewModal";
+import PearlGuideModal from "@/components/shop/PearlGuideModal";
 
 export default function AboutPage() {
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.title = 'About Us | Maharaj Jewellery — The Art of Timeless Pearls';
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.title =
+      "About Us | MAHESHRAJ Jewellery — The Art of Timeless Pearls";
   }, []);
 
   return (
@@ -36,7 +37,7 @@ export default function AboutPage() {
       {/* 05 — FROM PEARL TO JEWELLERY */}
       <AboutTransformation />
 
-      {/* 06 — MAHARAJ SIGNATURE */}
+      {/* 06 — MAHESHRAJ SIGNATURE */}
       <AboutSignature />
 
       {/* 07 — VALUES */}
@@ -47,7 +48,6 @@ export default function AboutPage() {
 
       {/* 09 — FINAL CTA */}
       <AboutCTA />
-
     </div>
   );
 }

@@ -1,8 +1,8 @@
-﻿import { motion } from 'framer-motion';
-import { Instagram, ArrowRight } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
-import { editorialImages } from '@/data/mockData';
-import { useShop } from '@/context/ShopContext';
+﻿import { motion } from "framer-motion";
+import { Instagram, ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { editorialImages } from "@/data/mockData";
+import { useShop } from "@/context/ShopContext";
 
 export default function EditorialGallery() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
@@ -12,16 +12,16 @@ export default function EditorialGallery() {
 
   if (galleryCMS && galleryCMS.active === false) return null;
 
-  const title = galleryCMS?.title || 'The Maharaj World';
+  const title = galleryCMS?.title || "The MAHESHRAJ World";
 
   // Editorial layout: varied sizes
   const colSpans = [
-    'md:col-span-2 md:row-span-2',
-    'md:col-span-1',
-    'md:col-span-1',
-    'md:col-span-1',
-    'md:col-span-1',
-    'md:col-span-2',
+    "md:col-span-2 md:row-span-2",
+    "md:col-span-1",
+    "md:col-span-1",
+    "md:col-span-1",
+    "md:col-span-1",
+    "md:col-span-2",
   ];
 
   return (
@@ -55,7 +55,11 @@ export default function EditorialGallery() {
               href="#"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.12 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: 0.12 + i * 0.07,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className={`group relative overflow-hidden rounded-[2px] ${colSpans[i]}`}
             >
               <img
@@ -68,7 +72,11 @@ export default function EditorialGallery() {
 
               {/* Hover content */}
               <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Instagram size={22} strokeWidth={1.5} className="text-ivory-50 mb-2" />
+                <Instagram
+                  size={22}
+                  strokeWidth={1.5}
+                  className="text-ivory-50 mb-2"
+                />
                 <span className="text-ivory-50 text-[11px] tracking-widest uppercase font-light flex items-center gap-1.5">
                   View
                   <ArrowRight size={13} strokeWidth={1.5} />

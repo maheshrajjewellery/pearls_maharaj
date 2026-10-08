@@ -1,6 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { useInView } from '@/hooks/useInView';
-import { useShop } from '@/context/ShopContext';
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "@/hooks/useInView";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -10,22 +10,23 @@ export default function AboutPhilosophy() {
   const { cmsData } = useShop();
 
   const aboutCMS = cmsData?.about;
-  const philosophyText = aboutCMS?.philosophyText || 'Maharaj Jewellery brings together the natural beauty of pearls, refined design and careful craftsmanship to create pieces meant to be remembered.';
+  const philosophyText =
+    aboutCMS?.philosophyText ||
+    "MAHESHRAJ Jewellery brings together the natural beauty of pearls, refined design and careful craftsmanship to create pieces meant to be remembered.";
 
   const quoteLines = [
-    '“Jewellery should not simply be worn.',
-    'It should become part of your story.”',
+    "“Jewellery should not simply be worn.",
+    "It should become part of your story.”",
   ];
 
   return (
     <section
       ref={ref}
       className="relative bg-pearlIvory-100 py-24 sm:py-28 lg:py-36 px-6 sm:px-10 lg:px-16 xl:px-20 border-b border-cocoa-300/10 overflow-hidden"
-      aria-label="Maharaj Brand Philosophy"
+      aria-label="MAHESHRAJ Brand Philosophy"
     >
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          
           {/* LEFT: Small Label */}
           <div className="lg:col-span-4 flex flex-col items-start pt-2">
             <motion.div
@@ -52,14 +53,16 @@ export default function AboutPhilosophy() {
                     initial={{
                       opacity: 0,
                       y: prefersReduced ? 0 : 40,
-                      clipPath: prefersReduced ? 'none' : 'inset(0 0 100% 0)',
+                      clipPath: prefersReduced ? "none" : "inset(0 0 100% 0)",
                     }}
                     animate={
                       inView
                         ? {
                             opacity: 1,
                             y: 0,
-                            clipPath: prefersReduced ? 'none' : 'inset(0 0 0% 0)',
+                            clipPath: prefersReduced
+                              ? "none"
+                              : "inset(0 0 0% 0)",
                           }
                         : {}
                     }
@@ -90,12 +93,11 @@ export default function AboutPhilosophy() {
             {/* Subtle decorative champagne signature flourish */}
             <motion.div
               initial={{ width: 0, opacity: 0 }}
-              animate={inView ? { width: '80px', opacity: 1 } : {}}
+              animate={inView ? { width: "80px", opacity: 1 } : {}}
               transition={{ duration: 1.1, delay: 0.85, ease: luxuryEase }}
               className="h-px bg-champagne-300 mt-10 sm:mt-12"
             />
           </div>
-
         </div>
       </div>
     </section>

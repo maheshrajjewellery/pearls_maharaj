@@ -258,9 +258,7 @@ export const AdminGlobalSearchModal: React.FC = () => {
                         {c.totalSpent.toLocaleString("en-IN")}
                       </p>
                     </div>
-                    <span
-                      className="text-[10px] bg-[#F5EBDD] text-[#30372F] font-semibold px-2 py-0.5"
-                    >
+                    <span className="text-[10px] bg-[#F5EBDD] text-[#30372F] font-semibold px-2 py-0.5">
                       {c.status}
                     </span>
                   </div>
@@ -311,7 +309,7 @@ export const AdminGlobalSearchModal: React.FC = () => {
         {/* FOOTER TIP */}
         <div className="px-4 py-2 border-t border-[#30372F]/10 bg-[#F5F1EB] flex items-center justify-between text-[10px] text-[#30372F]/50">
           <span>Press ESC or click outside to dismiss</span>
-          <span>MAHARAJ JEWELLERY ADMIN</span>
+          <span>MAHESHRAJ JEWELLERY ADMIN</span>
         </div>
       </div>
     </div>

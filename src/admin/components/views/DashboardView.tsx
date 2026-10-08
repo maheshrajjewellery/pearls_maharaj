@@ -153,14 +153,12 @@ export const DashboardView: React.FC = () => {
     <div className="space-y-8 animate-fadeIn">
       {/* WELCOME BANNER */}
       <div className="bg-[#FFFDF8] border border-[#30372F]/10 p-6 shadow-xs relative overflow-hidden">
-        <div
-          className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-[#F5EBDD]/40 to-transparent pointer-events-none hidden md:block"
-        />
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-[#F5EBDD]/40 to-transparent pointer-events-none hidden md:block" />
         <h2 className="font-serif text-2xl md:text-3xl text-[#30372F] font-semibold">
           Good Morning, {adminUser?.name || "Admin"}
         </h2>
         <p className="text-xs text-[#30372F]/70 mt-1">
-          Here's what's happening with Maharaj Jewellery today.
+          Here's what's happening with MAHESHRAJ Jewellery today.
         </p>
       </div>
 

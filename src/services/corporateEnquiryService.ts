@@ -38,7 +38,7 @@ export const STAFF_MEMBERS: StaffMember[] = [
   { id: 'staff-1', name: 'Rajesh Kumar', role: 'Corporate Sales Lead' },
   { id: 'staff-2', name: 'Meera Nair', role: 'Senior Concierge' },
   { id: 'staff-3', name: 'Vikramaditya Sharma', role: 'Gifting Director' },
-  { id: 'admin-1', name: 'Maharaj Executive', role: 'Super Admin' },
+  { id: 'admin-1', name: 'MAHESHRAJ Executive', role: 'Super Admin' },
 ];
 
 export interface CorporateEnquiry {
@@ -103,8 +103,8 @@ export interface FetchEnquiriesResult {
   };
 }
 
-const STORAGE_KEY = 'maharaj_corporate_enquiries_v2';
-const STORAGE_EVENTS_KEY = 'maharaj_corporate_enquiry_events_v2';
+const STORAGE_KEY = 'MAHESHRAJ_corporate_enquiries_v2';
+const STORAGE_EVENTS_KEY = 'MAHESHRAJ_corporate_enquiry_events_v2';
 
 /**
  * Initial seed enquiries (empty by default to eliminate hardcoded enquiries)

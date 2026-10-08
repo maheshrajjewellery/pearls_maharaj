@@ -1,7 +1,7 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useInView } from '@/hooks/useInView';
-import { useShop } from '@/context/ShopContext';
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { useShop } from "@/context/ShopContext";
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -11,27 +11,26 @@ export default function AboutSignature() {
   const { setCurrentPage, setCategory } = useShop();
 
   const handleDiscover = () => {
-    setCurrentPage('shop');
-    setCategory('all');
-    window.history.pushState({}, '', '/shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage("shop");
+    setCategory("all");
+    window.history.pushState({}, "", "/shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <section
       ref={ref}
       className="relative bg-pearlIvory-100 py-24 sm:py-28 lg:py-36 px-6 sm:px-10 lg:px-16 xl:px-20 border-b border-cocoa-300/10 overflow-hidden"
-      aria-label="The Maharaj Signature"
+      aria-label="The MAHESHRAJ Signature"
     >
       <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-center">
-          
           {/* LEFT: Large Portrait-Oriented Jewellery Image */}
           <div className="lg:col-span-6">
             <div className="relative max-w-[520px] mx-auto lg:max-w-none">
               {/* Subtle architectural offset frame */}
               <div className="absolute -inset-3 border border-champagne-300/25 rounded-[2px] pointer-events-none -z-0" />
-              
+
               <motion.div
                 className="relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] rounded-[2px] shadow-[0_12px_40px_rgba(41,35,31,0.08)] bg-pearlIvory-200 z-10"
                 initial={{ opacity: 0, y: prefersReduced ? 0 : 25 }}
@@ -40,7 +39,7 @@ export default function AboutSignature() {
               >
                 <img
                   src="https://images.pexels.com/photos/10061399/pexels-photo-10061399.jpeg?auto=compress&cs=tinysrgb&w=1400"
-                  alt="Maharaj signature handcrafted pearl jewellery"
+                  alt="MAHESHRAJ signature handcrafted pearl jewellery"
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
                 />
@@ -67,7 +66,7 @@ export default function AboutSignature() {
             >
               <span className="h-px w-6 bg-champagne-300" />
               <p className="text-champagne-500 text-[11px] sm:text-[12px] font-sans font-medium tracking-[0.1em] uppercase">
-                THE MAHARAJ SIGNATURE
+                THE MAHESHRAJ SIGNATURE
               </p>
             </motion.div>
 
@@ -102,7 +101,8 @@ export default function AboutSignature() {
               transition={{ duration: 0.85, delay: 0.45, ease: luxuryEase }}
               className="text-cocoa-200/85 text-[16px] sm:text-[17px] font-sans font-normal leading-[1.7] mb-8 sm:mb-10"
             >
-              Every piece is designed with a balance of classic elegance and contemporary expression.
+              Every piece is designed with a balance of classic elegance and
+              contemporary expression.
             </motion.p>
 
             {/* CTA */}
@@ -126,7 +126,6 @@ export default function AboutSignature() {
               <div className="w-36 h-px bg-champagne-300/50 mt-2 group-hover:w-48 transition-all duration-300" />
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>
